@@ -8,7 +8,12 @@ class PatronController < ApplicationController
 
   def index
     @voyager_connection = Voyager::Connection.new(APP_CONFIG['voyager_connection'])
-    @patron = Voyager::Patron.new(uni: current_user.login, connection: @voyager_connection)
+    uni_to_lookup = current_user.login
+
+    if params['impersonate'] && can?(:impersonate, User)
+      uni_to_lookup = params['impersonate']
+    end
+    @patron = Voyager::Patron.new(uni: uni_to_lookup,  connection: @voyager_connection)
 
     if params['commit'] && params['loans_renew'] && !params['loans_renew'].empty?
       @debug_entries['loans'] = []

@@ -1,0 +1,21 @@
+- if @patron.fines
+  %h4 Fines
+
+  %table.table.table-striped
+    %tr
+      %th Title
+      %th Fine
+      %th Date
+      %th Amount
+
+    - @patron.fines.each do |fine|
+      %tr{:class => alternating_line('fine')} 
+        %td= fine.item_title
+        %td= fine.fine_type 
+        %td= fine.fine_date.to_formatted_s(:short)
+        %td= fine.amount
+
+    - if @patron.fines.length > 1
+      %tr
+        %td{:colspan => 3} Total:
+        %td= @patron.fine_balance
