@@ -11,6 +11,7 @@
       %th Item Type
       %th Status
       %th Renew?
+    - can_renew_any = false
     = form_tag patron_index_path do 
       - @patron.loans.each do |loan|
         %tr{:class => determine_loan_row_class(loan)}
@@ -20,9 +21,11 @@
           %td= loan.status_text
           %td
             - if loan.can_renew
+              - can_renew_any= true
               = check_box_tag "loans_renew[]", "#{loan.db_key}%7C#{loan.item_id}", loan.db_key.in?(params['loans_renew'])
 
-      - unless @patron.loans.empty?
+      - if @patron.loans.empty? && can_renew_any
         %tr
           %td{:colspan => 4}
           %td= submit_tag "Renew"
+

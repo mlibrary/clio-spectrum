@@ -1,0 +1,10 @@
+- if @patron.blocks
+  %h4 Blocks:
+
+  %table.table.table-striped
+
+    - @patron.blocks.each do |block|
+      %tr{:class => 'error'}
+        %td= block.block_reason
+
+

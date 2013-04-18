@@ -1,0 +1,21 @@
+
+- if @patron.holds
+  %h4 Requests: 
+
+  %table.table.table-striped
+    %tr
+      %th Title
+      %th Database
+      %th Expires
+      %th Pickup At
+      %th Cancel?
+
+    = form_tag patron_index_path do 
+      - @patron.holds.each do |hold|
+        %tr{:class => alternating_line('requests')}
+          %td= hold.item_title
+          %td= hold.db_name
+          %td= hold.expired_date
+          %td= hold.pickup_location
+          %td= link_to "Cancel", "#", class: 'btn'
+
