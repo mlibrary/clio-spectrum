@@ -29,5 +29,6 @@
 //= require catalog
 //= require datasources
 //= require async-search
+//= require patron
 
 //= require holdings

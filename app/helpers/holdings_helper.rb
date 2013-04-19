@@ -63,6 +63,7 @@ module HoldingsHelper
   end
 
 
+
   SERVICE_ORDER = %w{offsite spec_coll precat recall_hold on_order borrow_direct ill in_process doc_delivery}
   # parameters: title, link, whether to append clio_id to link
   SERVICES = {
@@ -77,12 +78,20 @@ module HoldingsHelper
     'doc_delivery' => ['Document Delivery', " https://www1.columbia.edu/sec-cgi-bin/cul/forms/docdel?", true]
   } 
 
-  def service_links(services, clio_id, options = {})
-    services.select {|svc| SERVICE_ORDER.index(svc)}.sort_by { |svc| SERVICE_ORDER.index(svc) }.collect do |svc|
+  def service_links(entry, clio_id, options = {})
+    entry['services'].select {|svc| SERVICE_ORDER.index(svc)}.sort_by { |svc| SERVICE_ORDER.index(svc) }.collect do |svc|
+
       title, uri, add_clio_id = SERVICES[svc]
       uri += clio_id.to_s if add_clio_id
-      link_to title, uri, options
-    end
+      link = link_to title, uri, options
+
+      if svc == 'recall_hold'
+        [link, link_to("Recall/Hold (New)", patron_request_path(item_id: clio_id), options)]
+      else
+        link
+      end
+      
+    end.flatten
   end
 
 

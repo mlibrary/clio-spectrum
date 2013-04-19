@@ -1,0 +1,24 @@
+%h4 Request Form
+
+
+= form_tag patron_request_path, :class => "form-horizontal" do
+  .control-group
+    %label.control-label(for="title") Title
+    .controls
+      %label.checkbox.inline
+        = @record_request['title']
+
+  .control-group
+    %label.control-label(for="request_type") Request Type
+    .controls
+      - if @record_request['recall']
+        %label.radio.radio-record_request.inline
+          = radio_button_tag 'request_type', 'recall', params['request_type'] == 'recall'
+          Recall
+      - if @record_request['hold']
+        %label.radio.radio-record_request.inline
+          = radio_button_tag 'request_type', 'hold', params['request_type'] == 'hold'
+          Hold
+
+  .record_request_form.recall= render partial: "request_subform", locals: {request_name: 'recall', request_data: @record_request['recall']}
+  .record_request_form.hold= render partial: "request_subform", locals: {request_name: 'hold', request_data: @record_request['hold']}

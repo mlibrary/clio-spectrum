@@ -1,0 +1,40 @@
+- params[request_name] ||= {}
+
+- if request_data
+  = hidden_field_tag("#{request_name}[dbkey]", request_data['dbkey'])
+
+  .control-group
+    - control_name = "#{request_name}[copy]"
+    %label.control-label(for=control_name) Copy
+    .controls
+      - items = [{item_id: "any-copy", description: "Any Copy"}] | request_data['items']
+      = select_tag control_name, options_for_select(items.collect{ |i| [i[:description], i[:item_id]]} )
+
+
+  .control-group
+    - control_name = "#{request_name}[location]"
+    %label.control-label(for=control_name) Pickup Location
+    .controls
+      - locations = request_data['pickup_locations']
+      - selected = locations.detect { |l| l[:default] == "Y"}
+      - selected = selected ? selected[:code] : "572"
+      = select_tag control_name, options_for_select(locations.collect{ |i| [i[:name], i[:code]]} )
+
+   
+  .control-group
+    - control_name = "#{request_name}[comment]"
+    %label.control-label(for=control_name) Comment
+    .controls
+      = text_field_tag control_name, params[request_name]['comment'], :maxlength => 100
+
+  .control-group
+    - control_name = "#{request_name}[max_date]"
+    - default_date = params[request_name]['max_date'] || (Date.today + 1.month).to_formatted_s(:long)
+    %label.control-label(for=control_name) Not Needed After
+    .controls
+      = text_field_tag control_name, default_date
+
+  .control_group
+    .controls
+      = submit_tag "Place #{request_name}"
+  
