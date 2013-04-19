@@ -86,7 +86,7 @@ module HoldingsHelper
       link = link_to title, uri, options
 
       if svc == 'recall_hold'
-        [link, link_to("Recall/Hold (New)", patron_request_path(item_id: clio_id), options)]
+        [link, link_to("Recall/Hold (New)", patron_request_path(record_id: clio_id), options)]
       else
         link
       end

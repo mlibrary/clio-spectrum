@@ -18,7 +18,7 @@
       - locations = request_data['pickup_locations']
       - selected = locations.detect { |l| l[:default] == "Y"}
       - selected = selected ? selected[:code] : "572"
-      = select_tag control_name, options_for_select(locations.collect{ |i| [i[:name], i[:code]]} )
+      = select_tag control_name, options_for_select(locations.collect{ |i| [i[:name], i[:code]]}, selected )
 
    
   .control-group
