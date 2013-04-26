@@ -1,6 +1,6 @@
 %h4 Currently On Loan:
 
-- if @patron.loans.empty?
+- unless @patron.loans
   You currently have nothing on loan.
 
 - else

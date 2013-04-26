@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
 
 
   def has_role?(area, role, admin_okay = true)
-    self.login.in?(PERMISSIONS_CONFIG[area] && PERMISSIONS_CONFIG[area][role]) || (admin_okay && self.login.in?(PERMISSIONS_CONFIG['site']['manage']))
+#    self.login.in?(PERMISSIONS_CONFIG[area] && PERMISSIONS_CONFIG[area][role]) || (admin_okay && self.login.in?(PERMISSIONS_CONFIG['site']['manage']))
+    (PERMISSIONS_CONFIG[area] && self.login.in?(PERMISSIONS_CONFIG[area][role])) || (admin_okay && self.login.in?(PERMISSIONS_CONFIG['site']['manage']))
   end
 
   def to_s
