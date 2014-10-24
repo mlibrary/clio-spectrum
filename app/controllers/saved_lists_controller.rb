@@ -29,7 +29,6 @@ class SavedListsController < ApplicationController
     # Determine search parameters to locate the list
     owner = params[:owner]
     slug  = params[:slug]  ||= SavedList::DEFAULT_LIST_SLUG
-
     # Default to your own lists, if you don't specify an owner
     if owner.blank? and current_user.present?
       owner = current_user.login

@@ -9,6 +9,39 @@ describe 'Saved List Interface' do
     @blatteroon = FactoryGirl.create(:user, login: 'blatteroon')
   end
 
+  describe 'share by email' do
+    before(:each) do
+      feature_login @autodidact
+    end
+    it 'supports an email function, directly' do
+      visit email_savedlist_path(id: '12_345')
+      expect(page).to have_text('Share selected item(s) via email')
+      within('#email_form') do fill_in 'to', with: 'marquis@columbia.edu' end
+      (within('#email_form') do find('button[type=submit]') end).click
+    end
+
+    it 'supports an email function, via JS modal', js: true do
+      @list=SavedList.create!(owner: @autodidact.login, name: 'george')
+      @list.saved_list_items=[SavedListItem.new(item_key: "10922430")]
+      visit '/lists/autodidact/george/'
+      (page.find("#item_select_10922430")).set(true)
+      find('a', :text=>'Selected List Items...').click
+      find('a', :text=>'Send to Email').click
+      (within('.btn-toolbar', visible: false) do find('#emailLink', visible: false) end).trigger('click')
+      expect(page).to have_text('Share selected item(s) via email')
+
+      page.should have_css('.modal-dialog .modal-content .modal-header')
+
+      find('.modal-header').should have_text('Share selected item(s) via email')
+
+      within '#email_form' do
+        fill_in 'to', with: 'marquis@columbia.edu'
+        fill_in 'message', with: 'testing'
+        find('button[type=submit]').click
+      end
+    end
+  end
+
   it 'Capybara should let us login and logout and login again', xfocus: true do
     # Not yet logged in - navbar shows un-authenticated message
     visit catalog_index_path
