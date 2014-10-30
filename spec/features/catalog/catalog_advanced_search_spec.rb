@@ -68,6 +68,99 @@ describe 'Catalog Advanced Search' do
 
   end
 
+  # Test each individual advanced-search option
+  { 'Title' => 'smith',
+    'Journal Title' => 'Journal',
+    'Author' => 'Smith',
+    'Series' => 'Series',
+    # We have some funny quoting logic around this field
+    'Title Begins With' => '"Three"',
+    'Subject' => 'Science',
+    'Form/Genre' => 'Manuscript',
+    'Publication Place' => 'Boston',
+    'Publisher' => 'Penguin',
+    'Publication Year' => '1999',
+    # check for specific bibs?
+    # 'ISBN' => '9780470405543',
+    # 'ISSN' => '2372-5699',
+    # or search by prefix?
+    'ISBN' => '13',
+    'ISSN' => '2372',
+    'Call Number' => 'PN1995.9.P7',
+    'Location' => 'Dakhla Library',
+  }.each_pair do |searchField, searchValue|
+
+
+    it "supports fielded search by #{searchField}", js: true do
+      visit catalog_index_path
+      find('btn', text: "All Fields").click
+      within('.search_row') do
+        find('li', text: /\A#{searchField}\z/).click
+      end
+      fill_in 'q', with: searchValue
+      find('button[type=submit]').click
+
+      find('.constraint-box').should have_content("#{searchField}: #{searchValue}")
+      page.should have_text "« Previous | 1 - 25 of"
+    end
+
+
+    it "supports advanced search by #{searchField}", js: true do
+      visit catalog_index_path
+      find('.search_box.catalog .advanced_search_toggle').click
+      within '.landing_page.catalog .advanced_search' do
+        select(searchField, from: 'adv_1_field')
+        fill_in 'adv_1_value', with: searchValue
+        find('button[type=submit]').click
+      end
+      find('.constraint-box').should have_content("#{searchField}: #{searchValue}")
+      page.should have_text "« Previous | 1 - 25 of"
+    end
+
+
+  end
+
+  # NEXT-1113 - location search
+  # Specifically, test the ability to search beyond "base" location to 
+  # sublocation text.
+  [ 'Barnard Reference',
+    'Lehman Reference',
+    'Barnard Alumnae Collection',
+    'Comp Lit',
+    'African Studies',
+    'Offsite <Avery>',
+    'Offsite <Fine Arts>'
+  ].each do |locationSearch|
+
+    it "supports fielded Location search for #{locationSearch}", js: true do
+      visit catalog_index_path
+      find('btn', text: "All Fields").click
+      within('.search_row') do
+        find('li', text: 'Location').click
+      end
+      fill_in 'q', with: locationSearch
+      find('button[type=submit]').click
+
+      find('.constraint-box').should have_content("Location: #{locationSearch}")
+      page.should have_text "« Previous | 1 - 25 of"
+    end
+
+
+    it "supports advanced Location search for #{locationSearch}", js: true do
+      visit catalog_index_path
+      find('.search_box.catalog .advanced_search_toggle').click
+      within '.landing_page.catalog .advanced_search' do
+        select('Location', from: 'adv_1_field')
+        fill_in 'adv_1_value', with: locationSearch
+        find('button[type=submit]').click
+      end
+      find('.constraint-box').should have_content("Location: #{locationSearch}")
+      page.should have_text "« Previous | 1 - 25 of"
+    end
+  end
+
+
+
   # Bug - Dismissing the last advanced-search field should WORK
   # (CatalogController#preprocess_search_params:  undefined method `gsub!' for nil:NilClass)
   it 'should allow dismissing of final advanced fielded search param', js: true do
