@@ -33,7 +33,6 @@ class CatalogController < ApplicationController
   def index
     # raise
     debug_timestamp('CatalogController#index() begin')
-
     # very useful - shows the execution order of before filters
     # logger.debug "#{   _process_action_callbacks.map(&:filter) }"
 

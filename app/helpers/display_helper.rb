@@ -183,13 +183,43 @@ module DisplayHelper
     url = 'http://pegasus.law.columbia.edu'
     if document && document.id
       # NEXT-996 - Rename "Pegasus" link
+
       return link_to 'Check Law catalog for status',
                      "#{url}/record=#{document.id}",
                      :'data-ga-category' => 'Pegasus Link',
                      :'data-ga-action' => context,
-                     :'data-ga-label' => document['title_display'] || document.id
+                     :'data-ga-label' => document[:title_display] || document.id
     else
       return link_to url, url
+    end
+  end
+
+  def ac_handle_list(document)
+    return document['handle'].listify.collect { |url| link_to(url, url) }
+  end
+
+  #title, handle, context
+  def ac_item_link(document, context = @active_source)
+    if document && document.id
+      return link_to document[:title_display],
+                     document[:handle],
+                     :'data-ga-category' => 'Academic Commons Link',
+                     :'data-ga-action' => context,
+                     :'data-ga-label' => document[:title_display] || document.id
+    else
+      return link_to academic_commons_index_path, academic_commons_index_path
+    end
+  end
+
+  def ac_download_link(document, context = @active_source)
+    if document && document.id
+      return link_to document[:title_display],
+                     document[:handle],
+                     :'data-ga-category' => 'Academic Commons Download',
+                     :'data-ga-action' => context,
+                     :'data-ga-label' => document[:title_display] || document.id
+    else
+      return link_to academic_commons_index_path, academic_commons_index_path
     end
   end
 
