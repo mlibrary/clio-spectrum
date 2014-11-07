@@ -211,15 +211,15 @@ module DisplayHelper
     end
   end
 
-  def ac_download_link(document, context = @active_source)
-    if document && document.id
-      return link_to document[:title_display],
-                     document[:handle],
-                     :'data-ga-category' => 'Academic Commons Download',
-                     :'data-ga-action' => context,
-                     :'data-ga-label' => document[:title_display] || document.id
+  def ac_download_link(fedora_id)
+    if fedora_id
+      debugger
+      return "<span class='fedora_#{fedora_id.gsub(':','')}'>Loading... #{image_tag("ajax-indicator.gif",:size => "12x12")} </span>"
+             #        :'data-ga-category' => 'Academic Commons Download',
+             #        :'data-ga-action' => context,
+             #        :'data-ga-label' => document[:title_display] || document.id
     else
-      return link_to academic_commons_index_path, academic_commons_index_path
+      return link_to academic_commons_index_path
     end
   end
 

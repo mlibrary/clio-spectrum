@@ -24,10 +24,10 @@ $(document).ready(function() {
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   // Point our running instance to the appropriate GA property definition
-  ga('create', google_analytics_web_property_id, 'columbia.edu');
+//  ga('create', google_analytics_web_property_id, 'columbia.edu');
 
   // FOR LOCALHOST DEVELOPMENT USE THIS LINE INSTEAD
-  // ga('create', google_analytics_web_property_id, 'none');
+  ga('create', google_analytics_web_property_id, 'none');
 
   // This sends the a normal page-view to Google Analytics.
   // It runs once on page load.
