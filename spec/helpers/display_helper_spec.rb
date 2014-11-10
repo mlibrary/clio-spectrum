@@ -50,31 +50,6 @@ describe DisplayHelper do
     end
   end
 
-  describe '#ac_download_link' do
-    xit 'should return academic commons index if received with nil' do
-      link = ac_item_link(nil)
-      link.should match(/href=.#{academic_commons_index_path}/)
-    end
-
-    it 'should return link to handle' do
-      allow(document).to receive(:[]).with(:id)
-      #allow(document).to receive(:[]).with(:handle).and_return("http://dx.doi.org/10.7916/D81N7Z5C")
-      fedora_id = document[:id].listify.first
-      link = ac_download_link(fedora_id)
-      link.should match /href=\"http:\/\/dx.doi.org\/10.7916\/D81N7Z5C\"/
-    end
-
-    it 'should have google analytics event tracking' do
-      allow(document).to receive(:[]).with(:id).and_return("5")
-      #allow(document).to receive(:[]).with(:handle).and_return("http://dx.doi.org/10.7916/D81N7Z5C")
-      fedora_id = document[:id].listify.first
-      link = ac_download_link(fedora_id)
-      expect(link).to match(/data\-ga\-action\=\"Download\"/)
-      expect(link).to match(/data\-ga\-category=\"Academic Commons Link\"/)
-      expect(link).to match(/data\-ga\-label=\"http:\/\/dx\.doi\.org\/10\.7916\/D81N7Z5C\"/)
-    end
-
-  end
   describe '#ac_handle_list' do
     xit 'should return a list of handles' do
       allow(document).to receive(:[]).with(:handle).and_return(["http://dx.doi.org/10.7916/D81N7Z5C", "http://dx.doi.org/10.7916/D81N7Z5C"])

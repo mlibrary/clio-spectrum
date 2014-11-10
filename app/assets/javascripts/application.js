@@ -61,6 +61,7 @@
 //= require ldpd_feedback
 //= require nearby
 //= require saved_lists
+//= require ga_links
 
 
 // was used in support of JavaScript landing-page switching,
