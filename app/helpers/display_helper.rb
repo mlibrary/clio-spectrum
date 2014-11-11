@@ -196,8 +196,11 @@ module DisplayHelper
     end
   end
 
-  def ac_handle_list(document)
-    return document['handle'].listify.collect { |url| link_to(url, url) }
+  def ac_handle_list(document, context = @active_source)
+    return document['handle'].listify.collect { |url| link_to(url, url,
+      :'data-ga-category' => 'Academic Commons Link',
+      :'data-ga-action' => context,
+      :'data-ga-label' => document[:title_display] || document.id) }
   end
 
   #title, handle, context

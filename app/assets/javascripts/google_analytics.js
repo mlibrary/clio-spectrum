@@ -42,14 +42,14 @@ $(document).ready(function() {
   // Apply to all off-site <A> tags, based on:
   //   http://www.electrictoolbox.com/jquery-open-offsite-links-new-window/
 
-  $('a[href]').filter( function() {return this.hostname && this.hostname !== location.hostname} ).each(function() {
+  $('a[data-ga-category]').filter( function() {return this.hostname && this.hostname !== location.hostname} ).each(function() {
 
-    // var href   = $(this).attr("href");
-    // var target = $(this).attr("target");
-    // var text   = $(this).text();
-    // console.log("found a.href href=["+href+"] text=["+text+"]")
+     var href   = $(this).attr("href");
+     var target = $(this).attr("target");
+     var text   = $(this).text();
+     console.log("found a.href href=["+href+"] text=["+text+"]")
 
-    $(this).click(function(event) { // when someone clicks these links
+    $('body').on('click', 'a[data-ga-category]', function(event) { // when someone clicks these links
       // Gather up values at time of click, not at first load, to allow
       // for ajax updates to, e.g., href labels or targets
 
@@ -66,7 +66,7 @@ $(document).ready(function() {
 
       event.preventDefault(); // don't open the link yet
 
-      // console.log("ga('send','event','"+category+"','"+action+"','"+label+"')")
+      console.log("ga('send','event','"+category+"','"+action+"','"+label+"')")
       ga('send', 'event', category, action, label);
 
       setTimeout(function() { // now wait 300 milliseconds...
