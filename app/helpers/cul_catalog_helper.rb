@@ -85,7 +85,10 @@ module CulCatalogHelper
       content_tag(:a, (checkmark + ' ' + label), href: '#')
     else
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
-      content_tag(:a, (checkmark + ' ' + label), href: href, per_page: per_page, class: 'per_page_link')
+      content_tag(:a, (checkmark + ' ' + label), :'data-ga-category' => 'Catalog Results List',
+                                                 :'data-ga-action' => 'Display Options',
+                                                 :'data-ga-label' => "per page: #{per_page}",
+                                                 href: href, per_page: per_page, class: 'per_page_link')
     end
   end
 
@@ -114,7 +117,11 @@ module CulCatalogHelper
       content_tag(:a, (checkmark + ' ' + label), href: '#')
     else
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
-      content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, class: 'viewstyle_link')
+      content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, 
+                                                 class: 'viewstyle_link',
+                                                 :'data-ga-category' => 'Catalog Results List',
+                                                 :'data-ga-action' => 'Display Options',
+                                                 :'data-ga-label' => "view style: #{viewstyle}")
     end
   end
 
