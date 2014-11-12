@@ -59,7 +59,8 @@ $(document).ready(function() {
 
     event.preventDefault(); // don't open the link yet
 
-    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')")
+    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
+
     ga('send', 'event', category, action, label);
 
     setTimeout(function() { // now wait 300 milliseconds...
