@@ -43,17 +43,29 @@ describe DisplayHelper do
       allow(document).to receive(:[]).with(:title_display).and_return("Document Title")
       allow(document).to receive(:[]).with(:id).and_return("5")
       allow(document).to receive(:[]).with(:handle).and_return("http://dx.doi.org/10.7916/D81N7Z5C")
-      link = ac_item_link(document, "Search Results")
-      expect(link).to match(/data\-ga\-action\=\"Search Results\"/)
+      link = ac_item_link(document, "Search Results Click")
       expect(link).to match(/data\-ga\-category=\"Academic Commons Link\"/)
+      expect(link).to match(/data\-ga\-action\=\"Search Results Click\"/)
       expect(link).to match(/data\-ga\-label=\"Document Title\"/)
     end
   end
 
   describe '#ac_handle_list' do
-    xit 'should return a list of handles' do
+    it 'should have links to handles' do
       allow(document).to receive(:[]).with(:handle).and_return(["http://dx.doi.org/10.7916/D81N7Z5C", "http://dx.doi.org/10.7916/D81N7Z5C"])
-      #return document['handle'].listify.collect { |url| link_to(url, url) }
+      allow(document).to receive(:[]).with(:title_display).and_return(["Document Title"])
+      link = ac_handle_list(document)
+      link.to_s.should match /href=\\\"http:\/\/dx\.doi\.org\/10\.7916\/D81N7Z5C/
+      link.to_s.should match /href=\\\"http:\/\/dx\.doi\.org\/10\.7916\/D81N7Z5C/
+    end
+
+    it 'should have google analytics event tracking' do
+      allow(document).to receive(:[]).with(:handle).and_return(["http://dx.doi.org/10.7916/D81N7Z5C"])
+      allow(document).to receive(:[]).with(:title_display).and_return(["Document Title"])
+      link = ac_handle_list(document)
+      expect(link[0]).to match(/data\-ga\-category=\"Academic Commons Link\"/)
+      expect(link[0]).to match(/data\-ga\-action\=\"Search Results Handle Click\"/)
+      expect(link[0]).to match(/data\-ga\-label=\"Document Title\"/)
     end
   end
 

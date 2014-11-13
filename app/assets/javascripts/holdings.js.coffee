@@ -78,7 +78,7 @@ $ ->
           extension = filename.substr(filename.length - 3).toLowerCase()
           if $.inArray(extension, format_icons) >= 0
             icon = extension
-        txt = '<div class="entry"><img src="/assets/format_icons/' + icon + '.png" width="16" height="16"/> <a data-ga-category="Download Link" data-ga-action="' + 'academic_commons' +'" href="' + resource['download_path'] + '">' + resource['filename'] + '</a></div>'
+        txt = '<div class="entry"><img src="/assets/format_icons/' + icon + '.png" width="16" height="16"/> <a data-ga-category="Academic Commons Link" data-ga-action="' + 'Download Click' +'" href="' + resource['download_path'] + '">' + resource['filename'] + '</a></div>'
         $(fedora_selector).append(txt)
 
       if first_resource
