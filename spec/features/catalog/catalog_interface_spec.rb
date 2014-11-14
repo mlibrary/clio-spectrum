@@ -155,7 +155,6 @@ describe 'Catalog Interface' do
 
     click_link 'Display Options'
     click_link 'Standard View'
-
     all('.result.document').first.text.should match /Author.*Published.*Location/
 
     click_link 'Display Options'
@@ -169,6 +168,43 @@ describe 'Catalog Interface' do
     click_link 'Standard View'
 
     all('.result.document').first.text.should match /Author.*Published.*Location/
+  end
+
+  describe 'Selected Items dropdown' do
+    context 'Send to Email' do
+      it 'has <a> attributes' do
+        visit catalog_index_path('q' => "penguins")
+        link = find("a[id='emailLink']", :visible => false)
+        expect(link).to have_text('Send to Email')
+        expect(link['name']).to eq('email')
+        expect(link['class']).to eq('lightboxLink')
+        expect(link['onclick']).to eq("return appendSelectedToURL(this);")
+        expect(link['href']).to eq('/catalog/email')
+      end
+      it 'has Google Analytics tracking' do
+        visit catalog_index_path('q' => "penguins")
+        link = find("a[id='emailLink']", :visible => false)
+        expect(link['data-ga-category']).to eq('Catalog Results List')
+        expect(link['data-ga-action']).to eq('Selected Items')
+        expect(link['data-ga-label']).to eq('Send to Email')
+      end
+    end
+    context 'Export to Endnote' do
+      it 'has <a> attributes' do
+        visit catalog_index_path('q' => "penguins")
+        link = find("a[id='endnoteLink']", :visible => false)
+        expect(link).to have_text('Export to EndNote')
+        expect(link['onclick']).to eq("return appendSelectedToURL(this);")
+        expect(link['href']).to eq('/catalog/endnote.endnote')
+      end
+      it 'has Google Analytics tracking' do
+        visit catalog_index_path('q' => "penguins")
+        link = find("a[id='endnoteLink']", :visible => false)
+        expect(link['data-ga-category']).to eq('Catalog Results List')
+        expect(link['data-ga-action']).to eq('Selected Items')
+        expect(link['data-ga-label']).to eq('Export to EndNote')
+      end
+    end
   end
 
   describe 'share by email' do

@@ -87,7 +87,7 @@ module CulCatalogHelper
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
       content_tag(:a, (checkmark + ' ' + label), :'data-ga-category' => 'Catalog Results List',
                                                  :'data-ga-action' => 'Display Options',
-                                                 :'data-ga-label' => "per page: #{per_page}",
+                                                 :'data-ga-label' => "#{per_page} per page",
                                                  href: href, per_page: per_page, class: 'per_page_link')
     end
   end
@@ -121,7 +121,7 @@ module CulCatalogHelper
                                                  class: 'viewstyle_link',
                                                  :'data-ga-category' => 'Catalog Results List',
                                                  :'data-ga-action' => 'Display Options',
-                                                 :'data-ga-label' => "view style: #{viewstyle}")
+                                                 :'data-ga-label' => label)
     end
   end
 
