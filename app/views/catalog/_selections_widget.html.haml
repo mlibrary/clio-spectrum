@@ -29,21 +29,21 @@
     %b.caret
 
   %ul.dropdown-menu
-    %li= email_dropdown_link(email_path())
-    %li= link_to "Export to EndNote", endnote_catalog_path(:format => 'endnote'), {:id => "endnoteLink", :onclick => "return appendSelectedToURL(this);"}
+    %li= send_to_email_dropdown_link(email_path())
+    %li= export_to_endnote_dropdown_link(endnote_catalog_path(:format => 'endnote'))
 
     -# %li.nav-divider
     -# -# %li= link_to "Save to #{SavedList::DEFAULT_LIST_NAME}", "#", :onclick => "saveSelectedToNamedList('#{SavedList::DEFAULT_LIST_NAME}'); return false;"
     -# %li= link_to "Add to My Saved List", "#", :onclick => "saveSelectedToNamedList('#{SavedList::DEFAULT_LIST_NAME}'); return false;"
 
     %li.nav-divider
-    %li= link_to "Add to My Saved List", "#", class: 'saved_list_add'
+    %li= add_to_my_saved_list_dropdown_link
 
 
     %li.nav-divider
 
-    %li= link_to "Select All Items", "#", :onclick => "selectAll(); return false;"
-    %li= link_to "Clear All Items", "#", :onclick => "deselectAll(); return false;"
+    %li= select_all_items_dropdown_link
+    %li= clear_all_items_dropdown_link
 
 
 
