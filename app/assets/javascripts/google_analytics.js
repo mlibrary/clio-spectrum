@@ -42,7 +42,7 @@ $(document).ready(function() {
   // Apply to all off-site <A> tags, based on:
   //   http://www.electrictoolbox.com/jquery-open-offsite-links-new-window/
 
-  $('body').on('click', 'a[data-ga-category]', function(event) { // when someone clicks these links
+  $('body').on('click', "a[data-ga-category='Pegasus Link'], [data-ga-category='Academic Commons Link']", function(event) { // when someone clicks these links
     // Gather up values at time of click, not at first load, to allow
     // for ajax updates to, e.g., href labels or targets
 
@@ -59,16 +59,15 @@ $(document).ready(function() {
 
     event.preventDefault(); // don't open the link yet
 
-    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
-
+    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')")
     ga('send', 'event', category, action, label);
 
-    setTimeout(function() { // now wait 300 milliseconds...
-      window.open(href, (!target ? "_blank" : target)); // ...and open in new blank window
-    },300);
+      setTimeout(function() { // now wait 300 milliseconds...
+        window.open(href, (!target ? "_blank" : target)); // ...and open in new blank window
+      },300)
   });
 
-  $('body').on('change', 'per-page-link', function(event) { // when someone clicks these links
+  $('body').on('click', "a[data-ga-category='Catalog Results List']", function(event) { // when someone clicks these links
     // Gather up values at time of click, not at first load, to allow
     // for ajax updates to, e.g., href labels or targets
 
@@ -83,16 +82,15 @@ $(document).ready(function() {
     // Should the GA label default to the text or the URL?
     var label = $(this).data("ga-label") || text;
 
-    event.preventDefault(); // don't open the link yet
+//    event.preventDefault(); // don't open the link yet
 
-    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
-
+    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')")
     ga('send', 'event', category, action, label);
 
-    setTimeout(function() { // now wait 300 milliseconds...
-      window.open(href, (!target ? "_blank" : target)); // ...and open in new blank window
-    },300);
-  }).change();
+ //     setTimeout(function() { // now wait 300 milliseconds...
+  //      window.open(href, (!target ? "_blank" : target)); // ...and open in new blank window
+   //   },300)
+  });
 
 
   $(this).bind('copy', function() {
