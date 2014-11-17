@@ -106,7 +106,6 @@ module DisplayHelper
 # raise
     # Render based on @active_source -- unless an alternative is passed in
     options[:source] ||= @active_source
-
     partial_list = formats.map { |format| "/_formats/#{format}/#{template}" }
     @add_row_style = options[:style]
     view = render_first_available_partial(partial_list, options.merge(document: document))
@@ -299,7 +298,13 @@ module DisplayHelper
           # using solrmarc removeTrailingPunc rule
           search_value = remove_punctuation(search_value)
 
-          out << link_to(display_value, url_for(:controller => 'catalog', :action => 'index', 'f[author_facet][]' => search_value))
+          out << link_to(display_value, url_for(:controller => 'catalog', 
+                                                :action => 'index', 
+                                                'f[author_facet][]' => search_value),
+                                        'data-ga-category' => 'Catalog Item Detail',
+                                        'data-ga-action' => 'Author Click',
+                                        'data-ga-label' => display_value,
+                        )
         end
 
       # Obsoleted, replaced by generate_value_links_subject(), defined below
@@ -312,7 +317,15 @@ module DisplayHelper
 
       when :series_title
         q = search_value
-        out << link_to(display_value, url_for(controller: 'catalog', action: 'index', q: q, search_field: 'series_title', commit: 'search'))
+        out << link_to(display_value, url_for(controller: 'catalog',
+                                              action: 'index',
+                                              q: q,
+                                              search_field: 'series_title',
+                                              commit: 'search'),
+                                      'data-ga-category' => 'Catalog Item Detail',
+                                      'data-ga-action' => 'Series Title Click',
+                                      'data-ga-label' => display_value,
+                      )
 
       else
         fail 'invalid category specified for generate_value_links'
@@ -412,6 +425,9 @@ module DisplayHelper
                                q: '"' + search + '"',
                                search_field: 'subject',
                                commit: 'search'),
+                              'data-ga-category' => 'Catalog Item Detail',
+                              'data-ga-action' => 'Subject Click',
+                              'data-ga-label' => display,
               title: title)
     end
   end
