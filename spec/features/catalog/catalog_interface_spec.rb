@@ -181,13 +181,6 @@ describe 'Catalog Interface' do
         expect(link['onclick']).to eq("return appendSelectedToURL(this);")
         expect(link['href']).to eq('/catalog/email')
       end
-      it 'has Google Analytics tracking' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[id='emailLink']", :visible => false)
-        expect(link['data-ga-category']).to eq('Catalog Results List')
-        expect(link['data-ga-action']).to eq('Selected Items')
-        expect(link['data-ga-label']).to eq('Send to Email')
-      end
     end
     context 'Export to EndNote' do
       it 'has <a> attributes' do
@@ -197,26 +190,12 @@ describe 'Catalog Interface' do
         expect(link['onclick']).to eq("return appendSelectedToURL(this);")
         expect(link['href']).to eq('/catalog/endnote.endnote')
       end
-      it 'has Google Analytics tracking' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[id='endnoteLink']", :visible => false)
-        expect(link['data-ga-category']).to eq('Catalog Results List')
-        expect(link['data-ga-action']).to eq('Selected Items')
-        expect(link['data-ga-label']).to eq('Export to EndNote')
-      end
     end
     context 'Add to My Saved List' do
       it 'has <a> attributes' do
         visit catalog_index_path('q' => "penguins")
         link = find("a[class='saved_list_add']", :visible => false)
         expect(link).to have_text('Add to My Saved List')
-      end
-      it 'has Google Analytics tracking' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[class='saved_list_add']", :visible => false)
-        expect(link['data-ga-category']).to eq('Catalog Results List')
-        expect(link['data-ga-action']).to eq('Selected Items')
-        expect(link['data-ga-label']).to eq('Add to My Saved List')
       end
     end
     context 'Select All' do
@@ -225,26 +204,12 @@ describe 'Catalog Interface' do
         link = find("a[onclick=\"selectAll(); return false;\"]", :visible => false)
         expect(link).to have_text('Select All Items')
       end
-      it 'has Google Analytics tracking' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[onclick=\"selectAll(); return false;\"]", :visible => false)
-        expect(link['data-ga-category']).to eq('Catalog Results List')
-        expect(link['data-ga-action']).to eq('Selected Items')
-        expect(link['data-ga-label']).to eq('Select All Items')
-      end
     end
     context 'Clear All' do
       it 'has <a> attributes' do
         visit catalog_index_path('q' => "penguins")
         link = find("a[onclick=\"deselectAll(); return false;\"]", :visible => false)
         expect(link).to have_text('Clear All Items')
-      end
-      it 'has Google Analytics tracking' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[onclick=\"deselectAll(); return false;\"]", :visible => false)
-        expect(link['data-ga-category']).to eq('Catalog Results List')
-        expect(link['data-ga-action']).to eq('Selected Items')
-        expect(link['data-ga-label']).to eq('Clear All Items')
       end
     end
   end

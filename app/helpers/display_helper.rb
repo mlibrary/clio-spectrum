@@ -381,7 +381,6 @@ module DisplayHelper
     #   a             "a"
     #   b             "a b"
     #   c             "a b c"
-
     values.listify.map do |value|
 #    values.listify.select { |x| x.respond_to?(:split)}.collect do |value|
 
@@ -426,7 +425,7 @@ module DisplayHelper
                                search_field: 'subject',
                                commit: 'search'),
                               'data-ga-category' => 'Catalog Item Detail',
-                              'data-ga-action' => 'Subject Click',
+                              'data-ga-action' => 'Subjects Click',
                               'data-ga-label' => display,
               title: title)
     end
