@@ -79,13 +79,13 @@ module CulCatalogHelper
 
   def per_page_link(href, per_page, current_per_page)
     label = "#{per_page} per page"
-
     if per_page == current_per_page
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-ok')
       content_tag(:a, (checkmark + ' ' + label), href: '#')
     else
+      source = @active_source ? @active_source.capitalize : ''
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
-      content_tag(:a, (checkmark + ' ' + label), :'data-ga-category' => 'Catalog Results List',
+      content_tag(:a, (checkmark + ' ' + label), :'data-ga-category' => "#{@active_source.capitalize} Results List",
                                                  :'data-ga-action' => 'Display Options',
                                                  :'data-ga-label' => "#{per_page} per page",
                                                  href: href, per_page: per_page, class: 'per_page_link')

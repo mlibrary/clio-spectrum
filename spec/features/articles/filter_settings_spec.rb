@@ -38,7 +38,6 @@ describe 'Summon Search Option Filter Settings' do
       @result_count = @result_count.sub(/.* all (.*) results/, '\1')
       click_link "View and filter all"
     end
-
     all('.index_toolbar.navbar').first.should have_text " of #{@result_count}"
     confirm_default_filter_settings
   end
