@@ -135,13 +135,35 @@ describe 'Google Analytics' do
     end
   end
 
-  context 'item detail page links' do
-    context 'Subjects' do
-      before :each do
-        visit catalog_path "9092438"
+  context 'item detail page' do
+    context 'toolbar' do
+      ['Print', 'Email', 'Send to Phone', 'Add to My Saved List', 'Export to EndNote', 'Display in CLIO Legacy',
+       'MARC View', "Place a Recall / Hold", 'Borrow Direct', 'ILL', "Scan & Deliver", 'Inter-Campus Delivery',
+       "In-Process / On Order", 'Precataloging', 'Off-site request', 'Item Not On Shelf?'].each do |option_link|
+      context "#{option_link}" do
+        before :each do
+          visit catalog_path "9092438"
+        end
+        let(:link){within('#outer-container'){find('a[href]', :text => option_link)}}
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Toolbar Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq(option_link)}
+        end
       end
-      let(:link){page.all(:xpath, "//a[contains(@href, 'subject')]").first}
-      context 'each' do
+    end
+      end
+
+    context 'item detail' do
+      context 'Subjects' do
+        before :each do
+          visit catalog_path "9092438"
+        end
+        let(:link){page.all(:xpath, "//a[contains(@href, 'subject')]").first}
         context 'data-ga-category' do
           it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
         end
@@ -152,65 +174,69 @@ describe 'Google Analytics' do
           it{expect(link['data-ga-label']).to eq(link.text)}
         end
       end
-    end
-    context "Subjects (Genre)" do
-      before :each do
-        visit catalog_path "5090546"
+
+      context "Subjects (Genre)" do
+        before :each do
+          visit catalog_path "5090546"
+        end
+        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        context 'data-ga-category' do
+          xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+        end
+        context 'data-ga-action' do
+          xit{expect(link['data-ga-action']).to eq('Subjects (Genre) Click')}
+        end
+        context 'data-ga-label' do
+          xit{expect(link['data-ga-label']).to eq(link.text)}
+        end
       end
-      let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
-      context 'data-ga-category' do
-        xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+
+      context 'Author' do
+        before :each do
+          visit catalog_path "5090546"
+        end
+        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Author Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq(link.text)}
+        end
       end
-      context 'data-ga-action' do
-        xit{expect(link['data-ga-action']).to eq('Subjects (Genre) Click')}
+
+      context 'Also Listed Under' do
+        before :each do
+          visit catalog_path "5090546"
+        end
+        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        context 'data-ga-category' do
+          xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+        end
+        context 'data-ga-action' do
+          xit{expect(link['data-ga-action']).to eq('Also Listed Under Click')}
+        end
+        context 'data-ga-label' do
+          xit{expect(link['data-ga-label']).to eq(link.text)}
+        end
       end
-      context 'data-ga-label' do
-        xit{expect(link['data-ga-label']).to eq(link.text)}
-      end
-    end
-    context 'Author' do
-      before :each do
-        visit catalog_path "5090546"
-      end
-      let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
-      context 'data-ga-category' do
-        it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
-      end
-      context 'data-ga-action' do
-        it{expect(link['data-ga-action']).to eq('Author Click')}
-      end
-      context 'data-ga-label' do
-        it{expect(link['data-ga-label']).to eq(link.text)}
-      end
-    end
-    context 'Also Listed Under' do
-      before :each do
-        visit catalog_path "5090546"
-      end
-      let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
-      context 'data-ga-category' do
-        xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
-      end
-      context 'data-ga-action' do
-        xit{expect(link['data-ga-action']).to eq('Also Listed Under Click')}
-      end
-      context 'data-ga-label' do
-        xit{expect(link['data-ga-label']).to eq(link.text)}
-      end
-    end
-    context 'Medical Subjects' do
-      before :each do
-        visit catalog_path "5090546"
-      end
-      let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
-      context 'data-ga-category' do
-        xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
-      end
-      context 'data-ga-action' do
-        xit{expect(link['data-ga-action']).to eq('Medical Subjects Click')}
-      end
-      context 'data-ga-label' do
-        xit{expect(link['data-ga-label']).to eq(link.text)}
+
+      context 'Medical Subjects' do
+        before :each do
+          visit catalog_path "5090546"
+        end
+        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        context 'data-ga-category' do
+          xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+        end
+        context 'data-ga-action' do
+          xit{expect(link['data-ga-action']).to eq('Medical Subjects Click')}
+        end
+        context 'data-ga-label' do
+          xit{expect(link['data-ga-label']).to eq(link.text)}
+        end
       end
     end
   end

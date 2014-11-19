@@ -53,4 +53,12 @@ module DropdownHelper
                                         :href => '#',
                                         :onclick => "deselectAll(); return false;"})
   end
+
+  def link_to_with_ga(text, uri, *options)
+    options_hash = Hash[*options]
+    options_hash.merge!('data-ga-category' =>  "Catalog Item Detail",
+    'data-ga-action' =>  "Toolbar Click",
+    'data-ga-label' => text)
+    return (link_to text, uri, options_hash)
+  end
 end
