@@ -118,6 +118,21 @@ describe 'Google Analytics' do
         end
       end
     end
+    context 'Start Over button' do
+      before :each do
+        visit catalog_index_path('q' => "penguins")
+      end
+      let(:link){find("a[href=\"\/catalog\"]", :text => 'Start Over')}
+      context 'data-ga-category' do
+        it{expect(link['data-ga-category']).to eq('Catalog Results List')}
+      end
+      context 'data-ga-action' do
+        it{expect(link['data-ga-action']).to eq('Search Bar Click')}
+      end
+      context 'data-ga-label' do
+        it{expect(link['data-ga-label']).to eq('Start Over')}
+      end
+    end
   end
 
   context 'item detail page links' do
