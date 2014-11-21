@@ -30,4 +30,3 @@ end
 def escape_parens(str)
   str.gsub(/[()\[\]]/, '(' => '\(', ')' => '\)', '\[' => '\[', '\]' => '\]')
 end
-end
