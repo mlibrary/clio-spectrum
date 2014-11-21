@@ -197,7 +197,7 @@ module DisplayHelper
 
   def ac_handle_list(document, context = @active_source)
     return document[:handle].listify.collect { |url| link_to(url, url,
-      :'data-ga-category' => 'Academic Commons Link',
+      :'data-ga-category' => 'AcademicCommons Link',
       :'data-ga-action' => 'Search Results Handle Click',
       :'data-ga-label' => document[:title_display] || document.id) }
   end
@@ -207,7 +207,7 @@ module DisplayHelper
     if document && document.id
       return link_to document[:title_display],
                      document[:handle],
-                     :'data-ga-category' => 'Academic Commons Link',
+                     :'data-ga-category' => 'AcademicCommons Link',
                      :'data-ga-action' => context,
                      :'data-ga-label' => document[:title_display] || document.id
     else

@@ -29,21 +29,21 @@
     %b.caret
 
   %ul.dropdown-menu
-    %li= send_to_email_dropdown_link(email_path())
-    %li= export_to_endnote_dropdown_link(endnote_catalog_path(:format => 'endnote'))
+    %li= link_to_item_list_with_ga "Send to Email", email_path(), {:id => "emailLink", :name => "email", :class => "lightboxLink", :onclick => "return appendSelectedToURL(this);"}
+    %li= link_to_item_list_with_ga "Export to EndNote", endnote_catalog_path(:format => 'endnote'), {:id => "endnoteLink", :onclick => "return appendSelectedToURL(this);"}
 
     -# %li.nav-divider
     -# -# %li= link_to "Save to #{SavedList::DEFAULT_LIST_NAME}", "#", :onclick => "saveSelectedToNamedList('#{SavedList::DEFAULT_LIST_NAME}'); return false;"
     -# %li= link_to "Add to My Saved List", "#", :onclick => "saveSelectedToNamedList('#{SavedList::DEFAULT_LIST_NAME}'); return false;"
 
     %li.nav-divider
-    %li= add_to_my_saved_list_dropdown_link
+    %li= link_to_item_list_with_ga "Add to My Saved List", "#", class: 'saved_list_add'
 
 
     %li.nav-divider
 
-    %li= select_all_items_dropdown_link
-    %li= clear_all_items_dropdown_link
+    %li= link_to_item_list_with_ga "Select All Items", "#", :onclick => "selectAll(); return false;"
+    %li= link_to_item_list_with_ga "Clear All Items", "#", :onclick => "deselectAll(); return false;"
 
 
 

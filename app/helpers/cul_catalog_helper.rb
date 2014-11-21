@@ -77,15 +77,22 @@ module CulCatalogHelper
     convert_values_to_text(all_holdings, expand: true)
   end
 
+  def ga_category_for_results_list
+    @active_source ? "#{@active_source.camelize} Results List" : 'Results List'
+  end
+
+  def ga_category_for_item_detail
+    @active_source ? "#{@active_source.camelize} Item Detail" : 'Item Detail'
+  end
+
   def per_page_link(href, per_page, current_per_page)
     label = "#{per_page} per page"
     if per_page == current_per_page
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-ok')
       content_tag(:a, (checkmark + ' ' + label), href: '#')
     else
-      source = @active_source ? @active_source.capitalize : ''
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
-      content_tag(:a, (checkmark + ' ' + label), :'data-ga-category' => "#{@active_source.capitalize} Results List",
+      content_tag(:a, (checkmark + ' ' + label), :'data-ga-category' => ga_category_for_results_list,
                                                  :'data-ga-action' => 'Display Options',
                                                  :'data-ga-label' => "#{per_page} per page",
                                                  href: href, per_page: per_page, class: 'per_page_link')
@@ -111,7 +118,6 @@ module CulCatalogHelper
     current_viewstyle = get_browser_option('viewstyle') ||
                         DATASOURCES_CONFIG['datasources'][@active_source]['default_viewstyle'] ||
                         'list'
-
     if viewstyle == current_viewstyle
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-ok')
       content_tag(:a, (checkmark + ' ' + label), href: '#')
@@ -119,7 +125,7 @@ module CulCatalogHelper
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
       content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, 
                                                  class: 'viewstyle_link',
-                                                 :'data-ga-category' => 'Catalog Results List',
+                                                 :'data-ga-category' => ga_category_for_results_list,
                                                  :'data-ga-action' => 'Display Options',
                                                  :'data-ga-label' => label)
     end
