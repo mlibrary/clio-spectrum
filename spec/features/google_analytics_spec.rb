@@ -1,19 +1,6 @@
 require 'spec_helper'
 
 describe 'Google Analytics' do
-  context 'AcademicCommons results page' do
-    before {visit academic_commons_index_path('q' => "penguins")}
-    xit 'download should not open a new window' do
-
-    end
-  end
-
-  context 'AcademicCommons results page' do
-    before {visit academic_commons_index_path('q' => "penguins")}
-    xit 'download should not open a new window' do
-
-    end
-  end
 
   context 'catalog search results page' do
     context 'Selected Items dropdown' do
@@ -30,6 +17,7 @@ describe 'Google Analytics' do
           it{expect(link['data-ga-label']).to eq('Send to Email')}
         end
       end
+
       context 'Export to EndNote' do
         let(:link){find("a[id='endnoteLink']", :visible => false)}
         context 'data-ga-category' do
@@ -42,6 +30,7 @@ describe 'Google Analytics' do
           it{expect(link['data-ga-label']).to eq('Export to EndNote')}
         end
       end
+
       context 'Add to My Saved List' do
         let(:link){find("a[class='saved_list_add']", :visible => false)}
         context 'data-ga-category' do
@@ -54,6 +43,7 @@ describe 'Google Analytics' do
           it{expect(link['data-ga-label']).to eq('Add to My Saved List')}
         end
       end
+
       context 'Select All' do
         let(:link){find("a[onclick=\"selectAll(); return false;\"]", :visible => false)}
         context 'data-ga-category' do
@@ -66,6 +56,7 @@ describe 'Google Analytics' do
           it{expect(link['data-ga-label']).to eq('Select All Items')}
         end
       end
+
       context 'Clear All' do
         let(:link){find("a[onclick=\"deselectAll(); return false;\"]", :visible => false)}
         context 'data-ga-category' do
@@ -95,6 +86,7 @@ describe 'Google Analytics' do
             it{expect(link['data-ga-label']).to eq('25 per page')}
           end
         end
+
         context 'link to change from 50 to 100 items per page' do
           let(:link){find("a[class=\"per_page_link\"][per_page=\"100\"]")}
           context 'data-ga-category' do
@@ -168,7 +160,7 @@ describe 'Google Analytics' do
       end
     end
 
-    context 'item detail' do
+    context 'catalog item detail' do
       context 'Subjects' do
         before {visit catalog_path "9092438"}
         let(:link){page.all(:xpath, "//a[contains(@href, 'subject')]").first}
@@ -184,16 +176,16 @@ describe 'Google Analytics' do
       end
 
       context "Subjects (Genre)" do
-        before{visit catalog_path "5090546"}
-        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        before{visit catalog_path "4127482"}
+        let(:link){find("a", :text=> "Electronic journals.")}
         context 'data-ga-category' do
-          xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+          it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
         end
         context 'data-ga-action' do
-          xit{expect(link['data-ga-action']).to eq('Subjects (Genre) Click')}
+          it{expect(link['data-ga-action']).to eq('Subjects Click')}
         end
         context 'data-ga-label' do
-          xit{expect(link['data-ga-label']).to eq(link.text)}
+          it{expect(link['data-ga-label']).to eq(link.text)}
         end
       end
 
@@ -213,29 +205,72 @@ describe 'Google Analytics' do
 
       context 'Also Listed Under' do
         before {visit catalog_path "5090546"}
-        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        let(:link){find("a", :text=> "Cerf-Bensussan, N.")}
         context 'data-ga-category' do
-          xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+          it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
         end
         context 'data-ga-action' do
-          xit{expect(link['data-ga-action']).to eq('Also Listed Under Click')}
+          it{expect(link['data-ga-action']).to eq('Author Click')}
         end
         context 'data-ga-label' do
-          xit{expect(link['data-ga-label']).to eq(link.text)}
+          it{expect(link['data-ga-label']).to eq(link.text)}
         end
       end
 
       context 'Medical Subjects' do
         before {visit catalog_path "5090546"}
-        let(:link){find("a", :text=> "International Symposium on Coeliac Disease (10th : 2002 : Paris, France)")}
+        let(:link){find("a", :text=> "Celiac Disease")}
         context 'data-ga-category' do
-          xit{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+          it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
         end
         context 'data-ga-action' do
-          xit{expect(link['data-ga-action']).to eq('Medical Subjects Click')}
+          it{expect(link['data-ga-action']).to eq('Subjects Click')}
         end
         context 'data-ga-label' do
-          xit{expect(link['data-ga-label']).to eq(link.text)}
+          it{expect(link['data-ga-label']).to eq(link.text)}
+        end
+      end
+    end
+
+    context 'journal item detail' do
+      before {visit journals_show_path "8876278"}
+      context 'Subjects' do
+        let(:link){page.all(:xpath, "//a[contains(@href, 'subject')]").first}
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Journals Item Detail')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Subjects Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq(link.text)}
+        end
+      end
+
+      context 'Author' do
+        let(:link){page.all(:xpath, "//a[contains(@href, 'author_facet')]").first}
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Journals Item Detail')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Author Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq(link.text)}
+        end
+      end
+
+      context 'Absorbed' do
+        let(:link){page.find(:xpath, "//a[@href]", :text => "Massachusetts Institute of Technology. Register of graduates")}
+
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Journals Item Detail')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Absorbed Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq(link.text)}
         end
       end
     end

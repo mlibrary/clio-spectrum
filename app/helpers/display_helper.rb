@@ -251,19 +251,25 @@ module DisplayHelper
   # generate_value_links() is used extensively throughout catalog show
   # helpers, to build CLIO search links out of MARC values, for use on
   # the item-detail pages.
-  def generate_value_links(values, category)
+  def generate_value_links(values, category, row_label = nil)
     # out - an array of strings to be returned by this function,
     # one per input value.
     out = []
-
     values.listify.each do |v|
-
       # Fields intended for for search links will have distinct
       # display/search values delimited within the field.
       display_value, search_value, t880_indicator = v.split(DELIM)
 
       # If the split didn't find us a search_value, this field was
       # not setup for searching - return the value for display, no link.
+      if row_label
+        ga_hash = { 'data-ga-category' => ga_category_for_item_detail,
+                    'data-ga-action' => "#{row_label} Click",
+                    'data-ga-label' => display_value } 
+      else
+        ga_hash = { }
+      end
+
       unless search_value
         out << v
         next
@@ -283,8 +289,12 @@ module DisplayHelper
 
       when :all
         q = '"' + search_value + '"'
-        out << link_to(display_value, url_for(controller: 'catalog', action: 'index', q: q, search_field: 'all_fields', commit: 'search'))
-
+        out << link_to(display_value, url_for(controller: 'catalog',
+                                              action: 'index',
+                                              q: q,
+                                              search_field: 'all_fields',
+                                              commit: 'search'),
+                                              ga_hash)
       when :author
         # t880_indicator is not nil when data is from an 880 field (vernacular)
         # temp workaround until we can get 880 authors into the author facet
@@ -301,10 +311,9 @@ module DisplayHelper
           out << link_to(display_value, url_for(:controller => 'catalog', 
                                                 :action => 'index', 
                                                 'f[author_facet][]' => search_value),
-                                        'data-ga-category' => 'Catalog Item Detail',
-                                        'data-ga-action' => 'Author Click',
-                                        'data-ga-label' => display_value,
-                        )
+                                                'data-ga-category' => ga_category_for_item_detail,
+                                                'data-ga-action' => 'Author Click',
+                                                'data-ga-label' => display_value)
         end
 
       # Obsoleted, replaced by generate_value_links_subject(), defined below
@@ -322,17 +331,15 @@ module DisplayHelper
                                               q: q,
                                               search_field: 'series_title',
                                               commit: 'search'),
-                                      'data-ga-category' => 'Catalog Item Detail',
-                                      'data-ga-action' => 'Series Title Click',
-                                      'data-ga-label' => display_value,
-                      )
+                                              'data-ga-category' => ga_category_for_item_detail,
+                                              'data-ga-action' => "Series Click",
+                                              'data-ga-label' => search_value)
 
       else
         fail 'invalid category specified for generate_value_links'
       end
 
     end
-
     out
   end
 
@@ -424,11 +431,16 @@ module DisplayHelper
                                q: '"' + search + '"',
                                search_field: 'subject',
                                commit: 'search'),
-                              'data-ga-category' => 'Catalog Item Detail',
+                              'data-ga-category' => ga_category_for_item_detail,
                               'data-ga-action' => 'Subjects Click',
                               'data-ga-label' => display,
-              title: title)
+                              title: title)
     end
+  end
+
+  def add_marc_row(title, field, category, options = {})
+    value_links = generate_value_links(field, category, title)
+    add_row(title, value_links, options)
   end
 
   def add_row(title, value, options = {})
@@ -443,7 +455,6 @@ module DisplayHelper
       spans: [2, 10],
       label_style: 'field'
     )
-
     value_txt = convert_values_to_text(value, options)
     spans = options[:spans]
 

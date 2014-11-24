@@ -17,7 +17,7 @@
   = add_row("Supersedes", generate_value_links(display_marc_field(marc, 'supersedes'), :all))
   = add_row("Supersedes in part", generate_value_links(display_marc_field(marc, 'supersedes_in_part'), :all))
   = add_row("Formed by the union of", generate_value_links(display_marc_field(marc, 'formed_by_the_union_of'), :all))
-  = add_row("Absorbed", generate_value_links(display_marc_field(marc, 'absorbed'), :all))
+  = add_marc_row("Absorbed", display_marc_field(marc, 'absorbed'), :all)
   = add_row("Absorbed in part", generate_value_links(display_marc_field(marc, 'absorbed_in_part'), :all))
   = add_row("Separated from", generate_value_links(display_marc_field(marc, 'separated_from'), :all))
   = add_row("Continued by", generate_value_links(display_marc_field(marc, 'continued_by'), :all))
