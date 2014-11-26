@@ -62,7 +62,6 @@ module SearchHelper
 
   def display_basic_search_form(source)
     options = DATASOURCES_CONFIG['datasources'][source]['search_box'] || {}
-
     search_params = determine_search_params
     div_classes = ['search_box', source]
     # div_classes << "multi" if show_all_search_boxes
@@ -149,9 +148,13 @@ module SearchHelper
       # link to advanced search
       if options['search_type'].in?('summon', 'blacklight') && options['advanced']
         adv_text = "Advanced#{content_tag(:span, ' Search', class: 'hidden-sm')}".html_safe
-        # result += content_tag(:a, 'Advanced Search', class: 'btn btn-link advanced_search_toggle', href: '#')
-        result += content_tag(:a, adv_text, class: 'btn btn-link advanced_search_toggle', href: '#')
+        result += content_tag(:a, adv_text, class: 'btn btn-link advanced_search_toggle',
+                              'data-ga-category' => ga_category_for_results_list,
+                              'data-ga-action' => "Search Toggle Click",
+                              'data-ga-label' => "Switch to Advanced",
+                              href: '#')
       end
+
 
       result = content_tag(:div, result, class: 'search_row input-append', escape: false)
 

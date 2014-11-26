@@ -34,29 +34,51 @@ $(document).ready(function() {
   ga('send', 'pageview');
 
 
-  // The below attaches a Click-handler function to selected <A HREF> links,
-  // which will send a GA custom event when that link is clicked.
+  $('.form-inline').on('submit', function(event) {
+    var advanced = (event.target.getElementsByClassName("advanced_search_button").length == 1)
+    var basic = (event.target.getElementsByClassName("basic_search_button").length == 1)
+    var action = ""
+    var label = ""
+    var category = "Search"
+    if (advanced) {
+      action = "Advanced Search Submit"
+      fields = event.target.getElementsByClassName("advanced_search_row")
+      var i;
+      for (i=0; i<fields.length; i+=1) {
+        field = $(fields[i]).find("option[selected=selected]")
+        field_name = field.text()
+        value = $(field).parent().parent().next().find('input').val()
+        if (value != "") {
+          label += field_name + ':' + value + ' '
+        }
+        x=1;
+      }
+    }
+    else if (basic) {
+      action = "Basic Search Submit"
+      label = 'q:'+getQueryVariable('q')+' field:'+getQueryVariable('search_field')
+    }
+    else{
+      return
+    }
+    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')")
+    ga('send', 'event', category, action, label);
+  });
 
-  // Click-Tracking as GA Events, based on:
-  //   http://www.lunametrics.com/blog/2013/07/02/jquery-event-tracking
-  // Apply to all off-site <A> tags, based on:
-  //   http://www.electrictoolbox.com/jquery-open-offsite-links-new-window/
-
-  $('body').on('click', "a[data-ga-category]" , function(event) {
+  $('body').on('click', 'a[data-ga-category]', function(event) {
     // Gather up values at time of click, not at first load, to allow
     // for ajax updates to, e.g., href labels or targets
 
     var href   = $(this).attr("href");
     var target = $(this).attr("target");
     var text   = $(this).text();
-
+    
     // The GA Category/Action may be given at a higher DOM level,
     // e.g., at the root of an html menu/list of links, or a container div,
     var category = $(this).closest("[data-ga-category]").data("ga-category") || "Outbound Link";
     var action = $(this).closest("[data-ga-action]").data("ga-action") || "Click";
     // Should the GA label default to the text or the URL?
     var label = $(this).data("ga-label") || text;
-
     var open_new_window = false
     // Offsite links will open a new window unless it is a download link
 
@@ -93,3 +115,13 @@ $(document).ready(function() {
 
 });
 
+function getQueryVariable(variable)
+{
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    if(pair[0] == variable){return pair[1];}
+  }
+  return(false);
+}

@@ -137,6 +137,35 @@ describe 'Google Analytics' do
         it{expect(link['data-ga-label']).to eq('Start Over')}
       end
     end
+
+    context 'advanced search toggle' do
+      before{visit catalog_index_path('q' => "penguins")}
+      context 'switch to advanced search' do
+        let(:link){find("a", :text => 'Advanced Search')}
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Catalog Results List')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Search Toggle Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq('Switch to Advanced')}
+        end
+      end
+      context 'switch to basic search' do
+        before{find('.search_box.catalog .advanced_search_toggle').click}
+        let(:link){find("a", :text => 'Basic Search')}
+        context 'data-ga-category' do
+          it{expect(link['data-ga-category']).to eq('Catalog Results List')}
+        end
+        context 'data-ga-action' do
+          it{expect(link['data-ga-action']).to eq('Search Toggle Click')}
+        end
+        context 'data-ga-label' do
+          it{expect(link['data-ga-label']).to eq('Switch to Basic')}
+        end
+      end
+    end
   end
 
   context 'item detail page' do
