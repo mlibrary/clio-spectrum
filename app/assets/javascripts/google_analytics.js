@@ -34,7 +34,7 @@ $(document).ready(function() {
   ga('send', 'pageview');
 
 
-  $('.form-inline').on('submit', function(event) {
+  $('body').on('submit', function(event) {
     var advanced = (event.target.getElementsByClassName("advanced_search_button").length == 1)
     var basic = (event.target.getElementsByClassName("basic_search_button").length == 1)
     var action = ""
@@ -42,21 +42,29 @@ $(document).ready(function() {
     var category = "Search"
     if (advanced) {
       action = "Advanced Search Submit"
+      e = document.getElementById('advanced_operator')
+      field_name = e.options[e.selectedIndex].text
+      label += field_name + ' of '
       fields = event.target.getElementsByClassName("advanced_search_row")
       var i;
       for (i=0; i<fields.length; i+=1) {
+        e = document.getElementById('adv_'+(i+1)+'_field')
         field = $(fields[i]).find("option[selected=selected]")
-        field_name = field.text()
+        field_name = e.options[e.selectedIndex].text
         value = $(field).parent().parent().next().find('input').val()
         if (value != "") {
-          label += field_name + ':' + value + ' '
+          if (i>0){
+            label += ' & '
+          }
+          label += field_name + ':' + value
         }
-        x=1;
       }
     }
     else if (basic) {
       action = "Basic Search Submit"
-      label = 'q:'+getQueryVariable('q')+' field:'+getQueryVariable('search_field')
+      value = $(this).find('.search_q').val()
+      field_name = $(this).find('btn.dropdown-toggle').text().trim()
+      label = field_name + ': ' + value + ' '
     }
     else{
       return
@@ -114,14 +122,3 @@ $(document).ready(function() {
   }); 
 
 });
-
-function getQueryVariable(variable)
-{
-  var query = window.location.search.substring(1);
-  var vars = query.split("&");
-  for (var i=0;i<vars.length;i++) {
-    var pair = vars[i].split("=");
-    if(pair[0] == variable){return pair[1];}
-  }
-  return(false);
-}
