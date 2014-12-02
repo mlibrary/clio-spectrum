@@ -124,6 +124,25 @@ describe 'Google Analytics' do
       end
     end
 
+    context 'Sort by dropdown' do
+      before {visit catalog_index_path('q' => "penguins", :rows => '50', :per_page => '50')}
+      ['Relevance', 'Acquired Earliest', 'Acquired Latest', 'Published Earliest', 'Published Latest',
+       'Author A-Z', 'Author Z-A', 'Title A-Z', 'Title Z-A'].each do |option|
+        context "#{option}" do
+          let(:link){find("a[href!='#']", :text => option)}
+          context 'data-ga-category' do
+            it{expect(link['data-ga-category']).to eq('Catalog Results List')}
+          end
+          context 'data-ga-action' do
+            it{expect(link['data-ga-action']).to eq('Sort by')}
+          end
+          context 'data-ga-label' do
+            it{expect(link['data-ga-label']).to eq(option)}
+          end
+        end
+      end
+    end
+
     context 'Start Over button' do
       before{visit catalog_index_path('q' => "penguins")}
       let(:link){find("a[href=\"\/catalog\"]", :text => 'Start Over')}
