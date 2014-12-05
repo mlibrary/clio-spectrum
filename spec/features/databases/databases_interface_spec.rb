@@ -110,6 +110,7 @@ describe 'Databases', focus: false do
      find('.constraint-box', text: %r{Resource Type: Is .* Music Scores})
    end
    page.should have_text('No results found for your search')
+   page.should have_css('.result_empty')
  end
 
 end

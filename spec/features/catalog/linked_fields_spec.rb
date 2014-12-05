@@ -27,6 +27,7 @@ describe 'Linked field-values in single-item display', focus: false do
     click_link(smm_decomposed)
 
     page.should have_css('.result')
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results found')
   end
 
@@ -46,6 +47,7 @@ describe 'Linked field-values in single-item display', focus: false do
     # Should be on the item-results page, which should include at least the item just visited
     page.should have_css('#documents')
     page.should have_text('You searched for:')
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should have_link(test_title, href: "/catalog/#{test_bib}")
   end
@@ -66,6 +68,7 @@ describe 'Linked field-values in single-item display', focus: false do
     # Should be on the item-results page, which should include at least the item just visited
     page.should have_css('#documents')
     page.should have_text('You searched for:')
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should_not have_text('1 of 1')
     page.should have_link(test_title, href: "/catalog/#{test_bib}")
@@ -87,6 +90,7 @@ describe 'Linked field-values in single-item display', focus: false do
     # Should be on the item-results page, which should include at least the item just visited
     page.should have_css('#documents')
     page.should have_text('You searched for:')
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should_not have_text('1 of 1')
     page.should have_link(test_title, href: "/catalog/#{test_bib}")
@@ -116,6 +120,7 @@ describe 'Linked field-values in single-item display', focus: false do
       # Should be on the item-results page, which should include at least the item just visited
       page.should have_css('#documents')
       page.should have_text('You searched for:')
+      page.should_not have_css('.result_empty')
       page.should_not have_text('No results')
       page.should_not have_text('1 of 1')
       page.should have_link(test_title, href: "/catalog/#{test_bib}")
@@ -142,6 +147,7 @@ describe 'Linked field-values in single-item display', focus: false do
     # Should be on the item-results page, which should include at least the item just visited
     page.should have_css('#documents')
     page.should have_text('You searched for:')
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should_not have_text('1 of 1')
     page.should have_link(test_title, href: "/catalog/#{test_bib}")
@@ -163,6 +169,7 @@ describe 'Linked field-values in single-item display', focus: false do
     # Should be on the item-results page, which should include at least the item just visited
     page.should have_css('#documents')
     page.should have_text('You searched for:')
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should_not have_text('1 of 1')
     page.should have_link(test_title, href: "/catalog/#{test_bib}")
@@ -177,6 +184,7 @@ describe 'Linked field-values in single-item display', focus: false do
 
     click_link "Collezione Confronti/consensi ; 15."
     page.should have_text "You searched for: Series: Collezione Confronti/consensi"
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should_not have_text('1 of 5')
     find('#documents').should have_text 'Lo specchio acceso : narrativa italiana'
@@ -194,6 +202,7 @@ describe 'Linked field-values in single-item display', focus: false do
 
     click_link(series_decomposed)
     page.should have_text "You searched for: Series: #{series_decomposed}"
+    page.should_not have_css('.result_empty')
     page.should_not have_text('No results')
     page.should have_text('1 - 4 of 4')
     # list out four title snippets to look for...
