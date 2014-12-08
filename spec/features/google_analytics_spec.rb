@@ -119,7 +119,7 @@ describe 'Google Analytics' do
           end
         end
         context 'no link to Standard View' do
-          it{page.should_not have_link("a[class=\"viewstyle_link\"][viewstyle=\"list\"]")}
+          it{page.should_not have_link("a[class=\"viewstyle_link\"][viewstyle=\"compact_list\"]")}
         end
       end
     end

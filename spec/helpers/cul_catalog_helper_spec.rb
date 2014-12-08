@@ -38,27 +38,27 @@ describe CulCatalogHelper do
         end
       end
       context '#viewstyle_link' do
-        before{allow(self).to receive(:get_browser_option).and_return('compact')}
+        before{allow(self).to receive(:get_browser_option).and_return('compact_list')}
         context 'no change to viewstyle' do
           context 'href' do
-            it{expect(viewstyle_link('compact', 'Compact View')).to match /<a [^>]*href=\"#\"/}
+            it{expect(viewstyle_link('compact_list', 'Compact View')).to match /<a [^>]*href=\"#\"/}
           end
           context 'data-ga-category' do
-            it{expect(viewstyle_link('compact', 'Compact View')).not_to match /data-ga-category/}
+            it{expect(viewstyle_link('compact_list', 'Compact View')).not_to match /data-ga-category/}
           end
         end
         context 'change from compact to standard view' do
           context 'href' do
-            it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*href=\"#\"/}
+            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*href=\"#\"/}
           end
           context 'data-ga-category' do
-            it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*data-ga-category=\"#{@active_source.camelize} Results List\"/}
+            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-category=\"#{@active_source.camelize} Results List\"/}
           end
           context 'data-ga-action' do
-            it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*data-ga-action=\"Display Options\"/}
+            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-action=\"Display Options\"/}
           end
           context 'data-ga-label' do
-            it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*data-ga-label=\"Standard View\"/}
+            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-label=\"Standard View\"/}
           end
         end
       end
@@ -80,15 +80,15 @@ describe CulCatalogHelper do
     end
     context '#viewstyle_link' do
       context 'change from compact to standard view' do
-        before{allow(self).to receive(:get_browser_option).and_return('compact')}
+        before{allow(self).to receive(:get_browser_option).and_return('compact_list')}
         context 'data-ga-category' do
-          it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*data-ga-category=\"Results List\"/}
+          it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-category=\"Results List\"/}
         end
         context 'data-ga-action' do
-          it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*data-ga-action=\"Display Options\"/}
+          it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-action=\"Display Options\"/}
         end
         context 'data-ga-label' do
-          it{expect(viewstyle_link('list', 'Standard View')).to match /<a [^>]*data-ga-label=\"Standard View\"/}
+          it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-label=\"Standard View\"/}
         end
       end
     end
