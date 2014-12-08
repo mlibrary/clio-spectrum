@@ -1,5 +1,7 @@
 -# serial
 
+/ _formats/serial/_catalog_show.html.haml
+
 - cache("catalog_show_format=serial_#{document.cache_key}") do
   - marc = document.to_marc
   = add_row("Author", generate_value_links(display_marc_field(marc, 'author'), :author))

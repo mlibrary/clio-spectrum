@@ -104,8 +104,15 @@ module LocalSolrHelperExtension
             key.to_s + '=' + solr_param_quote(val, quote: "'")
           end.join(' ')
 
+          # This has problems. Why "_query_"?  Why dismax?
+          # No comments, no explanation.
+
+          # "_query_:\"{!dismax #{local_params}}#{value}\""
           # if they submitted a quoted value, escape their quotes for them
           "_query_:\"{!dismax #{local_params}}#{value.gsub(/"/, '\"')}\""
+
+          # # testing....
+          # "{!#{local_params}}#{value.gsub(/"/, '\"')}"
 
         else
           value.to_s
@@ -234,7 +241,10 @@ module LocalSolrHelperExtension
       when value.is_a?(Range)
         "#{prefix}#{facet_field}:[#{value.first} TO #{value.last}]"
       else
-        "{!raw f=#{facet_field}#{(" " + local_params.join(" ")) unless local_params.empty?}}#{value}"
+        # NEXT-1107 -Pre-composed characters in facets
+        # Remove "raw" to allow analyzer to normalize unicode
+        # "{!raw f=#{facet_field}#{(" " + local_params.join(" ")) unless local_params.empty?}}#{value}"
+        "#{facet_field}:\"#{value}\""
     end
   end
 end

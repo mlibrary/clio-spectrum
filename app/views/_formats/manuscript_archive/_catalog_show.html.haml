@@ -1,5 +1,7 @@
 -# format=manuscript_archive
 
+/ _formats/manuscript_archive/_catalog_show.html.haml
+
 - cache("catalog_show_format=manuscript_archive_#{document.cache_key}") do
 
   - marc = document.to_marc

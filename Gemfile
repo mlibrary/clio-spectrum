@@ -127,14 +127,18 @@ gem 'newrelic_rpm'
 # gem 'rack-utf8_sanitizer', :github => 'whitequark/rack-utf8_sanitizer'
 gem 'rack-utf8_sanitizer', :git => 'git://github.com/whitequark/rack-utf8_sanitizer'
 
-# gives us JQuery and JQuery-ujs
+# gives us jQuery and jQuery-ujs, but not jQuery UI
 # (blacklight_range_limit brings this in anyway - no way to switch to CDN)
 gem 'jquery-rails'
+
+# # jQuery UI - JavaScript, CSS, Images
+# gem 'jquery-ui-rails'
 
 group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier'
+  # gem 'bootstrap-sass', '3.2.0.2'
   gem 'bootstrap-sass'
 end
 
@@ -170,7 +174,7 @@ gem 'rack-attack'
 #   gem 'webrat'
 # end
 group :development do
-  gem 'guard-rails'
+  # gem 'guard-rails'
 
   # alternative webserver
   # gem 'hooves'
@@ -184,6 +188,8 @@ group :development do
   gem 'capistrano', '~>2'
   gem 'capistrano-ext'
   gem 'quiet_assets'
+  # fixes [morrison.cul.columbia.edu] sh: bundle: command not found
+  gem 'rvm-capistrano'
 
   # browser-based live debugger and REPL
   # http://railscasts.com/episodes/402-better-errors-railspanel
@@ -222,9 +228,9 @@ group :test do
   # gem 'spork', '~>1.0.0.rc2'
   gem 'spork'
 
-  gem 'guard'
-  gem 'guard-rspec'
-  gem 'guard-spork'
+  # gem 'guard'
+  # gem 'guard-rspec'
+  # gem 'guard-spork'
 
   # Copy Stanford's approach to Solr relevancy testing
   gem 'rspec-solr'
@@ -240,10 +246,10 @@ group :test do
 
   gem 'launchy'
   gem 'database_cleaner'
-  # Mac OS X 10.8 (Mountain Lion) Notifications replace growl
-  # http://protips.maxmasnick.com/mountain-lion-notifications-with-guard
-  # gem "growl"
-  gem 'terminal-notifier-guard'
+  # # Mac OS X 10.8 (Mountain Lion) Notifications replace growl
+  # # http://protips.maxmasnick.com/mountain-lion-notifications-with-guard
+  # # gem "growl"
+  # gem 'terminal-notifier-guard'
 
 
   gem 'rb-fsevent'

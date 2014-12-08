@@ -31,6 +31,7 @@
 //= require bootstrap/modal
 //= require bootstrap/tooltip
 //= require bootstrap/popover
+//= require bootstrap/button
 
 // And, one specific Bootstrap-based add-on, installed locally
 //= require bootstrap-datepicker
@@ -56,11 +57,13 @@
 //= require hathi
 //= require holdings
 //= require ie_warnings
+//= require in_viewport
 //= require item_actions
 //= require item_alerts
 //= require ldpd_feedback
 //= require nearby
 //= require saved_lists
+//= require scroll_memory
 
 
 // was used in support of JavaScript landing-page switching,

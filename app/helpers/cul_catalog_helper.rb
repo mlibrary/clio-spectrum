@@ -5,7 +5,7 @@ module CulCatalogHelper
     text.to_s.gsub('/catalog', "/#{source}").html_safe
   end
 
-  def build_link_back
+  def build_link_back(id = nil)
     # 1) EITHER start basic - just go back to where we came from... even if
     # it was a link found on a web page or in search-engine results...
     # link_back = request.referer.path
@@ -13,9 +13,20 @@ module CulCatalogHelper
     link_back = nil
     # raise
     begin
+
+      # Jump to the current item within the search results?
+      # No - because simple anchor behavior is to scroll so that
+      # the anchor is top-most in viewport.  This means that
+      # the search-box is always hidden, even for first document.
+      # current_search_session.query_params.merge!(anchor: id)
+
+      # add some extra info to the "Back to Results" link
+      opts = {class: 'link_back'}
+      opts['data'] = {bib: id} if id
+
       # try the Blacklight approach of reconstituting session[:search] into
       # a search-results-list URL...
-      link_back = link_back_to_catalog.html_safe
+      link_back = link_back_to_catalog(opts).html_safe
       # ...but this can easily fail in multi-page web interactions, so catch errors
     rescue ActionController::RoutingError
       link_back = nil
@@ -117,7 +128,12 @@ module CulCatalogHelper
   def viewstyle_link(viewstyle, label)
     current_viewstyle = get_browser_option('viewstyle') ||
                         DATASOURCES_CONFIG['datasources'][@active_source]['default_viewstyle'] ||
-                        'list'
+                        'standard_list'
+
+    # (support forward-conversion of renamed viewstyle names...)
+    current_viewstyle = 'standard_list' if current_viewstyle == 'list'
+    current_viewstyle = 'compact_list'  if current_viewstyle == 'compact'
+
     if viewstyle == current_viewstyle
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-ok')
       content_tag(:a, (checkmark + ' ' + label), href: '#')

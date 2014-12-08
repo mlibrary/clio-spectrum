@@ -1,5 +1,7 @@
 -# music (scores)
 
+/ _formats/music/_catalog_show.html.haml
+
 - cache("catalog_show_format=music_scores_#{document.cache_key}") do
   - marc = document.to_marc
   = add_row("Composer", generate_value_links(display_marc_field(marc, 'author'), :author))
