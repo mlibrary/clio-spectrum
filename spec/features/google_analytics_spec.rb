@@ -107,7 +107,7 @@ describe 'Google Analytics' do
       context 'in Standard View' do
         before {visit catalog_index_path('q' => "penguins", :rows => '50', :per_page => '50')}
         context 'link to change to Compact View' do
-          let(:link){find("a[class=\"viewstyle_link\"][viewstyle=\"compact\"]")}
+          let(:link){find("a[class=\"viewstyle_link\"][viewstyle=\"compact_list\"]", visible: false)}
           context 'data-ga-category' do
             it{expect(link['data-ga-category']).to eq('Catalog Results List')}
           end
