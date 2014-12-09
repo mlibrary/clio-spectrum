@@ -63,7 +63,7 @@ describe 'Summon Search Option Filter Settings' do
   it 'should default from Landing Page', js: true do
     visit articles_index_path
     fill_in 'q', with: $q
-    find('span.glyphicon.glyphicon-search.icon-white').click
+    find('span.glyphicon.glyphicon-search.icon-white').trigger('click')
     # page.save_and_open_page # debug
     all('.index_toolbar.navbar').first.should have_text " of #{@result_count}"
     confirm_default_filter_settings

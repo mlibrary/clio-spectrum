@@ -231,7 +231,7 @@ describe 'Catalog Interface' do
         click_link 'Email'
       end
 
-      page.should have_css('.modal-dialog .modal-content .modal-header')
+      expect(page).to have_css('.modal-dialog .modal-content .modal-header')
       #
       # NEXT 910 - Add some directions, and optionally email and Name, to the email form
       #

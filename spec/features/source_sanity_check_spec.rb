@@ -81,7 +81,7 @@ describe 'Simple query should retrieve results ', js: true do
     page.should have_css('.result')
 
     visit dissertations_index_path('q' => 'test')
-    page.should have_css('.result_set', count: 3)
+    expect(page).to have_css('.result_set', count: 3)
     all('.result_set').each do |result_set|
       result_set.should have_css('.result')
     end
@@ -109,7 +109,7 @@ describe 'Switching between data-source', js: true do
     # terminal newline submits form
     fill_in 'q', with: "test\n"
 
-    page.should have_css('.result_set', count: 4)
+    expect(page).to have_css('.result_set', count: 4)
     all('.result_set').each do |result_set|
       result_set.should have_css('.result')
     end

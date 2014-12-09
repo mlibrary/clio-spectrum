@@ -17,7 +17,8 @@ describe 'CLIO support for Law records' do
 
     # Now dismiss "supr* cour*", to get full listing of all law records...
     within find('.constraint-box', text: 'supr') do
-      find('.glyphicon.glyphicon-remove').click
+      expect(page).to have_css('.glyphicon.glyphicon-remove')
+      find('.glyphicon.glyphicon-remove').trigger('click')
     end
 
     # confirm
