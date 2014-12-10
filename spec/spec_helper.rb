@@ -31,7 +31,7 @@ Spork.prefork do
     # Specify an alternative JS driver if we want to avoid selinium
     Capybara.javascript_driver = :webkit
     # Capybara.javascript_driver = :webkit_debug
-    Capybara.default_wait_time = 5
+    Capybara.default_wait_time = 10
     # http://www.elabs.se/blog/60-introducing-capybara-2-1
     # But try to rewrite our specs so that we don't have to change
     # Capybara's default configuration settings.
