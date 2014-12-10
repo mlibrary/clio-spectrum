@@ -228,7 +228,7 @@ describe 'Catalog Interface' do
     it 'supports an email function, via JS modal', js: true do
       visit catalog_path(1234)
       within '#show_toolbar' do
-        click_link 'Email'
+        find_link('Email').trigger('click') 
       end
 
       expect(page).to have_css('.modal-dialog .modal-content .modal-header')

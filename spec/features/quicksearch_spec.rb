@@ -14,7 +14,7 @@ describe 'QuickSearch landing page' do
   # NEXT-612 - Quick search page doesn't let you start over
   it "should have a 'Start Over' link", js: true do
     visit quicksearch_index_path('q' => 'borneo')
-    page.should have_css('.result_set', count: 4)
+    expect(page).to have_css('.result_set', count: 4)
     all('.result_set').each do |result_set|
       result_set.should have_css('.result')
     end
@@ -25,8 +25,8 @@ describe 'QuickSearch landing page' do
     end
 
     # Verify that we're now on the landing page
-    page.should_not have_css('.result_set')
-    page.should have_text('Quicksearch performs a combined search of')
+    expect(page).not_to have_css('.result_set')
+    expect(page).to have_text('Quicksearch performs a combined search of')
   end
 
   # NEXT-1026 - Clicking 'All Results' for Libraries Website 
@@ -39,7 +39,7 @@ describe 'QuickSearch landing page' do
     within('.results_header', :text => "Catalog") do
       click_link "View and filter all"
     end
-    page.should have_text "You searched for: kitty"
+    expect(page).to have_text "You searched for: kitty"
   end
   # *** ARTICLES ***
   it "should link to Articles results correctly", js:true do
@@ -47,7 +47,7 @@ describe 'QuickSearch landing page' do
     within('.results_header', :text => "Articles") do
       click_link "View and filter all"
     end
-    page.should have_text "You searched for: indefinite"
+    expect(page).to have_text "You searched for: indefinite"
   end
   # *** ACADEMIC COMMONS ***
   it "should link to Academic Commons results correctly", js:true do
@@ -56,17 +56,18 @@ describe 'QuickSearch landing page' do
     within('.results_header', :text => "Academic Commons") do
       click_link "View and filter all"
     end
-    page.should have_text "You searched for: uncommon"
+    expect(page).to have_text "You searched for: uncommon"
   end
   # *** CATALOG ***
   it "should link to Libraries Website results correctly", js:true do
     visit quicksearch_index_path('q' => 'public')
+    expect(page).not_to have_text "View and filter all"
     # page.save_and_open_page
     within('.results_header', :text => "Libraries Website") do
-      should_not have_text "View and filter all"
-      click_link "View all"
+      byebug
+      page.find_link("View all").trigger('click')
     end
-    page.should have_text "You searched for: public"
+    expect(page).to have_text "You searched for: public"
   end
 
 
@@ -94,6 +95,7 @@ describe 'QuickSearch landing page' do
 
     # DISSERTATIONS
     visit dissertations_index_path('q' => 'horse')
+    byebug
     within('.results_header[data-source=catalog_dissertations]') do
       find('img').click
       find('.category_title').should have_text "Dissertations from the library catalog"
@@ -103,7 +105,7 @@ describe 'QuickSearch landing page' do
       find('.category_title').should have_text "Dissertations and theses from the Articles database. Many are full-text."
     end
     within('.results_header[data-source=ac_dissertations]') do
-      find('img').click
+      find('img').trigger('click')
       find('.category_title').should have_text "Dissertations deposited in Columbia's digital repository, primarily 2011-present."
     end
 

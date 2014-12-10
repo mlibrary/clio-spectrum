@@ -54,31 +54,31 @@ describe 'Simple query should retrieve results ', js: true do
   it 'within all datasources' do
 
     visit quicksearch_index_path('q' => 'test')
-    page.should have_css('.result_set', count: 4)
+    expect(page).to have_css('.result_set', count: 4)
     all('.result_set').each do |result_set|
-      result_set.should have_css('.result')
+      expect(result_set).to have_css('.result')
     end
 
     visit catalog_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit articles_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit journals_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit databases_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit academic_commons_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit library_web_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit archives_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit dissertations_index_path('q' => 'test')
     expect(page).to have_css('.result_set', count: 3)
@@ -87,16 +87,16 @@ describe 'Simple query should retrieve results ', js: true do
     end
 
     visit ebooks_index_path('q' => 'test')
-    page.should have_css('.result_set', count: 2)
+    expect(page).to have_css('.result_set', count: 2)
     all('.result_set').each do |result_set|
       result_set.should have_css('.result')
     end
 
     visit new_arrivals_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
 
     visit newspapers_index_path('q' => 'test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
   end
 
 end
@@ -119,58 +119,58 @@ describe 'Switching between data-source', js: true do
       click_link('Catalog')
     end
     find('div.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     all('#documents .result').first['source'].should eq 'catalog'
 
     click_link('Articles')
     # find('input#articles_q').should have_text('test')
     find('input#articles_q').value.should eq 'test'
     find('.well-constraints').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     # puts "==========" + all('#documents .result').first.inspect
     # all('#documents .result').first.should have_selector('.article_list')
 
     click_link('E-Journal Titles')
     find('input#journals_q').value.should eq 'test'
     find('.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     all('#documents .result').first['source'].should eq 'catalog'
 
     click_link('Databases')
     find('input#databases_q').value.should eq 'test'
     find('.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     all('#documents .result').first['source'].should eq 'catalog'
 
     click_link('Academic Commons')
     find('input#academic_commons_q').value.should eq 'test'
     find('.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     all('#documents .result').first['source'].should eq 'academic_commons'
 
     click_link('Libraries Website')
     find('input#library_web_q').value.should eq 'test'
     find('.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     # all('#documents .result').first['source'].should eq 'XXX'
 
     click_link('Archives')
     find('input#archives_q').value.should eq 'test'
     find('.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     all('#documents .result').first['source'].should eq 'catalog'
 
     click_link('More...')
     click_link('Dissertations')
     find('input#dissertations_q').value.should eq 'test'
-    page.should have_css('.result_set', count: 3)
+    expect(page).to have_css('.result_set', count: 3)
     all('.result_set').each do |result_set|
       result_set.should have_css('.result')
     end
 
     click_link('E-Books')
     find('input#ebooks_q').value.should eq 'test'
-    page.should have_css('.result_set', count: 2)
+    expect(page).to have_css('.result_set', count: 2)
     all('.result_set').each do |result_set|
       result_set.should have_css('.result')
     end
@@ -178,14 +178,14 @@ describe 'Switching between data-source', js: true do
     click_link('New Arrivals')
     find('input#new_arrivals_q').value.should eq 'test'
     find('.constraint-box').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     all('#documents .result').first['source'].should eq 'catalog'
 
     click_link('More...')
     click_link('Newspapers')
     find('input#newspapers_q').value.should eq 'test'
     find('.well-constraints').should have_text('test')
-    page.should have_css('.result')
+    expect(page).to have_css('.result')
     # all('#documents .result').first.should have_css('.article_list')
 
   end

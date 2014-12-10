@@ -33,12 +33,14 @@ describe 'Summon Search Option Filter Settings' do
   it 'should default from QuickSearch panel', js: true do
     visit quicksearch_index_path('q' => $q)
     within('.results_header[data-source=articles]') do
-      find('.result_count').should have_text "View and filter all"
+      expect(find('.result_count')).to have_text "View and filter all"
+      debugger
       @result_count = find('.result_count').text
       @result_count = @result_count.sub(/.* all (.*) results/, '\1')
       click_link "View and filter all"
     end
-    all('.index_toolbar.navbar').first.should have_text " of #{@result_count}"
+    expect(page).to have_css('.index_toolbar.navbar')
+    expect(all('.index_toolbar.navbar').first).to have_text " of #{@result_count}"
     confirm_default_filter_settings
   end
 
