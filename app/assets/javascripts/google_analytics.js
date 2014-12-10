@@ -26,48 +26,6 @@ $(document).ready(function() {
   // Apply to all off-site <A> tags, based on:
   //   http://www.electrictoolbox.com/jquery-open-offsite-links-new-window/
 
-  $('body').on('submit', function(event) {
-    var advanced = (event.target.getElementsByClassName("advanced_search_button").length == 1);
-    var basic = (event.target.getElementsByClassName("basic_search_button").length == 1);
-    var action = "";
-    var label = "";
-    var category = "Search";
-    if (advanced) {
-      action = "Advanced Search Submit";
-      e = document.getElementById('advanced_operator');
-      field_name = e.options[e.selectedIndex].text;
-      label += field_name + ' of ';
-      fields = event.target.getElementsByClassName("advanced_search_row");
-      var i;
-      for (i=0; i<fields.length; i+=1) {
-        e = document.getElementById('adv_'+(i+1)+'_field');
-        field = $(fields[i]).find("option[selected=selected]");
-        field_name = e.options[e.selectedIndex].text;
-        value = $(field).parent().parent().next().find('input').val();
-        if (value !== "") {
-          if (i>0){
-            label += ' & ';
-          }
-          label += field_name + ':' + value;
-        }
-      }
-    }
-    else if (basic) {
-      action = "Basic Search Submit";
-      value = $(this).find('.search_q').val();
-      field_name = $(this).find('btn.dropdown-toggle').text().trim();
-      label = field_name + ': ' + value + ' ';
-    }
-    else{
-      return;
-    }
-
-
-    ga('send', 'event', category, action, label, {useBeacon: true});
-
-  });
-
-
   $('body').on('click', 'a', function(event) {
 
     // Gather up values at time of click, not at first load, to allow
@@ -86,11 +44,13 @@ $(document).ready(function() {
 
     // if click also activates a page load, stash the values and submit when page reloads
 
-    if (action.match(/Display Options/)||action.match(/Sort by/)){
-      console.log("stashing ga('send','event','"+category+"','"+action+"','"+label+"')");
-      sessionStorage.setItem('data-ga-category', category);
-      sessionStorage.setItem('data-ga-action', action);
-      sessionStorage.setItem('data-ga-label', label);
+    if (action.match(/Display Options/)||action.match(/Sort by/)||label.match(/MARC View/)){
+      if (label != 'Export to EndNote'){
+        console.log("stashing ga('send','event','"+category+"','"+action+"','"+label+"')");
+        sessionStorage.setItem('data-ga-category', category);
+        sessionStorage.setItem('data-ga-action', action);
+        sessionStorage.setItem('data-ga-label', label);
+      }
       return;
     }
 
