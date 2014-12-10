@@ -34,7 +34,6 @@ describe 'Summon Search Option Filter Settings' do
     visit quicksearch_index_path('q' => $q)
     within('.results_header[data-source=articles]') do
       expect(find('.result_count')).to have_text "View and filter all"
-      debugger
       @result_count = find('.result_count').text
       @result_count = @result_count.sub(/.* all (.*) results/, '\1')
       click_link "View and filter all"
