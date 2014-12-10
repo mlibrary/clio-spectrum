@@ -7,10 +7,10 @@ describe 'New Arrivals Search' do
     visit root_path
 
     within 'div#sources' do
-      find_link('New Arrivals').click
+      find_link('New Arrivals').trigger('click')
     end
 
-    find('.basic_search_button', visible: true).click
+    find('.basic_search_button', visible: true).trigger('click')
 
     # Find the <li> with this text, as a Capybara node...
     within1week = find('li', text: /within 1 week/i)
@@ -40,51 +40,51 @@ describe 'New Arrivals Search' do
 
   end
 
-  it 'will be able to traverse next and previous links' do
+  it 'will be able to traverse next and previous links', js: true do
     visit new_arrivals_index_path('q' => 'd*o*g*')
 
-    page.should_not have_css('.index_toolbar a', text: 'Previous')
-    page.should have_css('.index_toolbar a', text: 'Next')
+    expect(page).not_to have_css('.index_toolbar a', text: 'Previous')
+    expect(page).to have_css('.index_toolbar a', text: 'Next')
 
-    all('.index_toolbar a', text: 'Next').first.click
+    all('.index_toolbar a', text: 'Next').first.trigger('click')
 
-    page.should have_css('.index_toolbar a', text: 'Previous')
-    page.should have_css('.index_toolbar a', text: 'Next')
+    expect(page).to have_css('.index_toolbar a', text: 'Previous')
+    expect(page).to have_css('.index_toolbar a', text: 'Next')
 
-    all('.index_toolbar a', text: 'Previous').first.click
+    all('.index_toolbar a', text: 'Previous').first.trigger('click')
 
-    page.should_not have_css('.index_toolbar a', text: 'Previous')
-    page.should have_css('.index_toolbar a', text: 'Next')
+    expect(page).not_to have_css('.index_toolbar a', text: 'Previous')
+    expect(page).to have_css('.index_toolbar a', text: 'Next')
   end
 
   it 'can move between item-detail and search-results', js: true do
     visit new_arrivals_index_path('q' => 'man')
 
     within all('.result.document').first do
-      all('a').first.click
+      all('a').first.trigger('click')
     end
 
     # page.save_and_open_page # debug
 
-    find('#search_info').should have_text '1 of '
-    page.should_not have_css('#search_info a', text: 'Previous')
-    page.should have_css('#search_info a', text: 'Next')
+    expect(find('#search_info')).to have_text '1 of '
+    expect(page).not_to have_css('#search_info a', text: 'Previous')
+    expect(page).to have_css('#search_info a', text: 'Next')
 
-    find('#search_info a', text: 'Next').click
+    find('#search_info a', text: 'Next').trigger('click')
 
-    find('#search_info').should have_text '2 of '
-    page.should have_css('#search_info a', text: 'Previous')
-    page.should have_css('#search_info a', text: 'Next')
+    expect(find('#search_info')).to have_text '2 of '
+    expect(page).to have_css('#search_info a', text: 'Previous')
+    expect(page).to have_css('#search_info a', text: 'Next')
 
-    find('#search_info a', text: 'Previous').click
+    find('#search_info a', text: 'Previous').trigger('click')
 
-    find('#search_info').should have_text '1 of '
-    page.should_not have_css('#search_info a', text: 'Previous')
-    page.should have_css('#search_info a', text: 'Next')
+    expect(find('#search_info')).to have_text '1 of '
+    expect(page).not_to have_css('#search_info a', text: 'Previous')
+    expect(page).to have_css('#search_info a', text: 'Next')
 
-    find('#search_info a', text: 'Back to Results').click
+    find('#search_info a', text: 'Back to Results').trigger('click')
 
-    find('.constraints-container').should have_text 'You searched for: man'
+    expect(find('.constraints-container')).to have_text 'You searched for: man'
 
   end
 
