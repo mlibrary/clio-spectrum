@@ -101,7 +101,8 @@ $(document).ready(function() {
 
     var category = "Search Results Load";
     var action = source;
-    var label = document.URL
+    var label = document.URL;
+    var advanced = false;
 
     // is there an event stashed away?
 
@@ -124,16 +125,16 @@ $(document).ready(function() {
     if ((getQueryVariable('advanced_operator'))|| (getQueryVariable('form') == 'advanced')){
       advanced = true;
     }
-    if (advanced){
-      label = 'Advanced: ' + document.URL;
-    }
-    else{
-      label = 'Basic: ' + document.URL;
-    }
     // zero-hits search?
 
     if ($('div.result_empty').length > 0){
       category += " - Zero Hits";
+      if (advanced){
+        action = action + ' Advanced';
+      }
+      else{
+        action = action + ' Basic';
+      }
       console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
       ga('send', 'event', category, action, label, {useBeacon: true});
     }
@@ -147,7 +148,6 @@ $(document).ready(function() {
 
       var hits = 0;
       var num_hits = 0;
-      var advanced = false;
 
       // Zero Hits Search?
 
@@ -158,20 +158,11 @@ $(document).ready(function() {
         num_hits = $('#current_item_info').text().replace(/ /g,'').replace(/\|/g,'').split('of')[1].trim();
       }
       if (advanced){
-        label = 'Advanced ('+ num_hits+' hits): ' + document.URL;
+        action = action + ' Advanced ('+ num_hits+' hits)';
         advanced_operator = getQueryVariable('advanced_operator')|| ' OR ';
-        for (i = 1; i < 6; i++){
-          field_query = getQueryVariable("adv[" + i + "][field]");
-          value_query = getQueryVariable("adv[" + i + "][value]");
-          if (value_query){
-            //label += advanced_operator;
-          }
-          //label += field_query + '=' + value_query;
-        }
       }
       else{
-        label = 'Basic ('+ num_hits+' hits): '+ document.URL
-//        label = 'Basic ('+ num_hits+' hits): '+getQueryVariable('search_field')+ ': ' + getQueryVariable('q');
+        action = action + ' Basic ('+ num_hits+' hits)';
       }
       console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
       ga('send', 'event', category, action, label, {useBeacon: true});
