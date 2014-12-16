@@ -45,7 +45,7 @@ describe DisplayHelper do
       allow(document).to receive(:[]).with(:handle).and_return("http://dx.doi.org/10.7916/D81N7Z5C")
       link = ac_item_link(document, "Search Results Click")
       expect(link).to match(/data\-ga\-category=\"Academic Commons Results List\"/)
-      expect(link).to match(/data\-ga\-action\=\"Search Results Click\"/)
+      expect(link).to match(/data\-ga\-action\=\"Title Click\"/)
       expect(link).to match(/data\-ga\-label=\"Document Title\"/)
     end
   end
@@ -64,7 +64,7 @@ describe DisplayHelper do
       allow(document).to receive(:[]).with(:title_display).and_return(["Document Title"])
       link = ac_handle_list(document)
       expect(link[0]).to match(/data\-ga\-category=\"Academic Commons Results List\"/)
-      expect(link[0]).to match(/data\-ga\-action\=\"Search Results Handle Click\"/)
+      expect(link[0]).to match(/data\-ga\-action\=\"Handle Click\"/)
       expect(link[0]).to match(/data\-ga\-label=\"Document Title\"/)
     end
   end
