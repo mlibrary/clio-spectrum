@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function(e) {
 
 
     $('.feedback-popup').bind('click', function(){
@@ -68,7 +68,7 @@ LWEB.showFeedbackDialog = function() {
     LWEB.centerFeedbackDialog();
     $('#feedback_dialog').show();
     LWEB.feedbackDialogIsVisible = true;
-
+    e.trigger('click');
     return false;
 };
 
