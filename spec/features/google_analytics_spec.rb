@@ -385,5 +385,18 @@ describe 'Google Analytics' do
       end
     end
 
+    context 'Start Over button' do
+      let(:link){find("a[href=\"\/academic_commons\"]", :text => 'Start Over')}
+      context 'data-ga-category' do
+        it{expect(link['data-ga-category']).to eq('Academic Commons Results List')}
+      end
+      context 'data-ga-action' do
+        it{expect(link['data-ga-action']).to eq('Search Bar Click')}
+      end
+      context 'data-ga-label' do
+        it{expect(link['data-ga-label']).to eq('Start Over')}
+      end
+    end
+
   end
 end

@@ -212,7 +212,7 @@ module SearchHelper
   def display_start_over_link(source = @active_source)
     link_to content_tag(:span, '', class: 'glyphicon glyphicon-backward') + ' Start Over',
             datasource_landing_page_path(source),
-            'data-ga-category' => "#{source.capitalize} Results List",
+            'data-ga-category' => ga_category_for_results_list,
             'data-ga-action' => 'Search Bar Click',
             'data-ga-label' => 'Start Over',
             class: 'btn btn-default'

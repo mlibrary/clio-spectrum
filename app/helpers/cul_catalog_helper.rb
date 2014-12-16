@@ -89,11 +89,11 @@ module CulCatalogHelper
   end
 
   def ga_category_for_results_list
-    @active_source ? "#{@active_source.camelize} Results List" : 'Results List'
+    @active_source ? "#{@active_source.split('_').map {|w| w.camelize}.join(" ")} Results List" : 'Results List'
   end
 
   def ga_category_for_item_detail
-    @active_source ? "#{@active_source.camelize} Item Detail" : 'Item Detail'
+    @active_source ? "#{@active_source.split('_').map {|w| w.camelize}.join(" ")} Item Detail" : 'Item Detail'
   end
 
   def per_page_link(href, per_page, current_per_page)
