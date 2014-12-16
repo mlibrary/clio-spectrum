@@ -14,10 +14,8 @@
       %button.btn.advanced_search_button.btn-primary{:name => "commit", :type => "submit", :value => "Search"}
         %span.glyphicon.glyphicon-search.icon-white
         %span.hidden-xs Search
-      =link_to "Basic Search", "#", class: "btn btn-link advanced_search_toggle",
-                                    'data-ga-category' => ga_category_for_results_list,
-                                    'data-ga-action' => "Search Toggle Click",
-                                    'data-ga-label' => "Switch to Basic"
+
+      = link_to_basic_search
 
       = hidden_field_tag 'search_field', 'advanced'
 

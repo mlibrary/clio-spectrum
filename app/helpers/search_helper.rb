@@ -147,9 +147,14 @@ module SearchHelper
 
       # link to advanced search
       if options['search_type'].in?('summon', 'blacklight') && options['advanced']
+        if (request.path_parameters[:action] == "index")
+          category =  ga_category_for_results_list
+        else
+          category =  ga_category_for_item_detail
+        end
         adv_text = "Advanced#{content_tag(:span, ' Search', class: 'hidden-sm')}".html_safe
         result += content_tag(:a, adv_text, class: 'btn btn-link advanced_search_toggle',
-                              'data-ga-category' => ga_category_for_results_list,
+                              'data-ga-category' => category,
                               'data-ga-action' => "Search Toggle Click",
                               'data-ga-label' => "Switch to Advanced",
                               href: '#')
@@ -169,6 +174,17 @@ module SearchHelper
     result
   end
 
+  def link_to_basic_search
+    if (request.path_parameters[:action] == "index")
+      category =  ga_category_for_results_list
+    else
+      category =  ga_category_for_item_detail
+    end
+    link_to "Basic Search", "#", class: "btn btn-link advanced_search_toggle",
+                                  'data-ga-category' => category,
+                                  'data-ga-action' => "Search Toggle Click",
+                                  'data-ga-label' => "Switch to Basic"
+  end
 
   # Override Blacklight's has_search_parameters to handle
   # our additional datasources

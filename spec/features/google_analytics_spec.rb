@@ -191,7 +191,7 @@ describe 'Google Analytics' do
     context 'toolbar' do
       ['Print', 'Email', 'Send to Phone', 'Add to My Saved List', 'Export to EndNote', 'Display in CLIO Legacy',
        'MARC View', "Place a Recall / Hold", 'Borrow Direct', 'ILL', "Scan & Deliver", 'Inter-Campus Delivery',
-       "In-Process / On Order", 'Precataloging', 'Off-site request', 'Item Not On Shelf?'].each do |option_link|
+       "In-Process / On Order", 'Precataloging', 'Off-site request', 'Item Not On Shelf?', 'Start Over'].each do |option_link|
         context "#{option_link}" do
           before {visit catalog_path "9092438"}
           let(:link){within('#outer-container'){find('a[href]', :text => option_link)}}
@@ -209,6 +209,24 @@ describe 'Google Analytics' do
     end
 
     context 'catalog item detail' do
+      context 'search toggle' do
+        ["Advanced", "Basic"].each do |option_link|
+          context "Switch to #{option_link}" do
+            before {visit catalog_path "9092438"}
+            let(:link){within('#outer-container'){find('a[href]', :text => option_link)}}
+            context 'data-ga-category' do
+              it{expect(link['data-ga-category']).to eq('Catalog Item Detail')}
+            end
+            context 'data-ga-action' do
+              it{expect(link['data-ga-action']).to eq('Search Toggle Click')}
+            end
+            context 'data-ga-label' do
+              it{expect(link['data-ga-label']).to eq("Switch to #{option_link}")}
+            end
+          end
+        end
+      end
+
       context 'Subjects' do
         before {visit catalog_path "9092438"}
         let(:link){page.all(:xpath, "//a[contains(@href, 'subject')]").first}
@@ -322,5 +340,50 @@ describe 'Google Analytics' do
         end
       end
     end
+  end
+
+  context "Academic Commons" do
+    before{visit '/academic_commons?q=penguins'}
+    context 'title click' do
+      let(:link){page.all("a[href='http://hdl.handle.net/10022/AC:P:15583']").first}
+      context 'data-ga-category' do
+        it{expect(link['data-ga-category']).to eq('Academic Commons Results List')}
+      end
+      context 'data-ga-action' do
+        it{expect(link['data-ga-action']).to eq('Title Click')}
+      end
+      context 'data-ga-label' do
+        it{expect(link['data-ga-label']).to eq(link.text)}
+      end
+    end
+
+    context 'handle click' do
+      let(:link){page.all("a[href='http://hdl.handle.net/10022/AC:P:15583']").last}
+      context 'data-ga-category' do
+        it{expect(link['data-ga-category']).to eq('Academic Commons Results List')}
+      end
+      context 'data-ga-action' do
+        it{expect(link['data-ga-action']).to eq('Handle Click')}
+      end
+      context 'data-ga-label' do
+        it{expect(link['data-ga-label']).to eq("Herd Behavior, the \"Penguine Effect\", and the Suppression of Informational Diffusion: An Analysis of Informational Externalities and Payoff Interdependency")}
+      end
+    end
+
+    context 'download click', :js => true do
+      before :each, :js => true do
+        Capybara.default_wait_time = 100
+        expect(page).to have_xpath('//a', :text => "econ_9394_691.pdf")
+        Capybara.default_wait_time = 10
+      end
+      let(:link){page.find_link("econ_9394_691.pdf")}
+      context 'data-ga-category', :js => true do
+        it{expect(link['data-ga-category']).to eq('Academic Commons Results List')}
+      end
+      context 'data-ga-action', :js => true do
+        it{expect(link['data-ga-action']).to eq('Download Click')}
+      end
+    end
+
   end
 end

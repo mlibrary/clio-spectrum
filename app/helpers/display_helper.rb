@@ -208,8 +208,8 @@ module DisplayHelper
 
   def ac_handle_list(document, context = @active_source)
     return document[:handle].listify.collect { |url| link_to(url, url,
-      :'data-ga-category' => 'AcademicCommons Link',
-      :'data-ga-action' => 'Search Results Handle Click',
+      :'data-ga-category' => 'Academic Commons Results List',
+      :'data-ga-action' => 'Handle Click',
       :'data-ga-label' => document[:title_display] || document.id) }
   end
 
@@ -218,8 +218,8 @@ module DisplayHelper
     if document && document.id
       return link_to document[:title_display],
                      document[:handle],
-                     :'data-ga-category' => 'AcademicCommons Link',
-                     :'data-ga-action' => context,
+                     :'data-ga-category' => 'Academic Commons Results List',
+                     :'data-ga-action' => "Title Click",
                      :'data-ga-label' => document[:title_display] || document.id
     else
       return link_to academic_commons_index_path, academic_commons_index_path
@@ -563,8 +563,13 @@ module DisplayHelper
 
   def catalog_to_openurl_ctx_kev(document)
     return '' unless document
-    fail 'Document has no format!  ' + document.id unless document[:format]
-    format = document[:format].first ||= 'book'
+    # No, be forgiving.
+    # fail 'Document has no format!  ' + document.id unless document[:format]
+    if document[:format]
+      format = document[:format].first ||= 'book'
+    else
+      format = 'Other'
+    end
 
     fields = []
     fields.push('ctx_ver=Z39.88-2004')
