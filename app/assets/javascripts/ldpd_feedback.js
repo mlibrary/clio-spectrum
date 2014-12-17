@@ -1,5 +1,4 @@
-$(document).ready(function(e) {
-
+$(document).ready(function() {
 
     $('.feedback-popup').bind('click', function(){
         if(!LWEB.feedbackDialogIsSetup) {
@@ -7,7 +6,6 @@ $(document).ready(function(e) {
           LWEB.feedbackDialogIsSetup = true;
         }
         LWEB.showFeedbackDialog();
-        return false;
     });
 
     $(window).resize(function(){
@@ -68,7 +66,6 @@ LWEB.showFeedbackDialog = function() {
     LWEB.centerFeedbackDialog();
     $('#feedback_dialog').show();
     LWEB.feedbackDialogIsVisible = true;
-    e.trigger('click');
     return false;
 };
 
