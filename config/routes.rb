@@ -138,6 +138,11 @@ Clio::Application.routes.draw do
   get 'browse/shelfkey_mini/:shelfkey(/:bib)', to: 'browse#shelfkey_mini', as: :browse_shelfkey_mini, :constraints => { :shelfkey => /[^\/]*/, :bib => /[^\/]*/ }
   get 'browse/shelfkey_full/:shelfkey(/:bib)', to: 'browse#shelfkey_full', as: :browse_shelfkey_full, :constraints => { :shelfkey => /[^\/]*/, :bib => /[^\/]*/ }
 
+  # EDS SUPPORT
+  get 'eds' => 'eds#index', as: :eds_index
+  get 'eds/:dbid/:an' => 'eds#detail', :constraints  => { :an => /[^\/]+/ }
+  get 'eds/:dbid/:an/fulltext' => 'eds#fulltext', :constraints  => { :an => /[^\/]+/ }
+  get 'eds/switch/' => 'eds#recordSwitch'
 
 end
 

@@ -300,6 +300,8 @@ class ApplicationController < ActionController::Base
         'academic_commons'
       when /^\/dcv/
         'dcv'
+      when /^\/eds/
+        'eds'
       when /^\/library_web/
         'library_web'
       when /^\/newspapers/

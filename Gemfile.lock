@@ -116,6 +116,7 @@ GEM
     coffee-script-source (1.8.0)
     colored (1.2)
     columnize (0.8.9)
+    crass (1.0.1)
     daemons (1.1.9)
     database_cleaner (1.3.0)
     debug_inspector (0.0.2)
@@ -142,6 +143,7 @@ GEM
       warden (~> 1.1)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    ebsco-discovery-service-api (1.0.4)
     ensure_valid_encoding (0.5.3)
     erubis (2.7.0)
     eventmachine (1.0.3)
@@ -172,6 +174,7 @@ GEM
     highline (1.6.21)
     hike (1.2.3)
     hirb (0.7.2)
+    htmlentities (4.3.3)
     httpclient (2.5.3.2)
     i18n (0.6.11)
     journey (1.0.4)
@@ -230,6 +233,8 @@ GEM
     newrelic_rpm (3.9.6.257)
     nokogiri (1.6.4.1)
       mini_portile (~> 0.6.0)
+    nokogumbo (1.2.0)
+      nokogiri
     orm_adapter (0.5.0)
     paper_trail (3.0.6)
       activerecord (>= 3.0, < 5.0)
@@ -319,6 +324,10 @@ GEM
       sexp_processor (~> 4.1)
     rvm-capistrano (1.5.4)
       capistrano (~> 2.15.4)
+    sanitize (3.1.0)
+      crass (~> 1.0.1)
+      nokogiri (>= 1.4.4)
+      nokogumbo (= 1.2.0)
     sass (3.4.8)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -388,11 +397,13 @@ DEPENDENCIES
   devise
   devise-encryptable
   devise_wind
+  ebsco-discovery-service-api (= 1.0.4)
   exception_notification
   factory_girl_rails
   haml
   haml-rails
   has_options
+  htmlentities
   httpclient
   jquery-rails
   json
@@ -413,6 +424,7 @@ DEPENDENCIES
   rspec-solr
   ruby-prof
   rvm-capistrano
+  sanitize
   sass
   sass-rails
   simplecov

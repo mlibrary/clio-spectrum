@@ -1,0 +1,16 @@
+<% if query_has_facetfilters? %>
+
+  <div id="appliedParams" class="clearfix well well-constraints">
+
+    <span class="constraints-label">You searched for: </span>
+
+    <%= show_applied_limiters %>
+
+    <% # = show_applied_facets %>  
+    <% if session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction'].present? %>
+      <%= render 'applied_facets' %>  
+    <% end %>
+
+  </div>
+
+<% end %>

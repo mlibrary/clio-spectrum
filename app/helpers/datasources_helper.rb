@@ -9,6 +9,9 @@ module DatasourcesHelper
     # DO NOT SHOW DCV IN PRODUCTION YET
     results.delete('dcv') if Rails.env == 'clio_prod'
     results.delete('dcv') if Rails.env == 'test'
+    # DO NOT SHOW EDS IN PRODUCTION YET
+    results.delete('eds') if Rails.env == 'clio_prod'
+    results.delete('eds') if Rails.env == 'test'
 
     results
   end
@@ -220,6 +223,8 @@ module DatasourcesHelper
       when 'articles'
         # articles_index_path('s.q' => query, 'new_search' => true)
         articles_index_path('q' => query, 'new_search' => true)
+      when 'eds'
+        eds_index_path(q: query)
       when 'journals'
         journals_index_path(q: query)
       when 'ebooks'

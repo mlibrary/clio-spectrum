@@ -166,6 +166,13 @@ datasources:
         title: Title
         name: Name
 
+  eds:
+    name: EDS
+    no_facets: true
+    search_box:
+      route: eds_index_path
+      placeholder: Articles and more
+
   new_arrivals:
     name: New Arrivals
     search_box:
@@ -190,6 +197,7 @@ datasource_bar:
     - archives
     - new_arrivals
     - articles
+    - eds
     - academic_commons
     - library_web
   minor_sources:
