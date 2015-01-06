@@ -33,6 +33,7 @@ gem 'blacklight_range_limit', :git => 'git://github.com/projectblacklight/blackl
 #  ###  copy over some of the gems bundled with EDS's demo app  ###
 gem "ebsco-discovery-service-api", "1.0.4"
 # gem "addressable", "2.3.2"
+gem "addressable"
 gem "htmlentities"
 gem "sanitize"
 # gem 'activerecord-session_store'
