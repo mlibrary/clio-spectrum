@@ -13,7 +13,14 @@
 # sessions table (routines truncation).
 
 # Clio::Application.config.session_store :cookie_store, key: '_clio_session'
-Clio::Application.config.session_store :active_record_store, :key => '_clio_session'
+# Clio::Application.config.session_store :active_record_store, :key => '_clio_session'
+
+# 1/2015 - or maybe this?  Cookies are 4K, MySQL text field is 64K,
+# but full query results of 2-300K need more.
+# This may have server implications - more memory required to run CLIO,
+# possible session-loss between passenger instances - have to keep an 
+# eye on it.
+Clio::Application.config.session_store :cache_store, :key => '_clio_session'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information
