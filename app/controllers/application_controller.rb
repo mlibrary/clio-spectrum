@@ -2,6 +2,7 @@
 # filters, authentication, methods used throughout multiple
 # classes, etc.
 require 'mail'
+require 'debugger'
 class ApplicationController < ActionController::Base
   helper_method :set_browser_option, :get_browser_option
 

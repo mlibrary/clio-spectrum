@@ -6,6 +6,7 @@ describe SearchHelper do
     let(:link){display_start_over_link('catalog')}
     context 'Google Analytics tracking' do
       before{allow(self).to receive(:datasource_landing_page_path).and_return('/catalog')}
+      before{allow(self).to receive(:ga_category_for_results_list).and_return('Catalog Results List')}
       it{expect(link).to match(/data\-ga\-category\=\"Catalog Results List\"/)}
       it{expect(link).to match(/data\-ga\-action=\"Search Bar Click\"/)}
       it{expect(link).to match(/data\-ga\-label=\"Start Over\"/)}
