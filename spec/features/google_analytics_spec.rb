@@ -366,7 +366,7 @@ describe 'Google Analytics' do
         it{expect(link['data-ga-action']).to eq('Handle Click')}
       end
       context 'data-ga-label' do
-        it{expect(link['data-ga-label']).to eq("Herd Behavior, the \"Penguine Effect\", and the Suppression of Informational Diffusion: An Analysis of Informational Externalities and Payoff Interdependency")}
+        it{expect(link['data-ga-label']).to eq("Herd Behavior, the \"Penguin Effect\", and the Suppression of Informational Diffusion: An Analysis of Informational Externalities and Payoff Interdependency")}
       end
     end
 
