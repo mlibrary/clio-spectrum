@@ -675,9 +675,16 @@ module Blacklight::EdsHelperBehavior
   # Facets / Limiters sidebar
   #############
 
-  # check to see if result has any facets.  crude, and I forget why I had to do a length check..
+  # check to see if result has any facets.  
   def has_eds_facets?
-    (show_facets.length > 5)
+    # crude, and I forget why I had to do a length check..
+    # (show_facets.length > 5)
+
+    # marquis - show_facets() generates complex hardcoded HTML.
+    # don't use that.  instead, check directly.
+    return true if session[:results] and
+                   session[:results]['SearchResult'] and
+                   session[:results]['SearchResult']['AvailableFacets']
   end
 
   def show_numlimiters
@@ -738,24 +745,25 @@ module Blacklight::EdsHelperBehavior
     return dateString.html_safe
   end
 
-  # show available facets
-  def show_facets
-    facets = '';
-    if session[:results]['SearchResult']['AvailableFacets'].present?
-      session[:results]['SearchResult']['AvailableFacets'].each do |facet|
-        facets = facets + '<div class="panel panel-default facet_limit blacklight-' + facet['Id'] + '"><div class="collapse-toggle panel-heading collapsed" data-target="#facet-' + facet['Id'] + '" data-toggle="collapse"><h5 class="panel-title"><a href="#" data-no-turbolink="true">' + facet['Label'] + '</a></h5></div><div id="facet-' + facet['Id'] + '" class="panel-collapse facet-content collapse"><div class="panel-body"><ul class="facet-values list-unstyled">'
-        facet.each do |key, val|
-          if key == "AvailableFacetValues"
-            val.each do |facetValue|
-              facets = facets + '<li><span class="facet-label"><a class="facet_select" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['AddAction'].to_s) + '">' + facetValue['Value'].to_s.titleize + '</a></span> <span class="facet-count">' + facetValue['Count'].to_s + '</span></li>'
-            end
-          end
-        end
-        facets = facets + '</ul></div></div></div>'
-      end
-    end
-    return facets.html_safe
-  end
+# marquis - moved to haml
+  # # show available facets
+  # def show_facets
+  #   facets = '';
+  #   if session[:results]['SearchResult']['AvailableFacets'].present?
+  #     session[:results]['SearchResult']['AvailableFacets'].each do |facet|
+  #       facets = facets + '<div class="panel panel-default facet_limit blacklight-' + facet['Id'] + '"><div class="collapse-toggle panel-heading collapsed" data-target="#facet-' + facet['Id'] + '" data-toggle="collapse"><h5 class="panel-title"><a href="#" data-no-turbolink="true">' + facet['Label'] + '</a></h5></div><div id="facet-' + facet['Id'] + '" class="panel-collapse facet-content collapse"><div class="panel-body"><ul class="facet-values list-unstyled">'
+  #       facet.each do |key, val|
+  #         if key == "AvailableFacetValues"
+  #           val.each do |facetValue|
+  #             facets = facets + '<li><span class="facet-label"><a class="facet_select" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['AddAction'].to_s) + '">' + facetValue['Value'].to_s.titleize + '</a></span> <span class="facet-count">' + facetValue['Count'].to_s + '</span></li>'
+  #           end
+  #         end
+  #       end
+  #       facets = facets + '</ul></div></div></div>'
+  #     end
+  #   end
+  #   return facets.html_safe
+  # end
 
 
   #############
