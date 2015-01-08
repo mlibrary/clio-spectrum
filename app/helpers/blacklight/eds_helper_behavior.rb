@@ -199,6 +199,7 @@ module Blacklight::EdsHelperBehavior
   def search(apiquery)
     session[:debugNotes] << "<p>API QUERY SENT: " << apiquery.to_s << "</p>"
     results = @connection.search(apiquery, @session_key, @auth_token, :json).to_hash
+    # raise
 
     #update session_key if new one was generated in the call
     checkSessionCurrency
@@ -1502,11 +1503,20 @@ module Blacklight::EdsHelperBehavior
   ################
 
   def show_query_string
-    return session[:results]['queryString']
+    return "nil" unless session[:results] and
+                        session[:results]['SearchRequestGet']
+                        session[:results]['SearchRequestGet']['QueryString']
+
+    return session[:results]['SearchRequestGet']['QueryString']
+
+    # broken
+    # return session[:results]['queryString']
   end
 
   def debugNotes
-    return session[:debugNotes] << "<h4>API Calls</h4>" << @connection.debug_notes
+    return session[:debugNotes] <<
+    "<h4>Returned QueryString</h4>" << show_query_string <<
+    "<h4>API Calls</h4>" << @connection.debug_notes
   end
 
 end

@@ -25,6 +25,10 @@
        params = clean_params
 %>
 
+<% search(options) %>
+
+<% raise %>
+
 <% if has_search_parameters? %>
 	<% unless params[:fromDetail] == 'y' and session[:results] %>
 	    <% search(options) %>
