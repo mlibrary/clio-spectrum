@@ -14,7 +14,7 @@
     - add_datasources(@active_source)
     #trigger
     = render :partial => "/top_navigation_bar"
-    #outer-container.container
+    #outer-container.container{'data-ga-category' => "#{ga_category_for_item_detail}"}
       -# #page.container
       = render :partial => "/header_with_search"
 
