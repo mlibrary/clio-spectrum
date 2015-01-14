@@ -46,7 +46,7 @@ $(document).ready(function() {
 
     if (action.match(/Display Options/)||action.match(/Sort by/)||label.match(/MARC View/)){
       if (label != 'Export to EndNote'){
-        console.log("stashing ga('send','event','"+category+"','"+action+"','"+label+"')");
+        logToConsole("stashing ga('send','event','"+category+"','"+action+"','"+label+"')");
         sessionStorage.setItem('data-ga-category', category);
         sessionStorage.setItem('data-ga-action', action);
         sessionStorage.setItem('data-ga-label', label);
@@ -65,7 +65,7 @@ $(document).ready(function() {
       event.preventDefault(); // don't open the link yet
     }
 
-    console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
+    logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
     ga('send', 'event', category, action, label, {useBeacon: true});
 
     if (open_new_window){
@@ -110,7 +110,7 @@ $(document).ready(function() {
       category = sessionStorage.getItem('data-ga-category');
       action = sessionStorage.getItem('data-ga-action');
       label = sessionStorage.getItem('data-ga-label');
-      console.log("sending stashed event: ga('send','event','"+category+"','"+action+"','"+label+"')");
+      logToConsole("sending stashed event: ga('send','event','"+category+"','"+action+"','"+label+"')");
       ga('send', 'event', category, action, label, {useBeacon: true});
       sessionStorage.removeItem('data-ga-category');
       sessionStorage.removeItem('data-ga-action');
@@ -135,7 +135,7 @@ $(document).ready(function() {
       else{
         action = action + ' Basic';
       }
-      console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
+      logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
       ga('send', 'event', category, action, label, {useBeacon: true});
     }
     else{
@@ -164,7 +164,7 @@ $(document).ready(function() {
       else{
         action = action + ' Basic ('+ num_hits+' hits)';
       }
-      console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
+      logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
       ga('send', 'event', category, action, label, {useBeacon: true});
     }
   });
@@ -192,7 +192,7 @@ $(document).ready(function() {
 
       if ($(resp).find('div.result_empty').length > 0){
         category += " - Zero Hits";
-        console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
+        logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
         ga('send', 'event', category, action, label, {useBeacon: true});
       }
       else{
@@ -203,7 +203,7 @@ $(document).ready(function() {
           }
           action += ' ' + hits + " Hits";
           label = settings.url;
-          console.log("ga('send','event','"+category+"','"+action+"','"+label+"')");
+          logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
           ga('send', 'event', category, action, label, {useBeacon: true});
         }
       }
@@ -212,6 +212,13 @@ $(document).ready(function() {
 
   });
 
+  function logToConsole(message)
+  {
+    if ($("body").data("rails-env") == 'development')
+      {
+        console.log(message)
+      }
+  }
 function getQueryVariable(variable)
 {
   var query = window.location.search.substring(1);

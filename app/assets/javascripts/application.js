@@ -74,7 +74,6 @@
 // be hitting on anything anymore?
 // # require modall_manager_override
 
-var RAILS_ENV = $('#RAILS_ENV_CONSTANT').text();
 
 
 

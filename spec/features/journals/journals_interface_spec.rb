@@ -11,13 +11,13 @@ describe 'E-Journals Search' do
       it{expect(page).to have_css('.index_toolbar a', text: 'Next')}
     end
 
-    context 'next results page' do
+    context 'next results page', js: true do
       before{all('.index_toolbar a', text: 'Next').first.trigger('click')}
       it{expect(page).to have_css('.index_toolbar a', text: 'Previous')}
       it{expect(page).to have_css('.index_toolbar a', text: 'Next')}
     end
 
-    context 'previous results page' do
+    context 'previous results page', js: true do
       before :each do
         all('.index_toolbar a', text: 'Next').first.trigger('click')
         all('.index_toolbar a', text: 'Previous').first.trigger('click')
@@ -38,13 +38,13 @@ describe 'E-Journals Search' do
 
     # page.save_and_open_page # debug
 
-    context 'first item' do
+    context 'first item', js: true do
       it{expect(page).to have_css('#search_info', text: '1 of ')}
       it{expect(page).not_to have_css('#search_info a', text: 'Previous')}
       it{expect(page).to have_css('#search_info a', text: 'Next')}
     end
 
-    context 'next item' do
+    context 'next item', js: true do
       before :each do
         expect(page).to have_css('#search_info a', text: 'Next')
         find('#search_info a', text: 'Next').trigger('click')
@@ -64,7 +64,7 @@ describe 'E-Journals Search' do
       it{expect(page).to have_css('#search_info a', text: 'Next')}
     end
 
-    context 'return to search results' do
+    context 'return to search results', js: true do
       before{find('#search_info a', text: 'Back to Results').trigger('click')}
       it{expect(page).to have_css('.constraints-container', text: 'You searched for: letters')}
     end
