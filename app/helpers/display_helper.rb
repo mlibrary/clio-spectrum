@@ -432,11 +432,6 @@ module DisplayHelper
     end
   end
 
-  def add_marc_row(title, field, category, options = {})
-    value_links = generate_value_links(field, category, title)
-    add_row(title, value_links, options)
-  end
-
   def add_row(title, value, options = {})
     options.reverse_merge!(@add_row_options) if @add_row_options.kind_of?(Hash)
     options.reverse_merge!(
