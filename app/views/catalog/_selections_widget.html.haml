@@ -28,7 +28,7 @@
     Selected Items...
     %b.caret
 
-  %ul.dropdown-menu
+  %ul.dropdown-menu{'data-ga-action' => "Selected Items"}
     %li= link_to_item_list_with_ga "Send to Email", email_path(), {:id => "emailLink", :name => "email", :class => "lightboxLink", :onclick => "return appendSelectedToURL(this);"}
     %li= link_to_item_list_with_ga "Export to EndNote", endnote_catalog_path(:format => 'endnote'), {:id => "endnoteLink", :onclick => "return appendSelectedToURL(this);"}
 

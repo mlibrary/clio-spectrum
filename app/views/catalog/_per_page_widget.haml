@@ -7,7 +7,7 @@
     Display Options
     %b.caret
 
-  %ul.dropdown-menu
+  %ul.dropdown-menu{'data-ga-action' => "Display Options"}
     -blacklight_config.per_page.each do |per_page|
       %li= catalog_per_page_link(per_page)
 

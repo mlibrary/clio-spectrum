@@ -154,9 +154,6 @@ module SearchHelper
         end
         adv_text = "Advanced#{content_tag(:span, ' Search', class: 'hidden-sm')}".html_safe
         result += content_tag(:a, adv_text, class: 'btn btn-link advanced_search_toggle',
-                              'data-ga-category' => category,
-                              'data-ga-action' => "Search Toggle Click",
-                              'data-ga-label' => "Switch to Advanced",
                               href: '#')
       end
 
@@ -180,10 +177,7 @@ module SearchHelper
     else
       category =  ga_category_for_item_detail
     end
-    link_to "Basic Search", "#", class: "btn btn-link advanced_search_toggle",
-                                  'data-ga-category' => category,
-                                  'data-ga-action' => "Search Toggle Click",
-                                  'data-ga-label' => "Switch to Basic"
+    link_to "Basic Search", "#", class: "btn btn-link advanced_search_toggle"
   end
 
   # Override Blacklight's has_search_parameters to handle
@@ -212,9 +206,6 @@ module SearchHelper
   def display_start_over_link(source = @active_source)
     link_to content_tag(:span, '', class: 'glyphicon glyphicon-backward') + ' Start Over',
             datasource_landing_page_path(source),
-            'data-ga-category' => ga_category_for_results_list,
-            'data-ga-action' => 'Search Bar Click',
-            'data-ga-label' => 'Start Over',
             class: 'btn btn-default'
             # :class => 'btn btn-link'
   end

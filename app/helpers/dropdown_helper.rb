@@ -10,9 +10,6 @@ module DropdownHelper
   end
   def link_to_item_list_with_ga(text, uri, *options)
     options_hash = Hash[*options]
-    options_hash.merge!('data-ga-category' => ga_category_for_results_list,
-    'data-ga-action' =>  "Selected Items",
-    'data-ga-label' => text)
     return (link_to text, uri, options_hash)
   end
 end

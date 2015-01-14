@@ -4,10 +4,10 @@
 
   <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= "Sort by #{current_sort_field.label}" %><b class="caret"></b></a>
 
-  <ul class="dropdown-menu">
+  <ul class="dropdown-menu" , data-ga-action = "Sort by" >
 
   <%- blacklight_config.sort_fields.each do |sort_key, field| %>
-    <li><%= link_to(field.label, url_for(params_for_search.merge(:sort => sort_key)), {'data-ga-category' => ga_category_for_results_list, 'data-ga-action' => 'Sort by', 'data-ga-label' => field.label}) %></li>
+    <li><%= link_to(field.label, url_for(params_for_search.merge(:sort => sort_key)), ) %></li>
   <%- end -%>
 
   </ul>

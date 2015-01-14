@@ -208,7 +208,6 @@ module DisplayHelper
 
   def ac_handle_list(document, context = @active_source)
     return document[:handle].listify.collect { |url| link_to(url, url,
-      :'data-ga-category' => 'Academic Commons Results List',
       :'data-ga-action' => 'Handle Click',
       :'data-ga-label' => document[:title_display] || document.id) }
   end
@@ -218,7 +217,6 @@ module DisplayHelper
     if document && document.id
       return link_to document[:title_display],
                      document[:handle],
-                     :'data-ga-category' => 'Academic Commons Results List',
                      :'data-ga-action' => "Title Click",
                      :'data-ga-label' => document[:title_display] || document.id
     else
@@ -275,13 +273,6 @@ module DisplayHelper
 
       # If the split didn't find us a search_value, this field was
       # not setup for searching - return the value for display, no link.
-      if row_label
-        ga_hash = { 'data-ga-category' => ga_category_for_item_detail,
-                    'data-ga-action' => "#{row_label} Click",
-                    'data-ga-label' => display_value } 
-      else
-        ga_hash = { }
-      end
 
       unless search_value
         out << v
@@ -306,8 +297,7 @@ module DisplayHelper
                                               action: 'index',
                                               q: q,
                                               search_field: 'all_fields',
-                                              commit: 'search'),
-                                              ga_hash)
+                                              commit: 'search'))
       when :author
         # t880_indicator is not nil when data is from an 880 field (vernacular)
         # temp workaround until we can get 880 authors into the author facet
@@ -323,10 +313,7 @@ module DisplayHelper
 
           out << link_to(display_value, url_for(:controller => 'catalog', 
                                                 :action => 'index', 
-                                                'f[author_facet][]' => search_value),
-                                                'data-ga-category' => ga_category_for_item_detail,
-                                                'data-ga-action' => 'Author Click',
-                                                'data-ga-label' => display_value)
+                                                'f[author_facet][]' => search_value))
         end
 
       # Obsoleted, replaced by generate_value_links_subject(), defined below
@@ -343,10 +330,7 @@ module DisplayHelper
                                               action: 'index',
                                               q: q,
                                               search_field: 'series_title',
-                                              commit: 'search'),
-                                              'data-ga-category' => ga_category_for_item_detail,
-                                              'data-ga-action' => "Series Click",
-                                              'data-ga-label' => search_value)
+                                              commit: 'search'))
 
       else
         fail 'invalid category specified for generate_value_links'
@@ -444,9 +428,6 @@ module DisplayHelper
                                q: '"' + search + '"',
                                search_field: 'subject',
                                commit: 'search'),
-                              'data-ga-category' => ga_category_for_item_detail,
-                              'data-ga-action' => 'Subjects Click',
-                              'data-ga-label' => display,
                               title: title)
     end
   end
@@ -476,7 +457,7 @@ module DisplayHelper
       if options[:style] == :text
         result = (title.to_s + ': ' + value_txt.to_s + "\n").html_safe
       else
-        result = content_tag(:div, class: 'row document-row') do
+        result = content_tag(:div, class: 'row document-row', 'data-ga-action' => "#{title.to_s.html_safe} Click") do
           if options[:style] == :definition
             # add space after row label, to help capybara string matchers
             content_tag(:div, title.to_s.html_safe + ' ', class: "#{options[:label_style]} col-sm-#{spans.first}") +
