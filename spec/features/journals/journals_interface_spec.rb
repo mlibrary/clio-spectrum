@@ -54,7 +54,7 @@ describe 'E-Journals Search' do
       it{expect(page).to have_css('#search_info a', text: 'Next')}
     end
 
-    context 'previous item' do
+    context 'previous item', :js => true do
       before :each do
         find('#search_info a', text: 'Next').trigger('click')
         find('#search_info a', text: 'Previous').trigger('click')
