@@ -11,7 +11,7 @@ module CulCatalogHelper
     # link_back = request.referer.path
     # 2) OR have no "back" support unless the below works:
     link_back = nil
-    # raise
+
     begin
 
       # Jump to the current item within the search results?
@@ -22,7 +22,9 @@ module CulCatalogHelper
 
       # add some extra info to the "Back to Results" link
       opts = {class: 'link_back'}
-      opts['data'] = {bib: id} if id
+
+      # I don't think we use this at this time - might be handy someday.
+      # opts['data'] = {bib: id} if id
 
       # try the Blacklight approach of reconstituting session[:search] into
       # a search-results-list URL...
@@ -88,16 +90,9 @@ module CulCatalogHelper
     convert_values_to_text(all_holdings, expand: true)
   end
 
-  def ga_category_for_results_list
-    @active_source ? "#{@active_source.split('_').map {|w| w.camelize}.join(" ")} Results List" : 'Results List'
-  end
-
-  def ga_category_for_item_detail
-    @active_source ? "#{@active_source.split('_').map {|w| w.camelize}.join(" ")} Item Detail" : 'Item Detail'
-  end
-
   def per_page_link(href, per_page, current_per_page)
     label = "#{per_page} per page"
+
     if per_page == current_per_page
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-ok')
       content_tag(:a, (checkmark + ' ' + label), href: '#')
@@ -136,8 +131,7 @@ module CulCatalogHelper
       content_tag(:a, (checkmark + ' ' + label), href: '#')
     else
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
-      content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, 
-                                                 class: 'viewstyle_link')
+      content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, class: 'viewstyle_link')
     end
   end
 

@@ -27,17 +27,6 @@ describe CulCatalogHelper do
               it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*per_page=\"25\"/}
             end
           end
-          context 'should have Google Analytics tracking category, action and label' do
-            context 'data-ga-category' do
-              it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*data-ga-category=\"#{ga_category_for_results_list}\"/}
-            end
-            context 'data-ga-action' do
-              it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*data-ga-action=\"Display Options\"/}
-            end
-            context 'data-ga-label' do
-              it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*data-ga-label=\"25 per page\"/}
-            end
-          end
         end
       end
       context '#viewstyle_link' do
@@ -53,15 +42,6 @@ describe CulCatalogHelper do
         context 'change from compact to standard view' do
           context 'href' do
             it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*href=\"#\"/}
-          end
-          context 'data-ga-category' do
-            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-category=\"#{ga_category_for_results_list}\"/}
-          end
-          context 'data-ga-action' do
-            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-action=\"Display Options\"/}
-          end
-          context 'data-ga-label' do
-            it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-label=\"Standard View\"/}
           end
         end
       end
@@ -100,34 +80,4 @@ describe CulCatalogHelper do
     end
   end
 
-  context 'no active source' do
-    context '#per_page_link' do
-      context 'change items per page' do
-        context 'data-ga-category' do
-          it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*data-ga-category=\"Results List\"/}
-        end
-        context 'data-ga-action' do
-          it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*data-ga-action=\"Display Options\"/}
-        end
-        context 'data-ga-label' do
-          it{expect(per_page_link('link.com', 25, 10)).to match /<a [^>]*data-ga-label=\"25 per page\"/}
-        end
-      end
-    end
-
-    context '#viewstyle_link' do
-      context 'change from compact to standard view' do
-        before{allow(self).to receive(:get_browser_option).and_return('compact_list')}
-        context 'data-ga-category' do
-          it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-category=\"Results List\"/}
-        end
-        context 'data-ga-action' do
-          it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-action=\"Display Options\"/}
-        end
-        context 'data-ga-label' do
-          it{expect(viewstyle_link('standard_list', 'Standard View')).to match /<a [^>]*data-ga-label=\"Standard View\"/}
-        end
-      end
-    end
-  end
 end

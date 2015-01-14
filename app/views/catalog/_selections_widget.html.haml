@@ -25,25 +25,27 @@
 %li#actions-dropdown.dropdown.navbar-right
 
   %a.dropdown-toggle{:href=>"#", :data=>{:toggle => "dropdown"}}
-    Selected Items...
+    Selected 
+    %span.hidden-sm
+      Items...
     %b.caret
 
   %ul.dropdown-menu{'data-ga-action' => "Selected Items"}
-    %li= link_to_item_list_with_ga "Send to Email", email_path(), {:id => "emailLink", :name => "email", :class => "lightboxLink", :onclick => "return appendSelectedToURL(this);"}
-    %li= link_to_item_list_with_ga "Export to EndNote", endnote_catalog_path(:format => 'endnote'), {:id => "endnoteLink", :onclick => "return appendSelectedToURL(this);"}
+    %li= link_to "Send to Email", email_path(), {:id => "emailLink", :name => "email", :class => "lightboxLink", :onclick => "return appendSelectedToURL(this);"}
+    %li= link_to "Export to EndNote", endnote_catalog_path(:format => 'endnote'), {:id => "endnoteLink", :onclick => "return appendSelectedToURL(this);"}
 
     -# %li.nav-divider
     -# -# %li= link_to "Save to #{SavedList::DEFAULT_LIST_NAME}", "#", :onclick => "saveSelectedToNamedList('#{SavedList::DEFAULT_LIST_NAME}'); return false;"
     -# %li= link_to "Add to My Saved List", "#", :onclick => "saveSelectedToNamedList('#{SavedList::DEFAULT_LIST_NAME}'); return false;"
 
     %li.nav-divider
-    %li= link_to_item_list_with_ga "Add to My Saved List", "#", class: 'saved_list_add'
+    %li= link_to "Add to My Saved List", "#", class: 'saved_list_add'
 
 
     %li.nav-divider
 
-    %li= link_to_item_list_with_ga "Select All Items", "#", :onclick => "selectAll(); return false;"
-    %li= link_to_item_list_with_ga "Clear All Items", "#", :onclick => "deselectAll(); return false;"
+    %li= link_to "Select All Items", "#", :onclick => "selectAll(); return false;"
+    %li= link_to "Clear All Items", "#", :onclick => "deselectAll(); return false;"
 
 
 
