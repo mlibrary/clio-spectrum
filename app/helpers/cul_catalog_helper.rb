@@ -11,7 +11,7 @@ module CulCatalogHelper
     # link_back = request.referer.path
     # 2) OR have no "back" support unless the below works:
     link_back = nil
-    # raise
+
     begin
 
       # Jump to the current item within the search results?
@@ -22,7 +22,9 @@ module CulCatalogHelper
 
       # add some extra info to the "Back to Results" link
       opts = {class: 'link_back'}
-      opts['data'] = {bib: id} if id
+
+      # I don't think we use this at this time - might be handy someday.
+      # opts['data'] = {bib: id} if id
 
       # try the Blacklight approach of reconstituting session[:search] into
       # a search-results-list URL...
