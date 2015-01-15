@@ -4,9 +4,12 @@ describe 'Google Analytics' do
 
   context 'catalog search results page' do
     context 'Selected Items dropdown' do
-      before {visxit catalog_index_path('q' => "penguins")}
+      before {visit catalog_index_path('q' => "penguins")}
       context 'Send to Email' do
         let(:link){find("a[id='emailLink']", :visible => false)}
+        it do
+          puts 'lol'
+        end
         context 'data-ga-category' do
           xit{expect(link['data-ga-category']).to eq('Catalog Results List')}
         end
