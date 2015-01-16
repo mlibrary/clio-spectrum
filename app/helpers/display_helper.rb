@@ -208,24 +208,6 @@ module DisplayHelper
     end
   end
 
-  def ac_handle_list(document, context = @active_source)
-    return document[:handle].listify.collect { |url| link_to(url, url,
-      :'data-ga-action' => 'Handle Click',
-      :'data-ga-label' => document[:title_display] || document.id) }
-  end
-
-  #title, handle, context
-  def ac_item_link(document, context = @active_source)
-    if document && document.id
-      return link_to document[:title_display],
-                     document[:handle],
-                     :'data-ga-action' => "Title Click",
-                     :'data-ga-label' => document[:title_display] || document.id
-    else
-      return link_to academic_commons_index_path, academic_commons_index_path
-    end
-  end
-
   def determine_formats(document, defaults = [])
     formats = defaults.listify
     # AC records, from the AC Solr, don't self-identify.
@@ -264,7 +246,7 @@ module DisplayHelper
   # generate_value_links() is used extensively throughout catalog show
   # helpers, to build CLIO search links out of MARC values, for use on
   # the item-detail pages.
-  def generate_value_links(values, category, row_label = nil)
+  def generate_value_links(values, category)
     # out - an array of strings to be returned by this function,
     # one per input value.
     out = []
