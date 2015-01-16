@@ -24,49 +24,6 @@ describe DisplayHelper do
     end
   end
 
-  describe '#ac_item_link' do
-    it 'should return academic commons index if received with nil' do
-      link = ac_item_link(nil)
-      link.should match(/href=.#{academic_commons_index_path}/)
-    end
-
-    it 'should return link to handle' do
-      allow(document).to receive(:[]).with(:title_display).and_return("Document Title")
-      allow(document).to receive(:[]).with(:id)
-      allow(document).to receive(:[]).with(:handle).and_return("http://dx.doi.org/10.7916/D81N7Z5C")
-      link = ac_item_link(document, "Search Results")
-      link.should have_text("Document Title")
-      link.should match /href=\"http:\/\/dx.doi.org\/10.7916\/D81N7Z5C\"/
-    end
-
-    it 'should have google analytics event tracking' do
-      allow(document).to receive(:[]).with(:title_display).and_return("Document Title")
-      allow(document).to receive(:[]).with(:id).and_return("5")
-      allow(document).to receive(:[]).with(:handle).and_return("http://dx.doi.org/10.7916/D81N7Z5C")
-      link = ac_item_link(document, "Search Results Click")
-      expect(link).to match(/data\-ga\-action\=\"Title Click\"/)
-      expect(link).to match(/data\-ga\-label=\"Document Title\"/)
-    end
-  end
-
-  describe '#ac_handle_list' do
-    it 'should have links to handles' do
-      allow(document).to receive(:[]).with(:handle).and_return(["http://dx.doi.org/10.7916/D81N7Z5C", "http://dx.doi.org/10.7916/D81N7Z5C"])
-      allow(document).to receive(:[]).with(:title_display).and_return(["Document Title"])
-      link = ac_handle_list(document)
-      link.to_s.should match /href=\\\"http:\/\/dx\.doi\.org\/10\.7916\/D81N7Z5C/
-      link.to_s.should match /href=\\\"http:\/\/dx\.doi\.org\/10\.7916\/D81N7Z5C/
-    end
-
-    it 'should have google analytics event tracking' do
-      allow(document).to receive(:[]).with(:handle).and_return(["http://dx.doi.org/10.7916/D81N7Z5C"])
-      allow(document).to receive(:[]).with(:title_display).and_return(["Document Title"])
-      link = ac_handle_list(document)
-      expect(link[0]).to match(/data\-ga\-action\=\"Handle Click\"/)
-      expect(link[0]).to match(/data\-ga\-label=\"Document Title\"/)
-    end
-  end
-
   it 'should return formats as text when appropriate' do
     # we know that Online uses "link.png"
     document = { 'format' => %w(Purple Online Banana) }
