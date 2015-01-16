@@ -26,7 +26,7 @@ $(document).ready(function() {
   // Apply to all off-site <A> tags, based on:
   //   http://www.electrictoolbox.com/jquery-open-offsite-links-new-window/
 
-  $('body').on('click', 'a', function(event) {
+  $(document).on('click', 'a', function(event) {
 
     // Gather up values at time of click, not at first load, to allow
     // for ajax updates to, e.g., href labels or targets

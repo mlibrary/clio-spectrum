@@ -363,10 +363,10 @@ describe 'Google Analytics' do
         it{expect(link.find(:xpath, 'ancestor-or-self::*[@data-ga-category]')['data-ga-category']).to eq('Academic Commons Results List')}
       end
       context 'data-ga-action' do
-        it{expect(link.find(:xpath, 'ancestor-or-self::*[@data-ga-action]')['data-ga-action']).to eq('Handle Click')}
+        it{expect(link.find(:xpath, 'ancestor-or-self::*[@data-ga-action]')['data-ga-action']).to eq('Identifier Click')}
       end
       context 'data-ga-label' do
-        it{expect(link.text).to eq("Herd Behavior, the \"Penguin Effect\", and the Suppression of Informational Diffusion: An Analysis of Informational Externalities and Payoff Interdependency")}
+        it{expect(link.text).to eq("http://hdl.handle.net/10022/AC:P:15583")}
       end
     end
 
@@ -379,7 +379,7 @@ describe 'Google Analytics' do
         it{expect(link.find(:xpath, 'ancestor-or-self::*[@data-ga-category]')['data-ga-category']).to eq('Academic Commons Results List')}
       end
       context 'data-ga-action', :js => true do
-        it{expect(link.find(:xpath, 'ancestor-or-self::*[@data-ga-action]')['data-ga-action']).to eq('Download Click')}
+        it{expect(link.find(:xpath, 'ancestor-or-self::*[@data-ga-action]')['data-ga-action']).to eq('Downloads Click')}
       end
     end
 
