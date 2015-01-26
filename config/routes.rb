@@ -1,10 +1,19 @@
 Clio::Application.routes.draw do
 
+  get "scope_databases/index"
+
   # This is getting masked.... try it up here?
   get "catalog/endnote", :as => "endnote_catalog"
 
   # resources :saved_list_items
   resources :saved_lists
+
+  # EDS Scoped Search support
+  resources :scope_databases
+  resources :scope_quick_sets
+  resources :scope_subcategories
+  resources :scope_subjects
+
 
   match 'lists/add/:item_key_list', via: [:get], to: 'saved_lists#add', as: :savedlist_add
   # Cannot restrict to POST, WIND auth always redirects via GET
