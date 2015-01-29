@@ -10,6 +10,7 @@ describe 'CLIO support for Law records' do
     within all('.blacklight-location_facet').first do
       click_link 'Law'
     end
+    expect(page).to have_css('.result.document')
     all('.result.document').each do |result_document|
       result_document.should have_text 'Law'
       result_document.should have_link('Check Law catalog for status')
@@ -17,8 +18,7 @@ describe 'CLIO support for Law records' do
 
     # Now dismiss "supr* cour*", to get full listing of all law records...
     within find('.constraint-box', text: 'supr') do
-      expect(page).to have_css('.glyphicon.glyphicon-remove')
-      find('.glyphicon.glyphicon-remove').trigger('click')
+      find('.glyphicon.glyphicon-remove').click
     end
 
     # confirm

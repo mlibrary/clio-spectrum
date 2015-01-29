@@ -155,6 +155,7 @@ describe 'Catalog Interface' do
 
     click_link 'Display Options'
     click_link 'Standard View'
+
     all('.result.document').first.text.should match /Author.*Published.*Location/
 
     click_link 'Display Options'
@@ -168,50 +169,6 @@ describe 'Catalog Interface' do
     click_link 'Standard View'
 
     all('.result.document').first.text.should match /Author.*Published.*Location/
-  end
-
-  describe 'Selected Items dropdown' do
-    context 'Send to Email' do
-      it 'has <a> attributes' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[id='emailLink']", :visible => false)
-        expect(link).to have_text('Send to Email')
-        expect(link['name']).to eq('email')
-        expect(link['class']).to eq('lightboxLink')
-        expect(link['onclick']).to eq("return appendSelectedToURL(this);")
-        expect(link['href']).to eq('/catalog/email')
-      end
-    end
-    context 'Export to EndNote' do
-      it 'has <a> attributes' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[id='endnoteLink']", :visible => false)
-        expect(link).to have_text('Export to EndNote')
-        expect(link['onclick']).to eq("return appendSelectedToURL(this);")
-        expect(link['href']).to eq('/catalog/endnote.endnote')
-      end
-    end
-    context 'Add to My Saved List' do
-      it 'has <a> attributes' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[class='saved_list_add']", :visible => false)
-        expect(link).to have_text('Add to My Saved List')
-      end
-    end
-    context 'Select All' do
-      it 'has <a> attributes' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[onclick=\"selectAll(); return false;\"]", :visible => false)
-        expect(link).to have_text('Select All Items')
-      end
-    end
-    context 'Clear All' do
-      it 'has <a> attributes' do
-        visit catalog_index_path('q' => "penguins")
-        link = find("a[onclick=\"deselectAll(); return false;\"]", :visible => false)
-        expect(link).to have_text('Clear All Items')
-      end
-    end
   end
 
   describe 'share by email' do
@@ -228,10 +185,10 @@ describe 'Catalog Interface' do
     it 'supports an email function, via JS modal', js: true do
       visit catalog_path(1234)
       within '#show_toolbar' do
-        find_link('Email').trigger('click') 
+        click_link 'Email'
       end
 
-      expect(page).to have_css('.modal-dialog .modal-content .modal-header')
+      page.should have_css('.modal-dialog .modal-content .modal-header')
       #
       # NEXT 910 - Add some directions, and optionally email and Name, to the email form
       #
@@ -409,6 +366,11 @@ describe 'Catalog Interface' do
     page.should have_text ("Your query was automatically truncated to the first 30 words")
   end
 
+  it "supports 'random query' feature" do
+    visit catalog_index_path(random_q: true)
+    page.should have_css('li.datasource_link.selected[source="catalog"]')
+    page.should have_css('span.constraints-label', text: "You searched for:")
+  end
 end
 
 # email_catalog_path(:id => id)

@@ -2,26 +2,12 @@ require 'spec_helper'
 
 describe DisplayHelper do
 
-  let(:document) { stub_model SolrDocument }
-  describe '#pegasus_item_link' do
-    it 'should return top-level Pegasus Link' do
-      pegasus_url = 'http://pegasus.law.columbia.edu'
+  it 'should return top-level Pegasus Link' do
+    pegasus_url = 'http://pegasus.law.columbia.edu'
 
-      link = pegasus_item_link(nil)
-      link.should have_text(pegasus_url)
-      link.should match(/href=.#{pegasus_url}./)
-    end
-
-    it 'should have google analytics event tracking' do
-      allow(document).to receive(:[]).with(:title_display).and_return("Document Title")
-      allow(document).to receive(:[]).with(:id).and_return("5")
-      pegasus_url = 'http://pegasus.law.columbia.edu'
-      "Search Results"
-      link = pegasus_item_link(document, "Search Results")
-      expect(link).to match(/data\-ga\-action\=\"Search Results\"/)
-      expect(link).to match(/data\-ga\-category=\"Pegasus Link\"/)
-      expect(link).to match(/data\-ga\-label=\"Document Title\"/)
-    end
+    link = pegasus_item_link(nil)
+    link.should have_text(pegasus_url)
+    link.should match(/href=.#{pegasus_url}./)
   end
 
   it 'should return formats as text when appropriate' do
@@ -143,6 +129,22 @@ describe DisplayHelper do
       end
     end
   end
+
+  describe '#academic_commons_title_link' do
+    let(:document) { stub_model SolrDocument }
+    it 'links to academiccommons when it has no handle' do
+      allow(document).to receive(:[]).with("handle").and_return(nil)
+      allow(document).to receive(:[]).with("id").and_return('ac:1234')
+      expect(academic_commons_title_link(document)).to eq("http://academiccommons.columbia.edu/catalog/#{document["id"]}")
+    end
+    it 'links to handle when it has one' do
+      allow(document).to receive(:[]).with("handle").and_return("http://hdl.handle.net/ac:22007")
+      allow(document).to receive(:[]).with("id").and_return('ac:1234')
+      expect(academic_commons_title_link(document)).to eq("http://hdl.handle.net/ac:22007")
+    end
+
+  end
+
   describe '#ac_to_openurl_ctx_kev' do
     let(:document) { stub_model SolrDocument }
     context 'music recording' do

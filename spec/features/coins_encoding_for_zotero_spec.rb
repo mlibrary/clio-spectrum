@@ -36,7 +36,7 @@ describe 'coins encoding for zotero' do
         it 'has the correct coins format' do
           visit academic_commons_index_path('q' => 'Chorale Labyrinth', 'search_field' => 'title')
           coins = all "//span[@class='Z3988']"
-          coins.first do |coin|
+          coins.each do |coin|
             expect(CGI.unescape (coin)['title']).to match(/fmt:kev:mtx:dc&rft\.type=audioRecording/)
           end
         end
