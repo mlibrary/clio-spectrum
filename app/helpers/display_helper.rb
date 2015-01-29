@@ -117,6 +117,7 @@ module DisplayHelper
 
     # Render based on @active_source -- unless an alternative is passed in
     options[:source] ||= @active_source
+
     partial_list = formats.map { |format| "/_formats/#{format}/#{template}" }
     @add_row_style = options[:style]
     view = render_first_available_partial(partial_list, options.merge(document: document))
@@ -197,12 +198,11 @@ module DisplayHelper
     url = 'http://pegasus.law.columbia.edu'
     if document && document.id
       # NEXT-996 - Rename "Pegasus" link
-
       return link_to 'Check Law catalog for status',
                      "#{url}/record=#{document.id}",
                      :'data-ga-category' => 'Pegasus Link',
                      :'data-ga-action' => context,
-                     :'data-ga-label' => document[:title_display] || document.id
+                     :'data-ga-label' => document['title_display'] || document.id
     else
       return link_to url, url
     end
@@ -250,14 +250,15 @@ module DisplayHelper
     # out - an array of strings to be returned by this function,
     # one per input value.
     out = []
+
     values.listify.each do |v|
+
       # Fields intended for for search links will have distinct
       # display/search values delimited within the field.
       display_value, search_value, t880_indicator = v.split(DELIM)
 
       # If the split didn't find us a search_value, this field was
       # not setup for searching - return the value for display, no link.
-
       unless search_value
         out << v
         next
@@ -276,12 +277,9 @@ module DisplayHelper
       case category
 
       when :all
-        q = '"' + search_value + '"'
-        out << link_to(display_value, url_for(controller: 'catalog',
-                                              action: 'index',
-                                              q: q,
-                                              search_field: 'all_fields',
-                                              commit: 'search'))
+        q = search_value
+        out << link_to(display_value, url_for(controller: 'catalog', action: 'index', q: q, search_field: 'all_fields', commit: 'search'))
+
       when :author
         # t880_indicator is not nil when data is from an 880 field (vernacular)
         # temp workaround until we can get 880 authors into the author facet
@@ -295,9 +293,7 @@ module DisplayHelper
           # using solrmarc removeTrailingPunc rule
           search_value = remove_punctuation(search_value)
 
-          out << link_to(display_value, url_for(:controller => 'catalog', 
-                                                :action => 'index', 
-                                                'f[author_facet][]' => search_value))
+          out << link_to(display_value, url_for(:controller => 'catalog', :action => 'index', 'f[author_facet][]' => search_value))
         end
 
       # Obsoleted, replaced by generate_value_links_subject(), defined below
@@ -310,17 +306,14 @@ module DisplayHelper
 
       when :series_title
         q = search_value
-        out << link_to(display_value, url_for(controller: 'catalog',
-                                              action: 'index',
-                                              q: q,
-                                              search_field: 'series_title',
-                                              commit: 'search'))
+        out << link_to(display_value, url_for(controller: 'catalog', action: 'index', q: q, search_field: 'series_title', commit: 'search'))
 
       else
         fail 'invalid category specified for generate_value_links'
       end
 
     end
+
     out
   end
 
@@ -369,6 +362,7 @@ module DisplayHelper
     #   a             "a"
     #   b             "a b"
     #   c             "a b c"
+
     values.listify.map do |value|
 #    values.listify.select { |x| x.respond_to?(:split)}.collect do |value|
 
@@ -412,7 +406,7 @@ module DisplayHelper
                                q: '"' + search + '"',
                                search_field: 'subject',
                                commit: 'search'),
-                              title: title)
+              title: title)
     end
   end
 
@@ -428,6 +422,7 @@ module DisplayHelper
       spans: [2, 10],
       label_style: 'field'
     )
+
     value_txt = convert_values_to_text(value, options)
     spans = options[:spans]
 
@@ -436,7 +431,7 @@ module DisplayHelper
       if options[:style] == :text
         result = (title.to_s + ': ' + value_txt.to_s + "\n").html_safe
       else
-        result = content_tag(:div, class: 'row document-row', 'data-ga-action' => "#{title.to_s.html_safe} Click") do
+        result = content_tag(:div, class: 'row document-row') do
           if options[:style] == :definition
             # add space after row label, to help capybara string matchers
             content_tag(:div, title.to_s.html_safe + ' ', class: "#{options[:label_style]} col-sm-#{spans.first}") +
@@ -446,6 +441,7 @@ module DisplayHelper
       end
 
     end
+
     result
   end
 
@@ -660,7 +656,7 @@ module DisplayHelper
 
     end
     Array.wrap(document[ :id]).each do |id|
-      document_url = 'http://academiccommons.columbia.edu/catalog/' + id
+      document_url = academic_commons_url(id)
       fields.push("rft_id=#{ CGI.escape(document_url) }")
     end
 
@@ -677,6 +673,18 @@ module DisplayHelper
     end
 
     fields.join('&')
+  end
+
+  def academic_commons_url(id)
+    'http://academiccommons.columbia.edu/catalog/' + id
+  end
+
+  def academic_commons_title_link(document)
+    if document['handle'].present?
+      title_link = document['handle']
+    else
+      title_link = academic_commons_url(document['id'])
+    end
   end
 
   # Our versions of link_to_previous_document/link_to_next_document,

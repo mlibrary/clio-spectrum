@@ -138,8 +138,7 @@ module CulCatalogHelper
       content_tag(:a, (checkmark + ' ' + label), href: '#')
     else
       checkmark = content_tag(:span, '', :class => 'glyphicon glyphicon-spacer')
-      content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, 
-                                                 class: 'viewstyle_link')
+      content_tag(:a, (checkmark + ' ' + label), href: '#', viewstyle: viewstyle, class: 'viewstyle_link')
     end
   end
 
