@@ -6,7 +6,7 @@
 // Calling collapse will trigger the events 'show' or 'hide'
 // https://github.com/seyhunak/twitter-bootstrap-rails/blob/master/app/assets/javascripts/twitter/bootstrap/bootstrap-collapse.js#L69
 
-describe('Google Analytics top navbar', function() {
+describe('top navbar', function() {
   window.google_analytics_web_property_id = 'FAKEID';
   beforeEach(function() {
     loadFixtures('top_navbar/crown.html');
@@ -16,7 +16,89 @@ describe('Google Analytics top navbar', function() {
     spyOnEvent($('.feedback-popup'),'click');
     spyOn(window, "ga");
     $('.feedback-popup').click()
-    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Outbound Link', 'Click', 'Suggestions & Feedback' );
+    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Outbound Link', 'Top NavBar Click', 'Suggestions & Feedback' );
   });
+});
+
+describe('Academic Commons results list', function() {
+  window.google_analytics_web_property_id = 'FAKEID';
+  beforeEach(function() {
+    loadFixtures('ac/index.html');
+  });
+
+  it('should send ga event when clicking on title', function(){
+    spyOnEvent($('a'),'click');
+    spyOn(window, "ga");
+    $('a[href]:contains("Herd Behavior")').click()
+    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Academic Commons Results List', 'Click', "Herd Behavior, the \"Penguin Effect\"");
+  });
+
+  it('should send ga event when clicking on document handle', function(){
+    spyOnEvent($('a'),'click');
+    spyOn(window, "ga");
+    $('a[href]:contains("handle")').click()
+    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Academic Commons Results List', 'Identifier Click', 'http://hdl.handle.net/10022/ActionController:P:15583');
+  });
+
+  it('should send ga event when clicking on document downloads link', function(){
+    spyOnEvent($('a'),'click');
+    spyOn(window, "ga");
+    $('a[href]:contains("pdf")').click()
+    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Academic Commons Results List', 'Downloads Click', 'econ_9394_691.pdf');
+  });
+
+});
+
+describe('Catalog results list', function() {
+  window.google_analytics_web_property_id = 'FAKEID';
+  beforeEach(function() {
+    loadFixtures('catalog/index.html');
+  });
+  describe('within item detail', function(){
+    it('clicking on a link to ProQuest should generate a ga event', function(){
+      spyOnEvent($('a'),'click');
+      spyOn(window, "ga");
+      $('a[href]:contains("Click here for full text")').click()
+      expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Online Click', 'Click here for full text.');
+    });
+
+    it('clicking on a title should not generate a ga event', function(){
+      spyOnEvent($('a'),'click');
+      spyOn(window, "ga");
+      $('a[href]:contains("Penguins")').click()
+      expect(window.ga).not.toHaveBeenCalled();
+    });
+  });
+  describe('Selected Items Toolbar', function(){
+    it('clicking on Send to Email should generate a ga event', function(){
+      spyOnEvent($('a'),'click');
+      spyOn(window, "ga");
+      $('a[href]:contains("Send to Email")').click()
+      expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Selected Items Toolbar Click', 'Send to Email');
+    });
+  });
+
+});
+
+describe('Catalog results list', function() {
+  window.google_analytics_web_property_id = 'FAKEID';
+  beforeEach(function() {
+    loadFixtures('catalog/index.html');
+  });
+
+  it('should send ga event when clicking on a link to ProQuest', function(){
+    spyOnEvent($('a'),'click');
+    spyOn(window, "ga");
+    $('a[href]:contains("Click here for full text")').click()
+    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Online Click', 'Click here for full text.');
+  });
+
+  it('should not send ga event when clicking on a title', function(){
+    spyOnEvent($('a'),'click');
+    spyOn(window, "ga");
+    $('a[href]:contains("Penguins")').click()
+    expect(window.ga).not.toHaveBeenCalled();
+  });
+
 });
 

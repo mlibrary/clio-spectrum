@@ -1,0 +1,71 @@
+<div class="index-toolbar-collapse navbar-collapse collapse">
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+    </li><li class="dropdown" id="display-dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+    Display Options
+    <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+    <li><a href="#"><span class="glyphicon glyphicon-ok"></span> 10 per page</a></li>
+    <li><a class="per_page_link" href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=25&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc" per_page="25"><span class="glyphicon glyphicon-spacer"></span> 25 per page</a></li>
+    <li><a class="per_page_link" href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=50&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc" per_page="50"><span class="glyphicon glyphicon-spacer"></span> 50 per page</a></li>
+    <li><a class="per_page_link" href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=100&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc" per_page="100"><span class="glyphicon glyphicon-spacer"></span> 100 per page</a></li>
+    <li class="nav-divider"></li>
+    <li><a href="#"><span class="glyphicon glyphicon-ok"></span> Standard View</a></li>
+    <li><a class="viewstyle_link" href="#" viewstyle="compact_list"><span class="glyphicon glyphicon-spacer"></span> Compact View</a></li>
+    </ul>
+    </li>
+    
+   <!-- Using Bootstrap Dropdowns -->
+  <li id="sort-dropdown" class="dropdown">
+   
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort by Relevance<b class="caret"></b></a>
+  
+    <ul class="dropdown-menu">
+ 
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc">Relevance</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=acq_dt+asc%2C+title_sort+asc">Acquired Earliest</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=acq_dt+desc%2C+title_sort+asc">Acquired Latest</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=pub_date_sort+asc%2C+title_sort+asc">Published Earliest</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=pub_date_sort+desc%2C+title_sort+asc">Published Latest</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=author_sort+asc%2C+title_sort+asc">Author A-Z</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=author_sort+desc%2C+title_sort+asc">Author Z-A</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=title_sort+asc%2C+pub_date_sort+desc">Title A-Z</a></li>
+      <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=title_sort+desc%2C+pub_date_sort+desc">Title Z-A</a></li>
+
+    </ul>
+  </li>
+  <li class="dropdown navbar-right" id="actions-dropdown">
+    <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Selected <span class="hidden-sm"> Items...  </span> <b class="caret"></b> </a>
+    <ul class="dropdown-menu" data-ga-action="Selected Items Toolbar Click">
+    <li><a href="/catalog/email" class="lightboxLink dropdown-link" id="emailLink" name="email" onclick="return appendSelectedToURL(this);">Send to Email</a></li>
+    <li><a href="/catalog/endnote.endnote" id="endnoteLink" onclick="return appendSelectedToURL(this);">Export to EndNote</a></li>
+    <li class="nav-divider"></li>
+    <li><a href="#" class="saved_list_add">Add to My Saved List</a></li>
+    <li class="nav-divider"></li>
+    <li><a href="#" onclick="selectAll(); return false;">Select All Items</a></li>
+    <li><a href="#" onclick="deselectAll(); return false;">Clear All Items</a></li>
+    </ul>
+    </li>
+
+  </ul>
+  <div class="navbar-text visible-xs">
+    <a href="/catalog?">Start Over</a>
+  </div>
+</div>
+<div data-ga-category="Catalog Results List">
+  <div class='item_select_allowance'>
+    <a href="/catalog/4359539" data-context-href="/catalog/4359539/track?counter=1&amp;search_id=449" source="catalog">Penguins</a>
+  </div>
+  <div class="row">
+   <div class="details col-sm-10">
+   <div class="row document-row" data-ga-action="Author Click"><div class="field col-sm-2">Author </div><div class="value col-sm-10">Davis, Lloyd Spencer, 1954-</div></div>
+   <div class="row document-row" data-ga-action="Published Click"><div class="field col-sm-2">Published </div><div class="value col-sm-10">London : T &amp; A D Poyser, 2003.</div></div>
+   <div class="row document-row" data-ga-action="Online Click"><div class="field col-sm-2">Online </div><div class="value col-sm-10"><img alt="Noncirc" class="availability" src="/assets/icons/noncirc.png"><a href="http://www.columbia.edu/cgi-bin/cul/resolve?clio8741090">Click here for full text.</a><span class="url_link_note"></span></div></div>
+   <div class="row document-row" data-ga-action="Format Click"><div class="field col-sm-2">Format </div><div class="value col-sm-10"><img alt="Book" height="16" src="/assets/icons/book.png" width="16"> Book, <img alt="Link" height="16" src="/assets/icons/link.png" width="16"> Online</div></div>
+ </div>
+ <div class="doc_bookjacket col-sm-2 hidden-xs">
+   <img alt="Spacer" class="list_view bookjacket " src="/assets/spacer.png">
+ </div>
+</div>
