@@ -75,7 +75,7 @@ $(document).ready(function() {
     }
 
     logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
-    ga('send', 'event', category, action, label, {useBeacon: true});
+    ga('send', 'event', category, action, label);
 
     if (open_new_window){
       setTimeout(function() { // now wait 300 milliseconds...
@@ -155,7 +155,7 @@ $(document).ready(function() {
 
       if ($(resp).find('div.result_empty').length > 0){
         logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
-        ga('send', 'event', category, action, label, {useBeacon: true});
+        ga('send', 'event', category, action, label);
       }
     });
 

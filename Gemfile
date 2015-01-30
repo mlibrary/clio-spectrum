@@ -216,6 +216,7 @@ group :test, :development do
   gem 'thin'
   # gem 'unicorn'
 
+  gem 'jasmine'
 
   # why in test and dev both instead of just test?  
   # because is says to: https://github.com/rspec/rspec-rails
