@@ -1,0 +1,30 @@
+- title = "Quick Set Management - #{@quickset.name}"
+- @page_title = title
+
+%h2= title
+
+= form_for @quickset do |f|
+
+  .row
+    .col-sm-3
+      .form_label
+        Name
+      = f.text_field :name
+      .form_label
+        Description
+      = f.text_area :description, {rows: '4'}
+      .form_label
+        Suppressed
+      = f.radio_button(:suppressed, true)
+      = label(:suppressed_true, "Yes")
+      = f.radio_button(:suppressed, false)
+      = label(:suppressed_false, "No")
+    
+    .col-sm-9
+      .form_label
+        Databases
+      = f.select :scope_database_ids, ScopeDatabase.all.collect {|x| [x.name, x.id]}, {}, :multiple => true, size: 40
+      
+  .row
+    .col-sm-12
+      = f.submit("Save")

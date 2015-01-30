@@ -191,18 +191,18 @@ datasources:
 datasource_bar:
   major_sources:
     - quicksearch
-    - catalog
-    - databases
-    - journals
-    - archives
-    - new_arrivals
+    # - catalog
+    # - databases
+    # - journals
+    # - archives
+    # - new_arrivals
     - articles
     - eds
-    - academic_commons
-    - library_web
+    # - academic_commons
+    # - library_web
   minor_sources:
-    - dissertations
-    - ebooks
+    # - dissertations
+    # - ebooks
     # 12/2014 - Gary says, committee decision to remove altogether
     # - newspapers
     # 12/2014 - Breck says, remove until closer to release

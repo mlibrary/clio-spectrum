@@ -1,7 +1,5 @@
 Clio::Application.routes.draw do
 
-  get "scope_databases/index"
-
   # This is getting masked.... try it up here?
   get "catalog/endnote", :as => "endnote_catalog"
 
@@ -10,9 +8,15 @@ Clio::Application.routes.draw do
 
   # EDS Scoped Search support
   resources :scope_databases
-  resources :scope_quick_sets
-  resources :scope_subcategories
-  resources :scope_subjects
+  # alias, for simpler urls (/quicksets/...)
+  resources :scope_quick_set, :path => 'quicksets'
+  resources :scope_subcategory
+  resources :scope_subject
+
+  match 'scoped', to: 'scope_quick_set#simple'
+  match 'ScopedSeach', to: 'scope_quick_set#simple'
+  match 'scoped/simple', to: 'scope_quiock_set#simple'
+  match 'scoped/advanced', to: 'scope_quiock_set#advanced'
 
 
   match 'lists/add/:item_key_list', via: [:get], to: 'saved_lists#add', as: :savedlist_add

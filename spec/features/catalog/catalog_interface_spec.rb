@@ -73,6 +73,9 @@ describe 'Catalog Interface' do
   #  Full View examples:  513297, 1862548, 2081553
   #  Limited examples:  70744 (?), 4043762, 2517624
   it "Should show Hathi Trust links, both 'Full view' and 'Limited'", js: true do
+
+    page.driver.allow_url("catalog.hathitrust.org")
+
     # visit this specific item
     visit catalog_path('513297')
 
@@ -202,7 +205,7 @@ describe 'Catalog Interface' do
     end
   end
 
-  it 'supports a debug mode', js: true, xfocus: true do
+  it 'supports a debug mode', js: true do
     visit catalog_index_path('q' => 'prim')
 
     page.should_not have_css('div.debug_instruction')
@@ -335,7 +338,7 @@ describe 'Catalog Interface' do
   end
 
   # NEXT-977 - Series Title does not display via basic search
-  it "should show Series Title when searching by Series Title", Xfocus: true do
+  it "should show Series Title when searching by Series Title" do
     # Basic Search
     visit catalog_index_path('q' => 'Black Sea', 'search_field' => 'series_title')
     page.should have_text('Series Title Black Sea studies')

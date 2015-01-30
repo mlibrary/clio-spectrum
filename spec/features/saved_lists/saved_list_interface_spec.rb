@@ -9,7 +9,7 @@ describe 'Saved List Interface' do
     @blatteroon = FactoryGirl.create(:user, login: 'blatteroon')
   end
 
-  it 'Capybara should let us login and logout and login again', xfocus: true do
+  it 'Capybara should let us login and logout and login again' do
     # Not yet logged in - navbar shows un-authenticated message
     visit catalog_index_path
     find('#topnavbar').should have_text 'My Library Account'

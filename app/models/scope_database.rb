@@ -4,4 +4,6 @@ class ScopeDatabase < ActiveRecord::Base
 
   attr_accessible :description, :name
 
+  default_scope order('name ASC')
+
 end

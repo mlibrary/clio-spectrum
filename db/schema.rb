@@ -142,9 +142,9 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "scope_databases_scope_quickesets", :id => false, :force => true do |t|
+  create_table "scope_databases_scope_quick_sets", :id => false, :force => true do |t|
     t.integer "scope_database_id"
-    t.integer "scope_quickset_id"
+    t.integer "scope_quick_set_id"
   end
 
   create_table "scope_databases_scope_subcategories", :id => false, :force => true do |t|
@@ -153,9 +153,11 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
   end
 
   create_table "scope_quick_sets", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",                          :null => false
+    t.string   "description", :default => ""
+    t.boolean  "suppressed",  :default => true
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
   create_table "scope_subcategories", :force => true do |t|

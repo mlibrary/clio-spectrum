@@ -1,0 +1,34 @@
+- title = "Quick Set Management"
+- @page_title = title
+
+%h2= title
+
+
+%table
+  %tr
+    %th
+      Name
+    %th
+      Description
+    %th
+      Databases
+    %th
+      Suppressed
+    %th
+      Last Update
+    
+  - @quicksets.each do |quickset|
+    %tr
+      %td= link_to quickset.name, edit_scope_quick_set_path(quickset.id)
+      %td= quickset.description
+      %td
+        - quickset.scope_databases.each do |db|
+          .db= db.name
+      %td= quickset.suppressed ? "[suppressed]" : ""
+      %td= quickset.updated_at.strftime("%F %H:%M")
+
+
+%br    
+%br    
+
+= link_to 'New Quick Set', new_scope_quick_set_path

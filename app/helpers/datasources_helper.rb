@@ -3,8 +3,12 @@ module DatasourcesHelper
 
   def datasource_list(category = :all)
     results = []
-    results |= DATASOURCES_CONFIG['datasource_bar']['major_sources'] if category.in?(:all, :major)
-    results |= DATASOURCES_CONFIG['datasource_bar']['minor_sources'] if category.in?(:all, :minor)
+    if major_sources = DATASOURCES_CONFIG['datasource_bar']['major_sources']
+      results |= major_sources if category.in?(:all, :major)
+    end
+    if minor_sources = DATASOURCES_CONFIG['datasource_bar']['minor_sources']
+      results |= minor_sources if category.in?(:all, :minor)
+    end
 
     # DO NOT SHOW DCV IN PRODUCTION YET
     results.delete('dcv') if Rails.env == 'clio_prod'
