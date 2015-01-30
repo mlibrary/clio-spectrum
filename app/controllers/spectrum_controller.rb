@@ -70,10 +70,12 @@ class SpectrumController < ApplicationController
       @action_has_async = true if @search_style == 'aggregate'
 
       if @search_style == 'aggregate' && !session[:async_off]
+        # Multi-Datasource searches - fetch results async.
         @action_has_async = true
         @results = {}
         sources.each { |source| @results[source] = {} }
       else
+        # Single-Datasource searches - get results immediately
         @results = get_results(sources)
       end
 

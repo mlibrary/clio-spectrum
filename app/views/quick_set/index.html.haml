@@ -19,10 +19,10 @@
     
   - @quicksets.each do |quickset|
     %tr
-      %td= link_to quickset.name, edit_scope_quick_set_path(quickset.id)
+      %td= link_to quickset.name, edit_quick_set_path(quickset.id)
       %td= quickset.description
       %td
-        - quickset.scope_databases.each do |db|
+        - quickset.content_providers.each do |db|
           .db= db.name
       %td= quickset.suppressed ? "[suppressed]" : ""
       %td= quickset.updated_at.strftime("%F %H:%M")
@@ -31,4 +31,4 @@
 %br    
 %br    
 
-= link_to 'New Quick Set', new_scope_quick_set_path
+= link_to 'New Quick Set', new_quick_set_path

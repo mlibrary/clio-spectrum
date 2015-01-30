@@ -157,7 +157,7 @@ module Blacklight::EdsHelperBehavior
     searchquery_extras = searchmode + "," + fieldcode
 
     #filter to make sure the only parameters put into the API query are those that are expected by the API
-    edsKeys = ["eds_action","q","query-1","facetfilter[]","facetfilter","sort","includefacets","searchmode","view","resultsperpage","sort","pagenumber","highlight", "limiter", "limiter[]"]
+    edsKeys = ["eds_action","q","query-1","facetfilter[]","facetfilter","sort","includefacets","searchmode","view","resultsperpage","sort","pagenumber","highlight", "limiter", "limiter[]", "defaultdb"]
     edsSubset  = {}
     options.each do |key,value|
       if edsKeys.include?(key)

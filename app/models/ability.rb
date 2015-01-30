@@ -15,7 +15,7 @@ class Ability
 
     # Can manage scoped-search definitions
     if user.has_role?('scoped_search', 'manage')
-      can :manage, ScopeQuickSet
+      can :manage, QuickSet
     end
   end
 end

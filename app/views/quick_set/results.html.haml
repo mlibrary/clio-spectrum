@@ -1,0 +1,11 @@
+- title = "Quick Set - Search Results"
+- @page_title = title
+
+%h2= title
+
+
+- eds_connect
+- options = generate_api_query(params)
+- clean_params = deep_clean(params)
+- params = clean_params
+- raise

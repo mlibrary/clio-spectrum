@@ -127,14 +127,14 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
   add_index "saved_lists", ["owner", "name"], :name => "savedlist_name", :unique => true
   add_index "saved_lists", ["owner", "slug"], :name => "savedlist_url", :unique => true
 
-  create_table "scope_database_types", :force => true do |t|
+  create_table "content_provider_types", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "scope_databases", :force => true do |t|
+  create_table "content_providers", :force => true do |t|
     t.string   "code"
     t.string   "name"
     t.text     "description"
@@ -142,22 +142,20 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
     t.datetime "updated_at",  :null => false
   end
 
-  create_table "scope_databases_scope_quick_sets", :id => false, :force => true do |t|
-    t.integer "scope_database_id"
-    t.integer "scope_quick_set_id"
+  create_table "content_providers_quickesets", :id => false, :force => true do |t|
+    t.integer "content_provider_id"
+    t.integer "quickset_id"
   end
 
-  create_table "scope_databases_scope_subcategories", :id => false, :force => true do |t|
-    t.integer "scope_database_id"
+  create_table "content_providers_scope_subcategories", :id => false, :force => true do |t|
+    t.integer "content_provider_id"
     t.integer "scope_subcategory_id"
   end
 
-  create_table "scope_quick_sets", :force => true do |t|
-    t.string   "name",                          :null => false
-    t.string   "description", :default => ""
-    t.boolean  "suppressed",  :default => true
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+  create_table "quick_sets", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "scope_subcategories", :force => true do |t|

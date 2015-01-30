@@ -1,6 +1,6 @@
-class CreateScopeQuickSets < ActiveRecord::Migration
+class CreateQuickSets < ActiveRecord::Migration
   def change
-    create_table :scope_quick_sets do |t|
+    create_table :quick_sets do |t|
       t.string :name, null: false
       t.string :description, default: ''
       t.boolean :suppressed, default: true

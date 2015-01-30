@@ -7,16 +7,16 @@ Clio::Application.routes.draw do
   resources :saved_lists
 
   # EDS Scoped Search support
-  resources :scope_databases
+  resources :content_providers
   # alias, for simpler urls (/quicksets/...)
-  resources :scope_quick_set, :path => 'quicksets'
+  resources :quick_set, :path => 'quicksets'
   resources :scope_subcategory
   resources :scope_subject
 
-  match 'scoped', to: 'scope_quick_set#simple'
-  match 'ScopedSeach', to: 'scope_quick_set#simple'
-  match 'scoped/simple', to: 'scope_quiock_set#simple'
-  match 'scoped/advanced', to: 'scope_quiock_set#advanced'
+  # match 'scoped', to: 'quick_set#simple'
+  match 'scoped/simple', to: 'quick_set#simple', :path => 'scoped'
+  match 'scoped/advanced', to: 'quick_set#advanced'
+  match 'scoped/results', to: 'quick_set#results', as: :scoped_search
 
 
   match 'lists/add/:item_key_list', via: [:get], to: 'saved_lists#add', as: :savedlist_add
@@ -47,7 +47,8 @@ Clio::Application.routes.draw do
 
   Blacklight.add_routes(self)
 
-  root to: 'spectrum#search', defaults: { layout: 'quicksearch' }
+  # root to: 'spectrum#search', defaults: { layout: 'quicksearch' }
+  root to: 'eds#index'
 
   devise_for :users, controllers: { sessions: 'sessions' }
 
@@ -158,6 +159,7 @@ Clio::Application.routes.draw do
   get 'eds/:dbid/:an' => 'eds#detail', :constraints  => { :an => /[^\/]+/ }
   get 'eds/:dbid/:an/fulltext' => 'eds#fulltext', :constraints  => { :an => /[^\/]+/ }
   get 'eds/switch/' => 'eds#recordSwitch'
+
 
 end
 

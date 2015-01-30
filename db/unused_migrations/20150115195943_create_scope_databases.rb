@@ -1,6 +1,6 @@
-class CreateScopeDatabases < ActiveRecord::Migration
+class CreateContentProviders < ActiveRecord::Migration
   def change
-    create_table :scope_databases do |t|
+    create_table :content_providers do |t|
       t.string :code
       t.string :name
       t.text :description

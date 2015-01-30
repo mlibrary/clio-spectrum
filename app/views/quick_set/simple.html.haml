@@ -1,0 +1,22 @@
+- title = "Quick Set - Simple Search"
+- @page_title = title
+
+%h2= title
+
+
+.search_panel.container
+
+  = form_tag scoped_search_path, :method => "GET" do
+
+    .row.well
+      .col-sm-9
+        = text_field_tag(:q, '', {size: 60})
+      .col-sm-3
+        = link_to "Advanced Search", scoped_advanced_path
+
+    = render 'quickset_pick_panel', quicksets: @quicksets
+
+    .row.well
+      .col-sm-12
+        = submit_tag("Search")
+

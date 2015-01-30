@@ -23,7 +23,7 @@
     .col-sm-9
       .form_label
         Databases
-      = f.select :scope_database_ids, ScopeDatabase.all.collect {|x| [x.name, x.id]}, {}, :multiple => true, size: 40
+      = f.select :content_provider_ids, ContentProvider.all.collect {|x| [x.name, x.id]}, {}, :multiple => true, size: 40
       
   .row
     .col-sm-12
