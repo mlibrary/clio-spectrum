@@ -76,6 +76,7 @@ Columbia Libraries Unified Search &amp; Discovery
 8. Run the test suite `rspec` and ensure that all tests are passing (green)
 
 9. Run the jasmine suite `rake jasmine` and browse to `localhost:8888` and ensure that all tests are passing (green)
+   OR `rake jasmine:ci` to run the jasmine suite once and collect the output
 
 
 **Contributing to CLIO**
