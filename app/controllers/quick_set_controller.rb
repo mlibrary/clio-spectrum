@@ -71,9 +71,23 @@ class QuickSetController < ApplicationController
     @content_providers = @quickset.content_providers
     @escaped_names = @content_providers.collect do |provider|
       # backslash-escape colons, commas, and parens.
-      provider.name.gsub(/:,\(\)/, '\\' + "\1")
+      "ContentProvider:" +
+        # provider.name.
+        #   gsub(':', '%3A').
+        #   gsub(',', '%23').
+        #   gsub('(', '%28').
+        #   gsub(')', '%29')
+        # 
+          provider.name.gsub(':', '\:').
+                        # gsub('(', '\(').
+                        # gsub(')', '\)').
+                        gsub('&amp;', '&').
+                        gsub(',', '\,')
+      #  gsub('%28','(').gsub('%3A',':').gsub('%29',')').gsub('%23',',')
+
     end
-    facetfilter = '1,ContentProvider:' + @escaped_names.join(',')
+# raise
+    facetfilter = '1,' + @escaped_names.join(',')
 
     # OK, now preform the search....
     # ...by redirecting to a full-CLIO-interface EDS search...

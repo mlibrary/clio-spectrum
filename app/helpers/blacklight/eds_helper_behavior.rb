@@ -197,6 +197,7 @@ module Blacklight::EdsHelperBehavior
 
   # main search function.  accepts string to be tacked on to API endpoint URL
   def search(apiquery)
+    Rails.logger.debug("====== search(#{apiquery.to_s})")
     session[:debugNotes] << "<p>API QUERY SENT: " << apiquery.to_s << "</p>"
     results = @connection.search(apiquery, @session_key, @auth_token, :json).to_hash
     # raise

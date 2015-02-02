@@ -11,16 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150120010101) do
-
-  create_table "admin_database_alerts", :force => true do |t|
-    t.integer  "clio_id"
-    t.integer  "author_id"
-    t.boolean  "active"
-    t.text     "message"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
+ActiveRecord::Schema.define(:version => 20150130193947) do
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",     :null => false
@@ -31,13 +22,15 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
     t.string   "user_type"
   end
 
-  create_table "database_alerts", :force => true do |t|
-    t.integer  "clio_id"
-    t.integer  "author_id"
-    t.boolean  "active"
-    t.text     "message"
+  create_table "content_providers", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "content_providers_quick_sets", :id => false, :force => true do |t|
+    t.integer "content_provider_id"
+    t.integer "quick_set_id"
   end
 
   create_table "item_alerts", :force => true do |t|
@@ -102,6 +95,14 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
 
   add_index "options", ["entity_type", "entity_id", "association_type", "name"], :name => "entity_association_name"
 
+  create_table "quick_sets", :force => true do |t|
+    t.string   "name",                          :null => false
+    t.string   "description", :default => ""
+    t.boolean  "suppressed",  :default => true
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
   create_table "saved_list_items", :force => true do |t|
     t.integer  "saved_list_id"
     t.string   "item_source"
@@ -126,50 +127,6 @@ ActiveRecord::Schema.define(:version => 20150120010101) do
 
   add_index "saved_lists", ["owner", "name"], :name => "savedlist_name", :unique => true
   add_index "saved_lists", ["owner", "slug"], :name => "savedlist_url", :unique => true
-
-  create_table "content_provider_types", :force => true do |t|
-    t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "content_providers", :force => true do |t|
-    t.string   "code"
-    t.string   "name"
-    t.text     "description"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
-  end
-
-  create_table "content_providers_quickesets", :id => false, :force => true do |t|
-    t.integer "content_provider_id"
-    t.integer "quickset_id"
-  end
-
-  create_table "content_providers_scope_subcategories", :id => false, :force => true do |t|
-    t.integer "content_provider_id"
-    t.integer "scope_subcategory_id"
-  end
-
-  create_table "quick_sets", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "scope_subcategories", :force => true do |t|
-    t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "scope_subjects", :force => true do |t|
-    t.string   "name"
-    t.integer  "scope_subject_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
-  end
 
   create_table "searches", :force => true do |t|
     t.text     "query_params"
