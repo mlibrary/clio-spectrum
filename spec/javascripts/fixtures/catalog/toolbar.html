@@ -1,0 +1,52 @@
+<div data-ga-category="Catalog Results List">
+  <div class="index-toolbar-collapse navbar-collapse collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+      </li>
+      <li class="dropdown" id="display-dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+          Display Options
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="#"><span class="glyphicon glyphicon-ok"></span> 10 per page</a></li>
+          <li><a class="per_page_link" href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=25&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc" per_page="25"><span class="glyphicon glyphicon-spacer"></span> 25 per page</a></li>
+          <li><a class="per_page_link" href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=50&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc" per_page="50"><span class="glyphicon glyphicon-spacer"></span> 50 per page</a></li>
+          <li><a class="per_page_link" href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=100&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc" per_page="100"><span class="glyphicon glyphicon-spacer"></span> 100 per page</a></li>
+          <li class="nav-divider"></li>
+          <li><a href="#"><span class="glyphicon glyphicon-ok"></span> Standard View</a></li>
+          <li><a class="viewstyle_link" href="#" viewstyle="compact_list"><span class="glyphicon glyphicon-spacer"></span> Compact View</a></li>
+        </ul>
+      </li>
+      <li id="sort-dropdown" class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sort by Relevance<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=score+desc%2C+pub_date_sort+desc%2C+title_sort+asc">Relevance</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=acq_dt+asc%2C+title_sort+asc">Acquired Earliest</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=acq_dt+desc%2C+title_sort+asc">Acquired Latest</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=pub_date_sort+asc%2C+title_sort+asc">Published Earliest</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=pub_date_sort+desc%2C+title_sort+asc">Published Latest</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=author_sort+asc%2C+title_sort+asc">Author A-Z</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=author_sort+desc%2C+title_sort+asc">Author Z-A</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=title_sort+asc%2C+pub_date_sort+desc">Title A-Z</a></li>
+          <li><a href="/catalog?&amp;page=1&amp;q=penguins&amp;rows=10&amp;search_field=all_fields&amp;sort=title_sort+desc%2C+pub_date_sort+desc">Title Z-A</a></li>
+        </ul>
+      </li>
+      <li class="dropdown navbar-right" id="actions-dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Selected <span class="hidden-sm"> Items...  </span> <b class="caret"></b> </a>
+        <ul class="dropdown-menu" data-ga-action="Selected Items Toolbar Click">
+          <li><a href="/catalog/email" class="lightboxLink dropdown-link" id="emailLink" name="email" onclick="return appendSelectedToURL(this);">Send to Email</a></li>
+          <li><a href="/catalog/endnote.endnote" id="endnoteLink" onclick="return appendSelectedToURL(this);">Export to EndNote</a></li>
+          <li class="nav-divider"></li>
+          <li><a href="#" class="saved_list_add">Add to My Saved List</a></li>
+          <li class="nav-divider"></li>
+          <li><a href="#" onclick="selectAll(); return false;">Select All Items</a></li>
+          <li><a href="#" onclick="deselectAll(); return false;">Clear All Items</a></li>
+        </ul>
+      </li>
+    </ul>
+    <div class="navbar-text visible-xs">
+      <a href="/catalog?">Start Over</a>
+    </div>
+  </div>
+</div>

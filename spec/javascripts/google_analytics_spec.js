@@ -51,17 +51,17 @@ describe('Academic Commons results list', function() {
 
 describe('Catalog results list', function() {
   window.google_analytics_web_property_id = 'FAKEID';
-  beforeEach(function() {
-    loadFixtures('catalog/index.html');
-  });
+
   describe('within item detail', function(){
+    beforeEach(function() {
+      loadFixtures('catalog/index.html');
+    });
     it('clicking on a link to ProQuest should generate a ga event', function(){
       spyOnEvent($('a'),'click');
       spyOn(window, "ga");
       $('a[href]:contains("Click here for full text")').click()
       expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Online Click', 'Click here for full text.');
     });
-
     it('clicking on a title should not generate a ga event', function(){
       spyOnEvent($('a'),'click');
       spyOn(window, "ga");
@@ -69,7 +69,11 @@ describe('Catalog results list', function() {
       expect(window.ga).not.toHaveBeenCalled();
     });
   });
+
   describe('Selected Items Toolbar', function(){
+    beforeEach(function() {
+      loadFixtures('catalog/toolbar.html');
+    });
     it('clicking on Send to Email should generate a ga event', function(){
       spyOnEvent($('a'),'click');
       spyOn(window, "ga");
@@ -77,28 +81,15 @@ describe('Catalog results list', function() {
       expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Selected Items Toolbar Click', 'Send to Email');
     });
   });
-
-});
-
-describe('Catalog results list', function() {
-  window.google_analytics_web_property_id = 'FAKEID';
-  beforeEach(function() {
-    loadFixtures('catalog/index.html');
-  });
-
-  it('should send ga event when clicking on a link to ProQuest', function(){
-    spyOnEvent($('a'),'click');
-    spyOn(window, "ga");
-    $('a[href]:contains("Click here for full text")').click()
-    expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Online Click', 'Click here for full text.');
-  });
-
-  it('should not send ga event when clicking on a title', function(){
-    spyOnEvent($('a'),'click');
-    spyOn(window, "ga");
-    $('a[href]:contains("Penguins")').click()
-    expect(window.ga).not.toHaveBeenCalled();
+  describe('search bar', function(){
+    beforeEach(function() {
+      loadFixtures('catalog/search.html');
+    });
+    it('should not generate an event when searching', function(){
+      spyOn(window, "ga");
+      $('.basic_search_button').click()
+      expect(window.ga).not.toHaveBeenCalled();
+    });
   });
 
 });
-
