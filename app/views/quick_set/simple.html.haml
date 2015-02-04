@@ -18,3 +18,15 @@
       .col-sm-12
         = submit_tag("Search")
 
+        -# #translate Blacklight search_field into query index
+        -# if options["search_field"].present?
+        -#   if options["search_field"] == "author"
+        -#     fieldcode = "AU:"
+        -#   elsif options["search_field"] == "subject"
+        -#     fieldcode = "SU:"
+        -#   elsif options["search_field"] == "title"
+        -#     fieldcode = "TI:"
+        -#   else
+        -#     fieldcode = ""
+        -#   end
+        -# else
