@@ -172,6 +172,12 @@ datasources:
     search_box:
       route: eds_index_path
       placeholder: Articles and more
+      search_fields:
+        all_fields: All Fields
+        author: Author
+        title: Title
+        subject: Subject
+      
 
   new_arrivals:
     name: New Arrivals

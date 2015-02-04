@@ -20,11 +20,19 @@
 
   Visit
   %strong= link_to "Scoped Quick Search", scoped_simple_path
-  to try out Scoped Searching against EDS, 
+  to try out Scoped Searching against EDS.
 
 .well
   %h4
     QuickSet Management
+
+  
+
   Authorized users will be able to 
   %strong= link_to "Manage Quick Sets", quick_set_index_path
+  %br
+  %br
+  QuickSets are configured by selecting one or more databases
+  from the 
+  %strong= link_to "list of available EDS Content Providers", content_providers_path
 

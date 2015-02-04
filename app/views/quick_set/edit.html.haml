@@ -1,7 +1,6 @@
-- title = "Quick Set Management - #{@quickset.name}"
-- @page_title = title
 
-%h2= title
+-# used in the layout, for html page header and H2 text
+- @page_title = "Quick Set Management - #{@quickset.name}"
 
 = form_for @quickset do |f|
 

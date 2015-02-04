@@ -1,5 +1,6 @@
+
 -# used in the layout, for html page header and H2 text
-- @page_title = "Quick Set - Simple Search"
+- @page_title = "Quick Set - Advanced Search"
 
 
 .search_panel.container
@@ -10,7 +11,7 @@
       .col-sm-9
         = text_field_tag(:q, '', {size: 60})
       .col-sm-3
-        = link_to "Advanced Search", scoped_advanced_path
+        = link_to "Simple Search", scoped_simple_path
 
     = render 'quickset_pick_panel', quicksets: @quicksets
 

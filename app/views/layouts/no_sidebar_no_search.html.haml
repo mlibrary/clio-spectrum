@@ -12,12 +12,16 @@
     = render :partial => "/top_navigation_bar"
 
     #outer-container.container
+      .row
+        .search_logo.hidden-xs.col-sm-2
+          = link_to "CLIO", root_path, :class => "nav_title search_bar_logo"
+        .col-sm-9
+          %h2=@page_title || application_name
 
-      #bd
-        = render :partial=>'/layouts/messages'
-        = yield
+      = render :partial=>'/layouts/messages'
+
+      = yield
       
-        .clear-both
       = render :partial => "/footer"
 
     -# BLACKLIGHT 5
