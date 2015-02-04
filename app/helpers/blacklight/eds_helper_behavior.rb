@@ -77,11 +77,11 @@ module Blacklight::EdsHelperBehavior
         @api_profile = f.readline.strip
     }
     if authenticated_user?
-      session[:debugNotes] << "<p>Sending NO as guest.</p>"
-      @connection.uid_init(@api_userid, @api_password, @api_profile, 'n')
-    else
       session[:debugNotes] << "<p>Sending YES as guest.</p>"
       @connection.uid_init(@api_userid, @api_password, @api_profile, 'y')
+    else
+      session[:debugNotes] << "<p>Sending NO as guest.</p>"
+      @connection.uid_init(@api_userid, @api_password, @api_profile, 'n')
     end
 
     # generate a new authentication token if their isn't one or the one stored on server is invalid or expired
