@@ -1,6 +1,11 @@
 class ContentProvidersController < ApplicationController
   # GET /content_providers
   # GET /content_providers.json
+
+  load_and_authorize_resource :except => [ 'index' ]
+
+  layout 'no_sidebar_no_search'
+
   def index
     @content_providers = ContentProvider.all
 
@@ -13,7 +18,7 @@ class ContentProvidersController < ApplicationController
   # GET /content_providers/1
   # GET /content_providers/1.json
   def show
-    @content_provider = ContentProvider.find(params[:id])
+    # @content_provider = ContentProvider.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -34,7 +39,7 @@ class ContentProvidersController < ApplicationController
 
   # GET /content_providers/1/edit
   def edit
-    @content_provider = ContentProvider.find(params[:id])
+    # @content_provider = ContentProvider.find(params[:id])
   end
 
   # POST /content_providers
@@ -56,7 +61,7 @@ class ContentProvidersController < ApplicationController
   # PUT /content_providers/1
   # PUT /content_providers/1.json
   def update
-    @content_provider = ContentProvider.find(params[:id])
+    # @content_provider = ContentProvider.find(params[:id])
 
     respond_to do |format|
       if @content_provider.update_attributes(params[:content_provider])
@@ -72,7 +77,7 @@ class ContentProvidersController < ApplicationController
   # DELETE /content_providers/1
   # DELETE /content_providers/1.json
   def destroy
-    @content_provider = ContentProvider.find(params[:id])
+    # @content_provider = ContentProvider.find(params[:id])
     @content_provider.destroy
 
     respond_to do |format|

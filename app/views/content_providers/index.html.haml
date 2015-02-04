@@ -1,19 +1,26 @@
-%h1 Listing content_providers
+
+- title = "EDS Content Providers"
+- @page_title = title
+
+%h2= title
+
 
 %table
-  %tr
-    %th Name
-    %th
-    %th
-    %th
+  -# %tr
+  -#   %th Name
+  -#   %th
+  -#   %th
+  -#   %th
 
   - @content_providers.each do |content_provider|
     %tr
-      %td= content_provider.name
-      %td= link_to 'Show', content_provider
-      %td= link_to 'Edit', edit_content_provider_path(content_provider)
-      %td= link_to 'Destroy', content_provider, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= content_provider.name.gsub('&amp;', '&')
+      - if can? :manage, content_provider
+        %td= link_to 'Show', content_provider
+        %td= link_to 'Edit', edit_content_provider_path(content_provider)
+        %td= link_to 'Destroy', content_provider, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
 %br
 
-= link_to 'New Content provider', new_content_provider_path
+- if can? :manage, ContentProvider
+  = link_to 'New Content provider', new_content_provider_path

@@ -17,5 +17,13 @@ class Ability
     if user.has_role?('scoped_search', 'manage')
       can :manage, QuickSet
     end
+
+    # Do we want to support in-app editing of Content Providers?
+    # They should be loaded via seed data.
+    # Let the over-all site admins (dev team) be only managers.
+    if user.has_role?('site', 'manage')
+      can :manage, ContentProvider
+    end
+
   end
 end
