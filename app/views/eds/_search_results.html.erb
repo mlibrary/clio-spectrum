@@ -85,6 +85,12 @@
   <dd class="blacklight-ill"><%= show_ill(result) %></dd>  
   <% end %>
 
+  <!-- Content Provider / Database - not exactly the same? -->
+  <% if has_dblabel?(result) %>
+  <dt class="blacklight-abstract">Content Provider:</dt>
+  <dd class="blacklight-abstract"><%= show_dblabel(result) %></dd>
+  <% end %>  
+
 </dl>
 <% else %>
     <dl class="dl-horizontal dl-invert">

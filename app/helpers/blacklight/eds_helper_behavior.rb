@@ -303,11 +303,17 @@ module Blacklight::EdsHelperBehavior
   ############
 
   def authenticated_user?
-    if user_signed_in?
-      return true
-    end
-    # need to define function for detecting on-campus IP ranges
+
+    # If we're on-campus, or have a current_user, then we're authenticated.
+    return true if @user_characteristics[:on_campus] || !current_user.nil?
+    # otherwise, we're not.
     return false
+
+    # if user_signed_in?
+    #   return true
+    # end
+    # # need to define function for detecting on-campus IP ranges
+    # return false
   end
 
   def clear_session_key
@@ -326,7 +332,9 @@ module Blacklight::EdsHelperBehavior
     if File.exists?(token_file_location)
       return true
     end
-    return Rails.root.to_s + "/token.txt"
+    # marquis - this seems incorrect
+    # return Rails.root.to_s + "/token.txt"
+    return false
   end
 
   def auth_file_exists?
@@ -337,9 +345,11 @@ module Blacklight::EdsHelperBehavior
   end
 
   def token_file_location
-    if request.domain.to_s.include?("localhost")
-      return "token.txt"
-    end
+    # I think we don't need this - our localhost
+    # development still uses Rails.
+    # if request.domain.to_s.include?("localhost")
+    #   return "token.txt"
+    # end
     return Rails.root.to_s + "/token.txt"
   end
 
@@ -406,7 +416,8 @@ module Blacklight::EdsHelperBehavior
         f.write("\n" + timeout)
         f.write("\n" + timestamp)
       }
-      File.chmod(664,token_file_location)
+      # update from '664' to '0664'
+      File.chmod(0664,token_file_location)
       File.open(token_file_location,"w") {|f|
         f.write(auth_token)
         f.write("\n" + timeout)
@@ -838,6 +849,31 @@ module Blacklight::EdsHelperBehavior
   def show_total_hits
     return session[:results]['SearchResult']['Statistics']['TotalHits']
   end
+
+  # Each result should have the following structure...
+  # {"ResultId"=>1,
+  #    "Header"=>{
+  #       "DbId"=>"edsamd",
+  #       "DbLabel"=>"Adam Matthew Digital",
+  #       "An"=>"edsamd.084FAE6D06CD3BE5",
+  #       "RelevancyScore"=>"2252",
+  #       "PubType"=>"Primary Source",
+  #       "PubTypeId"=>"primarySource"
+  #     },
+  #   
+  def has_dblabel?(result)
+    return result['Header'] && result['Header']['DbLabel']
+  end
+
+  # display title given a single result
+  def show_dblabel(result)
+    dblabel = ''
+    if result['Header'] && result['Header']['DbLabel']
+      dblabel = result['Header']['DbLabel']
+    end
+    return dblabel.html_safe
+  end
+
 
   # see if title is available given a single result
   def has_titlesource?(result)
