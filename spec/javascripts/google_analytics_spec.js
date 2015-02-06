@@ -46,7 +46,6 @@ describe('Academic Commons results list', function() {
     $('a[href]:contains("pdf")').click()
     expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Academic Commons Results List', 'Downloads Click', 'econ_9394_691.pdf');
   });
-
 });
 
 describe('Catalog results list', function() {
@@ -81,15 +80,4 @@ describe('Catalog results list', function() {
       expect(window.ga).toHaveBeenCalledWith('send', 'event', 'Catalog Results List', 'Selected Items Toolbar Click', 'Send to Email');
     });
   });
-  describe('search bar', function(){
-    beforeEach(function() {
-      loadFixtures('catalog/search.html');
-    });
-    it('should not generate an event when searching', function(){
-      spyOn(window, "ga");
-      $('.basic_search_button').click()
-      expect(window.ga).not.toHaveBeenCalled();
-    });
-  });
-
 });

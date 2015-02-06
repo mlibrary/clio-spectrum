@@ -51,22 +51,12 @@ $(document).ready(function() {
     var action = $(this).closest("[data-ga-action]").data("ga-action") || "Click";
     var label = $(this).data("ga-label") || text;
 
-    // if click also activates a page load, stash the values and submit when page reloads
-
-  //  if (action.match(/Display Options/)||action.match(/Sort by/)||label.match(/MARC View/)){
-   //   if (label != 'Export to EndNote'){
-    //    logToConsole("stashing ga('send','event','"+category+"','"+action+"','"+label+"')");
-     //   sessionStorage.setItem('data-ga-category', category);
-      //  sessionStorage.setItem('data-ga-action', action);
-    //    sessionStorage.setItem('data-ga-label', label);
-     // }
-      //return;
-   // }
-
     var open_new_window = false;
+
     // Offsite links will open a new window unless it is a download link
 
-    if ((this.hostname && this.hostname !== location.hostname) && action != "Download Click"){
+    //if (!($(this).hasClass('dropdown-link'))){
+    if ((this.hostname && this.hostname !== location.hostname) && (!($(this).hasClass('download')))){
       open_new_window = true;
     }
 
@@ -98,83 +88,11 @@ $(document).ready(function() {
     }
     return true;
   });
+});
 
-  $(window).load(function(event) {
 
-    // get selected source from sidebar and label from URL
-
-    var source = $(document).find('#sources').find('.datasource_link.selected').text();
-
-    var category = "Zero Hits Search";
-    var action = source;
-    var label = document.URL;
-    var advanced = false;
-
-    // is there an event stashed away?
-
-//    if (sessionStorage.getItem('data-ga-category')){
-//      category = sessionStorage.getItem('data-ga-category');
-//      action = sessionStorage.getItem('data-ga-action');
-//      label = sessionStorage.getItem('data-ga-label');
-//      logToConsole("sending stashed event: ga('send','event','"+category+"','"+action+"','"+label+"')");
-//      ga('send', 'event', category, action, label, {useBeacon: true});
-//      sessionStorage.removeItem('data-ga-category');
-//      sessionStorage.removeItem('data-ga-action');
-//      sessionStorage.removeItem('data-ga-label');
-//      return;
-//    }
-
-    // zero-hits search?
-
-    if ($('div.result_empty').length > 0){
-      logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
-      ga('send', 'event', category, action, label);
-    }
-  });
-
-    //Quicksearch and other aggregate searchresults are loaded by ajax
-
-    $(document).ajaxComplete(function(event, xhr, settings) {
-
-      var resp = jQuery.parseHTML(xhr.responseText);
-      if ($(resp).find('.results_header').length <= 0){
-        return;
-      }
-      var selected = $(document).find('#sources').find('.datasource_link.selected').text();
-      var source='';
-      var src='';
-        source = $(resp).find('div[data-source]').attr('data-source');
-      if (source){
-        src = source.split("_").map(function(i){return i[0].toUpperCase() + i.substring(1)}).join(" ");
-      }
-      var category = "Zero Hits Search";
-      var action = selected + ': ' + src;
-      var label = document.URL;
-
-      // Zero Hits Search?
-
-      if ($(resp).find('div.result_empty').length > 0){
-        logToConsole("ga('send','event','"+category+"','"+action+"','"+label+"')");
-        ga('send', 'event', category, action, label);
-      }
-    });
-
-  });
-
-  function logToConsole(message)
-  {
-    if ($("body").data("rails-env") == 'development')
-      {
-        console.log(message)
-      }
+function logToConsole(message) {
+  if ($("body").data("rails-env") == 'development') {
+    console.log(message)
   }
-//function getQueryVariable(variable)
-//{
-//  var query = window.location.search.substring(1);
-//  var vars = query.split("&");
-//  for (var i=0;i<vars.length;i++) {
-//    var pair = vars[i].split("=");
-//    if(decodeURI(pair[0]) == variable){return decodeURI(pair[1]);}
-//  }
-// return(false);
-//}
+}
