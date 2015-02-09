@@ -15,6 +15,7 @@ site:
     - trd2119
     - mw18
     - shs4
+    - bw12
     - witte
 
 scoped_search:
@@ -27,6 +28,7 @@ scoped_search:
     - trd2119
     - mw18
     - shs4
+    - bw12
     - witte
 
 item_alerts:
