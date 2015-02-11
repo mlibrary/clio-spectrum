@@ -177,6 +177,10 @@ datasources:
         author: Author
         title: Title
         subject: Subject
+        source: Journal Title/Source
+        abstrct: Abstract
+        issn: ISSN
+        isbn: ISBN
       
 
   new_arrivals:

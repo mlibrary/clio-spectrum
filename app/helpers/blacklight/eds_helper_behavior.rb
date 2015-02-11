@@ -143,6 +143,14 @@ module Blacklight::EdsHelperBehavior
         fieldcode = "SU:"
       elsif options["search_field"] == "title"
         fieldcode = "TI:"
+      elsif options["search_field"] == "source"
+        fieldcode = "SO:"
+      elsif options["search_field"] == "abstract"
+        fieldcode = "AB:"
+      elsif options["search_field"] == "issn"
+        fieldcode = "IS:"
+      elsif options["search_field"] == "isbn"
+        fieldcode = "IB:"
       else
         fieldcode = ""
       end
@@ -459,6 +467,10 @@ module Blacklight::EdsHelperBehavior
       url.gsub!("query-1=AND,TI:","q=")
       url.gsub!("query-1=AND,AU:","q=")
       url.gsub!("query-1=AND,SU:","q=")
+      url.gsub!("query-1=AND,SO:","q=")
+      url.gsub!("query-1=AND,AB:","q=")
+      url.gsub!("query-1=AND,IS:","q=")
+      url.gsub!("query-1=AND,IB:","q=")
       url.gsub!("query-1=AND,","q=")
 
       #Rails framework doesn't allow repeated params.  turning these into arrays fixes it.
@@ -1162,7 +1174,8 @@ module Blacklight::EdsHelperBehavior
   end
 
   def show_title(result)
-    result['Items'].each do |item|
+    # raise
+    Array(result['Items']).each do |item|
       if item['Group'] == 'Ti'
         return HTMLEntities.new.decode(item['Data']).html_safe
       end
