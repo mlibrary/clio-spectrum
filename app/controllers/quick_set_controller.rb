@@ -65,7 +65,7 @@ class QuickSetController < ApplicationController
   # display the results, based on submitted search params
   def results
     # Search term?
-    unless @q = params[:q] && params[:q].length > 0
+    unless (@q = params[:q]) && (@q.length > 0)
       flash[:error] = "Search term missing"
       return redirect_to scoped_simple_path
     end
