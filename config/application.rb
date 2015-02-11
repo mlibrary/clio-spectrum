@@ -35,6 +35,10 @@ module Clio
     require 'browse_support'
     require 'debug_renderer.rb'
 
+    # local copy of ebsco-discovery-service-api gem
+    # (the gem is only a single ruby file)
+    require 'ebsco-discovery-service-api'
+
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
     # config.plugins = [ :exception_notification, :ssl_requirement, :all ]

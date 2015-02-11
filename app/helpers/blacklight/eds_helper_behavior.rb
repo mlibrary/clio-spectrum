@@ -317,6 +317,8 @@ module Blacklight::EdsHelperBehavior
   end
 
   def clear_session_key
+    # Does anyone call this?
+    raise
     session.delete(:session_key)
   end
 
@@ -341,7 +343,8 @@ module Blacklight::EdsHelperBehavior
     if File.exists?(auth_file_location)
       return true
     end
-    return Rails.root.to_s + "/APIauthentication.txt"
+    # return Rails.root.to_s + "/APIauthentication.txt"
+    return false
   end
 
   def token_file_location
@@ -354,9 +357,9 @@ module Blacklight::EdsHelperBehavior
   end
 
   def auth_file_location
-    if request.domain.to_s.include?("localhost")
-      return "APIauthentication.txt"
-    end
+    # if request.domain.to_s.include?("localhost")
+    #   return "APIauthentication.txt"
+    # end
     return Rails.root.to_s + "/APIauthentication.txt"
   end
 
@@ -411,7 +414,7 @@ module Blacklight::EdsHelperBehavior
         f.write("\n" + timestamp)
       }
     else
-      File.new(token_file_location,"w") {|f|
+      File.open(token_file_location,"w") {|f|
         f.write(auth_token)
         f.write("\n" + timeout)
         f.write("\n" + timestamp)
