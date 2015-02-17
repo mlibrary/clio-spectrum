@@ -1,0 +1,34 @@
+
+
+-# EDS - CONSTRAINTS DISPLAY
+
+.well.well-constraints
+  %span.constraints-label You searched for:
+
+  - result.constraints_with_links.each do |text, link|
+
+    .constraint-box
+      %span.filterValue
+        =text
+        =link_to content_tag(:span, '', :class => 'glyphicon glyphicon-remove'), link
+      %span.chrome-fix
+
+
+-# OLD CODE - EDS ERB
+-# 
+-# <% if query_has_facetfilters? %>
+-# 
+-#   <div id="appliedParams" class="clearfix well well-constraints">
+-# 
+-#     <span class="constraints-label">You searched for: </span>
+-# 
+-#     <%= show_applied_limiters %>
+-# 
+-#     <% # = show_applied_facets %>  
+-#     <% if session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction'].present? %>
+-#       <%= render 'applied_facets' %>  
+-#     <% end %>
+-# 
+-#   </div>
+-# 
+-# <% end %>

@@ -125,9 +125,50 @@ module Blacklight::EdsHelperBehavior
   end
 
 
+  # Take a raw search-field param, and return a valid search-field 
+  # formatted for prefixing the query (i.e., include the colon)
+  # Unrecognized values or nil return empty string ('') for 'All Fields'
+  def search_field_prefix(search_field = '')
+    case search_field
+    when 'author'
+      'AU:'
+    when 'subject'
+      'SU:'
+    when 'title'
+      'TI:'
+    when 'source'
+      'SO:'
+    when 'abstract'
+      'AB:'
+    when 'issn'
+      'IS:'
+    when 'isbn'
+      'IB:'
+    else
+      ''
+    end
+  end
+
+  # Take a raw boolean_operator param, and return a valid boolean_operator
+  # formatted for prefixing the query (i.e., include the comma delimiter)
+  # Unrecognized values or nil return 'AND'.
+  def boolean_operator_prefix(boolean_operator = 'AND')
+    case boolean_operator
+    when 'AND'
+      'AND,'
+    when 'OR'
+      'OR,'
+    when 'NOT'
+      'NOT,'
+    else
+      'AND,'
+    end
+  end
+
   # generates parameters for the API call given URL parameters
   # options is usually the params hash
-  # this function strips out unneeded parameters and reformats them to form a string that the API accepts as input
+  # this function strips out unneeded parameters and reformats them 
+  # to form a string that the API accepts as input
   def generate_api_query(options)
 
     #removing Rails and Blacklight parameters
@@ -135,53 +176,94 @@ module Blacklight::EdsHelperBehavior
     options.delete("controller")
     options.delete("utf8")
 
-    #translate Blacklight search_field into query index
-    if options["search_field"].present?
-      if options["search_field"] == "author"
-        fieldcode = "AU:"
-      elsif options["search_field"] == "subject"
-        fieldcode = "SU:"
-      elsif options["search_field"] == "title"
-        fieldcode = "TI:"
-      elsif options["search_field"] == "source"
-        fieldcode = "SO:"
-      elsif options["search_field"] == "abstract"
-        fieldcode = "AB:"
-      elsif options["search_field"] == "issn"
-        fieldcode = "IS:"
-      elsif options["search_field"] == "isbn"
-        fieldcode = "IB:"
-      else
-        fieldcode = ""
-      end
-    else
-      fieldcode = ""
+    # This will be the hash of EDS-supported options
+    eds_options  = {}
+
+    # Handle q/search_field/search_mode, without an index.
+    # These fold into "query-1" for EDS.
+    if options["q"]
+      eds_options["query-1"] = options["q"]
+      # translate names (title) to EDS codes (TI) [nil maps to empty-string]
+      search_field = options["seach_field"]
+      eds_options["query-1"] = search_field_prefix(search_field) +
+                                eds_options["query-1"]
+      # validate and prepend "boolean" operator, [default to AND]
+      boolean_operator = options["boolean_operator"]
+      eds_options["query-1"] = boolean_operator_prefix(boolean_operator) +
+                                eds_options["query-1"]
     end
 
-    #should write something to allow this to be overridden
-    searchmode = "AND"
+    # The search form may submit multiple searchfield/searchfield/q triples,
+    # with an index appended.  (Even #1 may come to us with a '1' index.)
+    (1..9).each do |i|
+      qN = options["q#{i}"]
+      if qN && qN.length > 0
+        eds_options["query-#{i}"] = qN
+        # translate names (title) to EDS codes (TI) [nil maps to empty-string]
+        search_field = options["seach_field#{i}"]
+        eds_options["query-#{i}"] = search_field_prefix(search_field) +
+                                  eds_options["query-#{i}"]
+        # validate and prepend "boolean" operator, [default to AND]
+        boolean_operator = options["boolean_operator#{i}"]
+        eds_options["query-#{i}"] = boolean_operator_prefix(boolean_operator) +
+                                  eds_options["query-#{i}"]
+      end
+    end
 
-    #build 'query-1' API URL parameter
-    searchquery_extras = searchmode + "," + fieldcode
+
+    # 
+    # #translate Blacklight search_field into query index
+    # if options["search_field"].present?
+    #   if options["search_field"] == "author"
+    #     fieldcode = "AU:"
+    #   elsif options["search_field"] == "subject"
+    #     fieldcode = "SU:"
+    #   elsif options["search_field"] == "title"
+    #     fieldcode = "TI:"
+    #   elsif options["search_field"] == "source"
+    #     fieldcode = "SO:"
+    #   elsif options["search_field"] == "abstract"
+    #     fieldcode = "AB:"
+    #   elsif options["search_field"] == "issn"
+    #     fieldcode = "IS:"
+    #   elsif options["search_field"] == "isbn"
+    #     fieldcode = "IB:"
+    #   else
+    #     fieldcode = ""
+    #   end
+    # else
+    #   fieldcode = ""
+    # end
+    # 
+    # #should write something to allow this to be overridden
+    # search_mode = "AND"
+    # # The only non-default mode is "OR".  If it's passed, respect it.
+    # search_mode = "OR" if options['search_mode'] && options['search_mode'] == 'OR'
+
+    # #build 'query-1' API URL parameter
+    # searchquery_extras = search_mode + "," + fieldcode
 
     #filter to make sure the only parameters put into the API query are those that are expected by the API
-    edsKeys = ["eds_action","q","query-1","facetfilter[]","facetfilter","sort","includefacets","searchmode","view","resultsperpage","sort","pagenumber","highlight", "limiter", "limiter[]", "defaultdb"]
-    edsSubset  = {}
-    options.each do |key,value|
+    # edsKeys = ["eds_action","q","query-1","facetfilter[]","facetfilter","sort","includefacets","search_mode","view","resultsperpage","sort","pagenumber","highlight", "limiter", "limiter[]", "defaultdb"]
+    # Don't include q/search_field/search_mode - we handled those above.
+    edsKeys = ["eds_action", "facetfilter[]", "facetfilter", "sort",
+               "includefacets", "search_mode", "view", "resultsperpage",
+               "sort", "pagenumber", "highlight", "limiter", "limiter[]", "defaultdb"]
+    options.each do |key, value|
       if edsKeys.include?(key)
-        edsSubset[key] = value
+        eds_options[key] = value
       end
     end
 
     #rename parameters to expected names
     #action and query-1 were renamed due to Rails and Blacklight conventions respectively
     mappings = {"eds_action" => "action", "q" => "query-1"}
-    newoptions = Hash[edsSubset.map {|k, v| [mappings[k] || k, v] }]
+    eds_options = Hash[eds_options.map {|k, v| [mappings[k] || k, v] }]
 
-    #repace the raw query, adding searchmode and fieldcode
-    changedQuery = searchquery_extras.to_s + newoptions["query-1"].to_s
-    session[:debugNotes] << "CHANGEDQUERY: " << changedQuery.to_s
-    newoptions["query-1"] = changedQuery
+    # #repace the raw query, adding search_mode and fieldcode
+    # changedQuery = searchquery_extras.to_s + newoptions["query-1"].to_s
+    # session[:debugNotes] << "CHANGEDQUERY: " << changedQuery.to_s
+    # newoptions["query-1"] = changedQuery
 
 #    uri = Addressable::URI.new
 #    uri.query_values = newoptions
@@ -190,7 +272,10 @@ module Blacklight::EdsHelperBehavior
 #    searchtermindex = searchquery.index('query-1=') + 8
 #    searchquery.insert searchtermindex, searchquery_extras
 
-    searchquery = newoptions.to_query
+    Rails.logger.debug "======== eds_options=[#{eds_options.inspect}]"
+
+    searchquery = eds_options.to_query
+    Rails.logger.debug "======== searchquery=[#{searchquery.to_s}]"
     # , : ( ) - unencoding expected punctuation
     session[:debugNotes] << "<p>SEARCH QUERY AS STRING: " << searchquery.to_s
 #    searchquery = CGI::unescape(searchquery)

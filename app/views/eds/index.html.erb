@@ -25,7 +25,7 @@
        params = clean_params
 %>
 
-<% search(options) %>
+<% #search(options) %>
 
 
 <% if has_search_parameters? %>
@@ -66,6 +66,7 @@
       <% @page_title = t('blacklight.search.title', :application_name => application_name) %>
 
       <%= render :partial=>'constraints' %>
+
       <%= render :partial=>'sort_and_per_page' %>
       <%= render :partial=>'search_results' %>
       <%= render :partial=>'results_pagination' %>

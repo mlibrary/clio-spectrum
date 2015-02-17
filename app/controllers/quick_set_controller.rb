@@ -60,21 +60,22 @@ class QuickSetController < ApplicationController
 
   # build advanced query form
   def advanced
+    @quicksets = QuickSet.where(suppressed: false)
   end
 
   # display the results, based on submitted search params
   def results
     # Search term?
-    unless (@q = params[:q]) && (@q.length > 0)
+    unless params[:q].present? && params[:q].length > 0
       flash[:error] = "Search term missing"
       return redirect_to scoped_simple_path
     end
     # Against which Content Providers?
-    unless params[:id]
+    unless quickset_id = params.delete(:id)
       flash[:error] = "Must select a QuickSet"
       return redirect_to scoped_simple_path
     end
-    @quickset = QuickSet.find(params[:id])
+    @quickset = QuickSet.find(quickset_id)
     @content_providers = @quickset.content_providers
     @escaped_names = @content_providers.collect do |provider|
       # backslash-escape colons, commas, and parens.
@@ -98,7 +99,8 @@ class QuickSetController < ApplicationController
 
     # OK, now preform the search....
     # ...by redirecting to a full-CLIO-interface EDS search...
-    redirect_to eds_index_path(q: @q, facetfilter: facetfilter)
+    # redirect_to eds_index_path(q: @q, facetfilter: facetfilter, params)
+    redirect_to eds_index_path(params.merge(facetfilter: facetfilter))
   end
 
 end

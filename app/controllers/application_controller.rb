@@ -302,6 +302,9 @@ class ApplicationController < ActionController::Base
         'dcv'
       when /^\/eds/
         'eds'
+      # "Scoped" searching is a feature built on top of EDS
+      when /^\/scoped/
+        'eds'
       when /^\/library_web/
         'library_web'
       when /^\/newspapers/

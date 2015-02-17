@@ -23,6 +23,7 @@
         - cleanId = facetValue['FacetValue']['Id'].to_s.gsub("EDS","")
         - filterClass = 'filter-' + cleanId.gsub(" ","").titleize
         - removeHref = request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['RemoveAction'].to_s)
+
         .constraint-box
           %span.filterValue #{cleanId.titleize}: #{facetValue['FacetValue']['Value'].to_s.titleize}
           %a{href: removeHref}

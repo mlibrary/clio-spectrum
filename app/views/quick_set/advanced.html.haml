@@ -1,17 +1,29 @@
-
 -# used in the layout, for html page header and H2 text
 - @page_title = "Quick Set - Advanced Search"
 
 
 .search_panel.container
 
-  = form_tag scoped_search_path, :method => "GET" do
+  = form_tag scoped_search_path, method: 'GET', class: 'form-inline' do
 
     .row.well
-      .col-sm-9
-        = text_field_tag(:q, '', {size: 60})
-      .col-sm-3
-        = link_to "Simple Search", scoped_simple_path
+      .col-sm-10
+        .input-group
+          = text_field_tag(:q, '', {size: '60', class: 'form-control'})
+          = eds_fielded_dropdown(:search_field)
+        %br
+        .input-group
+          = text_field_tag(:q2, '', {size: '60', class: 'form-control'})
+          = eds_fielded_dropdown(:search_field2)
+        %br
+        .input-group
+          = text_field_tag(:q3, '', {size: '60', class: 'form-control'})
+          = eds_fielded_dropdown(:search_field3)
+
+
+      .col-sm-2
+        = link_to "Advanced Search", scoped_advanced_path
+
 
     = render 'quickset_pick_panel', quicksets: @quicksets
 
@@ -19,18 +31,3 @@
       .col-sm-12
         = submit_tag("Search")
 
-
-
-
-        -# #translate Blacklight search_field into query index
-        -# if options["search_field"].present?
-        -#   if options["search_field"] == "author"
-        -#     fieldcode = "AU:"
-        -#   elsif options["search_field"] == "subject"
-        -#     fieldcode = "SU:"
-        -#   elsif options["search_field"] == "title"
-        -#     fieldcode = "TI:"
-        -#   else
-        -#     fieldcode = ""
-        -#   end
-        -# else
