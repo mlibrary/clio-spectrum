@@ -11,8 +11,9 @@ site:
     - mem2308
     - sam119
     - hhb2119
-    - jrl2132
     - trd2119
+    - tdas
+    - jc2120
     - mw18
     - shs4
     - bw12
@@ -24,8 +25,9 @@ scoped_search:
     - mem2308
     - sam119
     - hhb2119
-    - jrl2132
     - trd2119
+    - tdas
+    - jc2120
     - mw18
     - shs4
     - bw12
@@ -59,6 +61,7 @@ item_alerts:
       - gb8
       - hk368
       - hs2148
+      - jc2120
       - jc677
       - jc93
       - jf2156
@@ -108,12 +111,11 @@ item_alerts:
       - sn2160
       - sy2133
       - tkf2104
+      - tdas
+      - trd2119
       - ur2
       - vjs4
       - vk91
       - wa2105
       - yl105
       - test_manager
-
-
-
