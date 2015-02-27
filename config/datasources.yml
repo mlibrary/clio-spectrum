@@ -178,7 +178,7 @@ datasources:
         title: Title
         subject: Subject
         source: Journal Title/Source
-        abstrct: Abstract
+        abstract: Abstract
         issn: ISSN
         isbn: ISBN
       

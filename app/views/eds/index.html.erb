@@ -19,10 +19,12 @@
 
 <% eds_connect %>
 
+
 <%
        options = generate_api_query(params)
-       clean_params = deep_clean(params)
-       params = clean_params
+       # This runs the params through html_escape.
+       # clean_params = deep_clean(params)
+       # params = clean_params
 %>
 
 <% #search(options) %>

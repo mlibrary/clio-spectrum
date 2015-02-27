@@ -3,7 +3,8 @@
 
     <% else %>
     
-    <% if session[:results]['SearchResult']['Data']['Records'].present? %>
+    <% # if session[:results]['SearchResult']['Data']['Records'].present? %>
+    <% if query_has_results? %>
 <div id="documents">
     <% session[:results]['SearchResult']['Data']['Records'].each do |result| %>
 

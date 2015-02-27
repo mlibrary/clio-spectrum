@@ -31,6 +31,9 @@ module Blacklight::EdsHelperBehavior
     return CGI.unescape(text)
   end
 
+  # passed a params hash, returns an array??
+  # this is all just to apply html_escape recursively to params? 
+  # I don't think we need that?
   def deep_clean(parameters)
     tempArray = Array.new;
     parameters.each do |k, v|
@@ -39,6 +42,7 @@ module Blacklight::EdsHelperBehavior
           deeperClean = deep_clean(v)
           parameters[k] = deeperClean
         else
+          raise
           parameters[k] = h(v)
         end
       else
@@ -124,30 +128,37 @@ module Blacklight::EdsHelperBehavior
     end
   end
 
+  SEARCH_FIELDS = {
+    'author'   => 'AU',
+    'subject'  => 'SU',
+    'title'    => 'TI',
+    'source'   => 'SO',
+    'abstract' => 'AB',
+    'issn'     => 'IS',
+    'isbn'     => 'IB'
+  }
+  SEARCH_CODES = SEARCH_FIELDS.invert
 
   # Take a raw search-field param, and return a valid search-field 
   # formatted for prefixing the query (i.e., include the colon)
   # Unrecognized values or nil return empty string ('') for 'All Fields'
   def search_field_prefix(search_field = '')
-    case search_field
-    when 'author'
-      'AU:'
-    when 'subject'
-      'SU:'
-    when 'title'
-      'TI:'
-    when 'source'
-      'SO:'
-    when 'abstract'
-      'AB:'
-    when 'issn'
-      'IS:'
-    when 'isbn'
-      'IB:'
+    if found = SEARCH_FIELDS[search_field]
+      return found + ':'
     else
-      ''
+      return ''
     end
   end
+
+  def search_field_label(code = '')
+    if found = SEARCH_CODES[code]
+      return found
+    else
+      return ''
+    end
+  end
+
+  BOOLEAN_OPERATORS = [ 'AND', 'OR', 'NOT' ]
 
   # Take a raw boolean_operator param, and return a valid boolean_operator
   # formatted for prefixing the query (i.e., include the comma delimiter)
@@ -179,19 +190,24 @@ module Blacklight::EdsHelperBehavior
     # This will be the hash of EDS-supported options
     eds_options  = {}
 
-    # Handle q/search_field/search_mode, without an index.
-    # These fold into "query-1" for EDS.
-    if options["q"]
-      eds_options["query-1"] = options["q"]
-      # translate names (title) to EDS codes (TI) [nil maps to empty-string]
-      search_field = options["seach_field"]
-      eds_options["query-1"] = search_field_prefix(search_field) +
-                                eds_options["query-1"]
-      # validate and prepend "boolean" operator, [default to AND]
-      boolean_operator = options["boolean_operator"]
-      eds_options["query-1"] = boolean_operator_prefix(boolean_operator) +
-                                eds_options["query-1"]
-    end
+    # Handle q/search_field/search_mode, without an index,
+    # by bumping them into "1"
+    options['q1'] = options['q'] if options['q']
+    options['search_field1'] = options['search_field'] if options['search_field']
+    options['search_mode1'] = options['search_mode'] if options['search_mode']
+
+    # # These fold into "query-1" for EDS.
+    # if options["q"]
+    #   eds_options["query-1"] = options["q"]
+    #   # translate names (title) to EDS codes (TI) [nil maps to empty-string]
+    #   search_field = options["search_field"]
+    #   eds_options["query-1"] = search_field_prefix(search_field) +
+    #                             eds_options["query-1"]
+    #   # validate and prepend "boolean" operator, [default to AND]
+    #   boolean_operator = options["boolean_operator"]
+    #   eds_options["query-1"] = boolean_operator_prefix(boolean_operator) +
+    #                             eds_options["query-1"]
+    # end
 
     # The search form may submit multiple searchfield/searchfield/q triples,
     # with an index appended.  (Even #1 may come to us with a '1' index.)
@@ -200,7 +216,8 @@ module Blacklight::EdsHelperBehavior
       if qN && qN.length > 0
         eds_options["query-#{i}"] = qN
         # translate names (title) to EDS codes (TI) [nil maps to empty-string]
-        search_field = options["seach_field#{i}"]
+        search_field = options["search_field#{i}"]
+        # raise
         eds_options["query-#{i}"] = search_field_prefix(search_field) +
                                   eds_options["query-#{i}"]
         # validate and prepend "boolean" operator, [default to AND]
@@ -209,7 +226,7 @@ module Blacklight::EdsHelperBehavior
                                   eds_options["query-#{i}"]
       end
     end
-
+# raise
 
     # 
     # #translate Blacklight search_field into query index
@@ -273,7 +290,7 @@ module Blacklight::EdsHelperBehavior
 #    searchquery.insert searchtermindex, searchquery_extras
 
     Rails.logger.debug "======== eds_options=[#{eds_options.inspect}]"
-
+# raise
     searchquery = eds_options.to_query
     Rails.logger.debug "======== searchquery=[#{searchquery.to_s}]"
     # , : ( ) - unencoding expected punctuation
@@ -542,34 +559,81 @@ module Blacklight::EdsHelperBehavior
 
   # pulls <QueryString> from the results of the current search to serve as the baseURL for next request
   def generate_next_url
-    if session[:results].present?
-      url = HTMLEntities.new.decode(session[:results]['SearchRequestGet']['QueryString'])
+    # raise
+    return '' unless session[:results].present?
 
-      #blacklight expects the search term to be in the parameter 'q'.
-      #q is moved back to 'query-1' in 'generate_api_query'
-      #should probably pull from Info method to determine replacement strings
-      #i could turn the query into a Hash, but available functions to do so delete duplicated params (Addressable)
-      url.gsub!("query-1=AND,TI:","q=")
-      url.gsub!("query-1=AND,AU:","q=")
-      url.gsub!("query-1=AND,SU:","q=")
-      url.gsub!("query-1=AND,SO:","q=")
-      url.gsub!("query-1=AND,AB:","q=")
-      url.gsub!("query-1=AND,IS:","q=")
-      url.gsub!("query-1=AND,IB:","q=")
-      url.gsub!("query-1=AND,","q=")
+    # the query string is only the cgi params, not a full or relative URL
+    query_string = HTMLEntities.new.decode(session[:results]['SearchRequestGet']['QueryString'])
+    query_params = CGI.parse(query_string)
 
-      #Rails framework doesn't allow repeated params.  turning these into arrays fixes it.
-      url.gsub!("facetfilter=","facetfilter[]=")
-      url.gsub!("limiter=","limiter[]=")
-
-      #i should probably pull this from the query, not the URL
-      if (params[:search_field]).present?
-        url << "&search_field=" << params[:search_field].to_s
-      end
-      return url
-    else
-      return ''
+    # CGI.parse sets all values to arrays.  Undo this.
+    query_params.each do |key, value|
+      query_params[key] = value[0] if (value.kind_of?(Array) && value.length == 1)
     end
+
+    # Map the EDS syntax of the QueryString back into application param syntax.
+    # query-N is broken into qN, search_fieldN, boolean_operatorN
+    (1..9).each do |i|
+      if query = query_params.delete("query-#{i}")
+
+        # peel off the leading boolean (and comma), store in it's own param
+        bools = BOOLEAN_OPERATORS.join('|')
+        if matched = query.match(/#{bools}/)
+          query_params["boolean_operator#{i}"] = matched.to_s
+          query.gsub!(/#{matched.to_s},/, '')
+        end
+
+        # peel off the leading search field code (and colon), store in it's own param
+        codes = SEARCH_CODES.keys.join('|')
+        # raise
+        if matched = query.match(/#{codes}/)
+          query_params["search_field#{i}"] = SEARCH_CODES[matched.to_s]
+          query.gsub!(/#{matched.to_s}:/, '')
+        end
+
+        # move the query over to the "q"
+        query_params["q#{i}"] = query
+      end
+    end
+
+    # bump "q1" back to a simple "q"
+    if q1 = query_params.delete('q1')
+      query_params['q'] = q1
+    end
+
+
+    # #blacklight expects the search term to be in the parameter 'q'.
+    # #q is moved back to 'query-1' in 'generate_api_query'
+    # #should probably pull from Info method to determine replacement strings
+    # #i could turn the query into a Hash, but available functions to do so delete duplicated params (Addressable)
+    # url.gsub!("query-1=AND,TI:","q=")
+    # url.gsub!("query-1=AND,AU:","q=")
+    # url.gsub!("query-1=AND,SU:","q=")
+    # url.gsub!("query-1=AND,SO:","q=")
+    # url.gsub!("query-1=AND,AB:","q=")
+    # url.gsub!("query-1=AND,IS:","q=")
+    # url.gsub!("query-1=AND,IB:","q=")
+    # url.gsub!("query-1=AND,","q=")
+
+    #Rails framework doesn't allow repeated params.  turning these into arrays fixes it.
+    # url.gsub!("facetfilter=","facetfilter[]=")
+    # url.gsub!("limiter=","limiter[]=")
+    # if facetfilter = query_params.delete('facetfilter')
+    #   query_params['facetfilter[]'] = facetfilter
+    # end
+    # if limiter = query_params.delete('limiter')
+    #   query_params['limiter[]'] = limiter
+    # end
+
+    # #i should probably pull this from the query, not the URL
+    # if (params[:search_field]).present?
+    #   url << "&search_field=" << params[:search_field].to_s
+    # end
+
+    # return url
+# Rails.logger.debug "+++  generate_next_url() returning:  #{query_params.to_query}"
+    return query_params.to_query
+
   end
 
   # should replace this functionality with AddQuery/RemoveQuery actions
@@ -660,7 +724,7 @@ module Blacklight::EdsHelperBehavior
     if last_result_on_page_num > show_total_hits
       last_result_on_page_num = show_total_hits
     end
-    page_info = "<strong>" + first_result_on_page_num.to_s + "</strong> - <strong>" + last_result_on_page_num.to_s + "</strong> of <strong>" + show_total_hits.to_s + "</strong>"
+    page_info = "<strong>" + first_result_on_page_num.to_s + "</strong> - <strong>" + last_result_on_page_num.to_s + "</strong> of <strong>" + number_with_delimiter(show_total_hits) + "</strong>"
     if show_current_page > 1
       previous_page = show_current_page - 1
       previous_link = '<a href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=GoToPage(" + previous_page.to_s + ')">&laquo; Previous</a> | '
@@ -729,60 +793,130 @@ module Blacklight::EdsHelperBehavior
   # Facet / Limiter Constraints Box
   #############
 
-  # used when determining if the "constraints" partial should display
-  def query_has_facetfilters?(localized_params = params)
-    (generate_next_url.scan("facetfilter[]=").length > 0) or (generate_next_url.scan("limiter[]=").length > 0)
+  def query_has_results?()
+    session[:results] &&
+    session[:results]['SearchResult'] &&
+    session[:results]['SearchResult']['Data'] &&
+    session[:results]['SearchResult']['Data']['Records']
   end
 
 
-  # should probably return a hash and let the view handle the HTML
-  def show_applied_facets
-    appliedfacets = '';
-    if session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction'].present?
-      session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction'].each do |appliedfacet|
-        appliedfacet.each do |key, val|
-          if key == "FacetValuesWithAction"
-            val.each do |facetValue|
-              appliedfacets << '<span class="btn-group appliedFilter constraint filter filter-' + facetValue['FacetValue']['Id'].to_s.gsub("EDS","").gsub(" ","").titleize + '"><a class="constraint-value btn btn-sm btn-default btn-disabled" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['RemoveAction'].to_s) + '"><span class="filterName">' + facetValue['FacetValue']['Id'].to_s.gsub("EDS","").titleize + '</span><span class="filterValue">' + facetValue['FacetValue']['Value'].to_s.titleize + '</span></a><a class="btn btn-default btn-sm remove dropdown-toggle" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['RemoveAction'].to_s) + '"><span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove filter ' + facetValue['FacetValue']['Id'].to_s.gsub("EDS","").titleize + ':' + facetValue['FacetValue']['Value'].to_s.titleize + '</span></a></span>'
-            end
-          end
-        end
-      end
+  def query_has_search_terms?()
+    # But maybe "q" is present, together with "eds_action=removequery(1)".
+    # return true if params[:q]
+    # (1..9).each do |i|
+    #   return true if params["q#{i}"] || params["query-#{i}"]
+    # end
+    # return false
+    # Better to directly check the active Query as echoed back from the API endpoint.
+
+    session[:results] &&
+    session[:results]['SearchRequestGet'] &&
+    session[:results]['SearchRequestGet']['SearchCriteriaWithActions'] &&
+    session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['QueriesWithAction']
+  end
+
+  # used when determining if "constraints" should display
+  def query_has_facetfilters?()
+    session[:results] &&
+    session[:results]['SearchRequestGet'] &&
+    session[:results]['SearchRequestGet']['SearchCriteriaWithActions'] &&
+    session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction']
+
+    # generate_next_url.scan("facetfilter[]=").length > 0
+  end
+
+  # used when determining if "constraints" should display
+  def query_has_limiters?()
+    session[:results] &&
+    session[:results]['SearchRequestGet'] &&
+    session[:results]['SearchRequestGet']['SearchCriteriaWithActions'] &&
+    session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['LimitersWithAction']
+
+    # generate_next_url.scan("limiter[]=").length > 0
+  end
+
+  def limiter_label(limiter = nil)
+    return '' if limiter.nil?
+
+    # map the ID to a display string
+    limiterLabel = limiter_id_to_label(limiter['Id'])
+
+    # that's it.  Unless we're a Date limiter.
+    return limiterLabel unless limiter['Id'] == 'DT1'
+
+    # Only process the first applied date limit.  Multiple date limits would be very, very odd.
+    limiterValue = limiter["LimiterValuesWithAction"][0]["Value"]
+
+    # Are EDS date limit values look like this:   "Value"=>"2010-01/2015-12"
+    return limiterLabel.titlecase + ' ' + limiterValue.gsub("-01/", " - ").gsub("-12", "")
+  end
+
+  def limiter_id_to_label(id = nil)
+    return '' if id.nil?
+
+    # make sure we've got session metadata
+    get_info unless session[:info].present?
+
+    # find the labels from our session metadata
+    session[:info]['AvailableSearchCriteria']['AvailableLimiters'].each do |limiter|
+      return limiter['Label'] if limiter["Id"] == id
     end
-    return appliedfacets.html_safe
+
+    return ''
   end
 
 
-  # should return hash and let the view handle the HTML
-  def show_applied_limiters
-    appliedlimiters = '';
-    if session[:results].present?
-      if session[:results]['SearchRequestGet']['SearchCriteriaWithActions'].present?
-        if session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['LimitersWithAction'].present?
-          session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['LimitersWithAction'].each do |appliedLimiter|
-            limiterLabel = "No Label"
-            session[:info]['AvailableSearchCriteria']['AvailableLimiters'].each do |limiter|
-              if limiter["Id"] == appliedLimiter["Id"]
-                limiterLabel = limiter["Label"]
-              end
-            end
-            if appliedLimiter["Id"] == "DT1"
-              appliedLimiter["LimiterValuesWithAction"].each do |limiterValues|
-                appliedlimiters << '<span class="btn-group appliedFilter constraint filter filter-' + appliedLimiter["Id"] + '">'
-                appliedlimiters << '<a class="constraint-value btn btn-sm btn-default btn-disabled" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '">'
-                appliedlimiters << '<span class="filterName">' + limiterLabel.to_s.titleize + '</span><span class="filterValue">' + limiterValues["Value"].gsub("-01/"," to ").gsub("-12","") + '</span>'
-                appliedlimiters << '</a><a class="btn btn-default btn-sm remove dropdown-toggle" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '">'
-                appliedlimiters << '<span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove limiter '+ limiterLabel.to_s.titleize + ':' + limiterValues["Value"].gsub("-01/"," to ").gsub("-12","") + '</a></span>'
-              end
-            else
-              appliedlimiters << '<span class="btn-group appliedFilter constraint filter filter-' + appliedLimiter["Id"] + '"><a class="constraint-value btn btn-sm btn-default btn-disabled" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '"><span class="filterValue">' + limiterLabel.to_s.titleize + '</span></a><a class="btn btn-default btn-sm remove dropdown-toggle" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '"><span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove limiter ' + limiterLabel.to_s.titleize + '</span></a></span>'
-            end
-          end
-        end
-      end
-    end
-    return appliedlimiters.html_safe
-  end
+# # marquis - moved this to a partial, _applied_facets.html.haml
+#   # should probably return a hash and let the view handle the HTML
+#   def show_applied_facets
+#     appliedfacets = '';
+#     if session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction'].present?
+#       session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['FacetFiltersWithAction'].each do |appliedfacet|
+#         appliedfacet.each do |key, val|
+#           if key == "FacetValuesWithAction"
+#             val.each do |facetValue|
+#               appliedfacets << '<span class="btn-group appliedFilter constraint filter filter-' + facetValue['FacetValue']['Id'].to_s.gsub("EDS","").gsub(" ","").titleize + '"><a class="constraint-value btn btn-sm btn-default btn-disabled" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['RemoveAction'].to_s) + '"><span class="filterName">' + facetValue['FacetValue']['Id'].to_s.gsub("EDS","").titleize + '</span><span class="filterValue">' + facetValue['FacetValue']['Value'].to_s.titleize + '</span></a><a class="btn btn-default btn-sm remove dropdown-toggle" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + CGI.escape(facetValue['RemoveAction'].to_s) + '"><span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove filter ' + facetValue['FacetValue']['Id'].to_s.gsub("EDS","").titleize + ':' + facetValue['FacetValue']['Value'].to_s.titleize + '</span></a></span>'
+#             end
+#           end
+#         end
+#       end
+#     end
+#     return appliedfacets.html_safe
+#   end
+
+
+# # marquis - moved this to a partial, _applied_limiters.html.haml
+#   # should return hash and let the view handle the HTML
+#   def show_applied_limiters
+#     appliedlimiters = '';
+#     if session[:results].present?
+#       if session[:results]['SearchRequestGet']['SearchCriteriaWithActions'].present?
+#         if session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['LimitersWithAction'].present?
+#           session[:results]['SearchRequestGet']['SearchCriteriaWithActions']['LimitersWithAction'].each do |appliedLimiter|
+#             limiterLabel = "No Label"
+#             session[:info]['AvailableSearchCriteria']['AvailableLimiters'].each do |limiter|
+#               if limiter["Id"] == appliedLimiter["Id"]
+#                 limiterLabel = limiter["Label"]
+#               end
+#             end
+#             if appliedLimiter["Id"] == "DT1"
+#               appliedLimiter["LimiterValuesWithAction"].each do |limiterValues|
+#                 appliedlimiters << '<span class="btn-group appliedFilter constraint filter filter-' + appliedLimiter["Id"] + '">'
+#                 appliedlimiters << '<a class="constraint-value btn btn-sm btn-default btn-disabled" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '">'
+#                 appliedlimiters << '<span class="filterName">' + limiterLabel.to_s.titleize + '</span><span class="filterValue">' + limiterValues["Value"].gsub("-01/"," to ").gsub("-12","") + '</span>'
+#                 appliedlimiters << '</a><a class="btn btn-default btn-sm remove dropdown-toggle" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '">'
+#                 appliedlimiters << '<span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove limiter '+ limiterLabel.to_s.titleize + ':' + limiterValues["Value"].gsub("-01/"," to ").gsub("-12","") + '</a></span>'
+#               end
+#             else
+#               appliedlimiters << '<span class="btn-group appliedFilter constraint filter filter-' + appliedLimiter["Id"] + '"><a class="constraint-value btn btn-sm btn-default btn-disabled" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '"><span class="filterValue">' + limiterLabel.to_s.titleize + '</span></a><a class="btn btn-default btn-sm remove dropdown-toggle" href="' + request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + appliedLimiter["RemoveAction"].to_s + '"><span class="glyphicon glyphicon-remove"></span><span class="sr-only">Remove limiter ' + limiterLabel.to_s.titleize + '</span></a></span>'
+#             end
+#           end
+#         end
+#       end
+#     end
+#     return appliedlimiters.html_safe
+#   end
 
   #############
   # Facets / Limiters sidebar
@@ -833,8 +967,11 @@ module Blacklight::EdsHelperBehavior
             end
           end
           limitershtml << "<li style='font-size:small;'>"
-          limitershtml << check_box_tag("limiters", limiterAction, limiterChecked, :id => ("limiter-" + limiterCount.to_s), :style => "margin-top:-5px;")
-          limitershtml << " " << limiter["Label"] << "</li>"
+          redirect_url = request.fullpath.split("?")[0] + "?" + generate_next_url + "&eds_action=" + limiterAction
+          limitershtml << check_box_tag("limiters", limiterAction, limiterChecked, :id => ("limiter-" + limiterCount.to_s), :style => "margin-top:-5px;", data: {redirect_url: redirect_url}, class: 'redirect_on_click')
+          limitershtml << label_tag("limiter-" + limiterCount.to_s, limiter["Label"])
+          # limitershtml << " " << limiter["Label"] << "</li>"
+          limitershtml << "</li>"
           limiterCount += 1
         end
       end
@@ -947,6 +1084,7 @@ module Blacklight::EdsHelperBehavior
   end
 
   def show_total_hits
+    # raise
     return session[:results]['SearchResult']['Statistics']['TotalHits']
   end
 

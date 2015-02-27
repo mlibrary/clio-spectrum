@@ -66,10 +66,14 @@ class QuickSetController < ApplicationController
   # display the results, based on submitted search params
   def results
     # Search term?
-    unless params[:q].present? && params[:q].length > 0
+    if ['q', 'q1', 'q2', 'q3'].none? {|key| params[key].present? && params[key].length > 0}
       flash[:error] = "Search term missing"
       return redirect_to scoped_simple_path
     end
+    # unless params[:q].present? && params[:q].length > 0
+    #   flash[:error] = "Search term missing"
+    #   return redirect_to scoped_simple_path
+    # end
     # Against which Content Providers?
     unless quickset_id = params.delete(:id)
       flash[:error] = "Must select a QuickSet"

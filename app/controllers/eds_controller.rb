@@ -9,6 +9,8 @@ class EdsController < ApplicationController
   #include Blacklight::Catalog
 
   def index
+    # Rails.logger.debug "AAA" + params.inspect
+    # render 'index', params: params
   end
 
 end
