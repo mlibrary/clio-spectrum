@@ -14,8 +14,3 @@
       %a.donor_info_icon{:disabled => disabled, href: "#{href}"}
         GIFT
       =link_to(message, href)
-- elsif copy['donor_info'].present?
-  - message = copy['donor_info']
-  - message = message.gsub(/ -- /, '<br/>').html_safe
-  .message=  message
-
