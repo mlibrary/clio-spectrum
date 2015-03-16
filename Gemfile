@@ -55,12 +55,27 @@ gem 'json'
 # Would be used for Patron services, if we were to use native Blacklight Patron services
 # gem 'restful_voyage', :git => "git://github.com/cul/restful_voyage.git", :branch => "master"
 
-# Always include sqlite, deploy to all servers, so that we can use dummy databases
-#  for simplified rails environments used in index rake cronjobs
-gem 'sqlite3'
+
+platforms :mri do
+  # Always include sqlite, deploy to all servers, so that we can use dummy databases
+  #  for simplified rails environments used in index rake cronjobs
+  gem 'sqlite3'
+  gem 'therubyracer'
+end
+
+platforms :jruby do
+  gem 'therubyrhino'
+  # Use jdbcsqlite3 as the database for Active Record
+  gem 'activerecord-jdbcsqlite3-adapter'
+end
 
 group :clio_dev, :clio_test, :clio_prod do
-  gem 'mysql2'
+  platforms :mri do
+    gem 'mysql2'
+  end
+  platforms :jruby do
+    gem 'activerecord-jdbcmysql-adapter'
+  end
 end
 
 # Some things we want to see in development and in-action on 
@@ -69,7 +84,7 @@ group :development, :clio_dev do
 
   # "MiniProfiler allows you to see the speed of a request on the page"
   # http://railscasts.com/episodes/368-miniprofiler
-# Disable while we straighten out the Bootstrap 3 style issues.
+  # Disable while we straighten out the Bootstrap 3 style issues.
   # gem 'rack-mini-profiler'
 
 end
@@ -81,8 +96,6 @@ end
 # should try to eliminate at some point.
 gem 'has_options'
 
-# gem 'therubyracer', '0.10.2'
-gem 'therubyracer'
 gem 'httpclient'
 gem 'nokogiri'
 
@@ -116,10 +129,8 @@ gem 'net-ldap'
 gem 'devise'
 gem 'devise-encryptable'
 
-
 # application monitoring tool
 gem 'newrelic_rpm'
-
 
 # "Rack middleware which cleans up invalid UTF8 characters"
 # gem 'rack-utf8_sanitizer'
@@ -145,7 +156,6 @@ group :assets do
   # gem 'bootstrap-sass', '3.2.0.2'
   gem 'bootstrap-sass'
 end
-
 
 # To build slugs for saved-list URLs
 gem 'stringex'
@@ -195,15 +205,17 @@ group :development do
   # fixes [morrison.cul.columbia.edu] sh: bundle: command not found
   gem 'rvm-capistrano'
 
-  # browser-based live debugger and REPL
-  # http://railscasts.com/episodes/402-better-errors-railspanel
-  gem 'better_errors'
-  gem 'binding_of_caller'
+  platforms :mri do
+    # browser-based live debugger and REPL
+    # http://railscasts.com/episodes/402-better-errors-railspanel
+    gem 'better_errors'
+    gem 'binding_of_caller'
+
+    # port of ruby-debug that works on 1.9.2 and 1.9.3
+    gem 'debugger'
+  end
   # is this what's slowing us down so much?
   # gem 'meta_request'
-
-  # port of ruby-debug that works on 1.9.2 and 1.9.3
-  gem 'debugger'
 
   # "A fist full of code metrics"
   gem 'metric_fu'
@@ -216,10 +228,10 @@ end
 
 group :test, :development do
 
-
-  gem 'thin'
+  platforms :mri do
+    gem 'thin'
+  end
   # gem 'unicorn'
-
 
   # why in test and dev both instead of just test?  
   # because is says to: https://github.com/rspec/rspec-rails
@@ -244,7 +256,10 @@ group :test do
   # gem 'capybara', '2.0.3'
 
   # Which Capybara driver for JS support?
-  gem 'capybara-webkit'
+  platforms :mri do
+    gem 'capybara-webkit'
+    gem 'ruby-prof'
+  end
   # dependent on localhost's browser configs
   # gem 'selenium-webdriver'
 
@@ -255,12 +270,9 @@ group :test do
   # # gem "growl"
   # gem 'terminal-notifier-guard'
 
-
   gem 'rb-fsevent'
   # GNTP is Growl's protocol - turn off, since no more Growl
   # gem 'ruby_gntp'
-  gem 'ruby-prof'
-
 
   # code coverage
   gem 'simplecov'
