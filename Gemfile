@@ -55,7 +55,9 @@ source 'https://rubygems.org' do
   gem 'nokogiri', '1.6.1'
 
   # HTML replacement language
-  gem 'haml'
+  # Force to use version 4; version 5 throws errors
+  # because rails 5 uses Erubi
+  gem 'haml', '~>4.0'
   gem 'haml-rails'
 
   # CSS replacement language
